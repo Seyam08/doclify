@@ -1,3 +1,4 @@
+import { UserProfile } from "@/components/authentication/user-profile";
 import { ModeToggle } from "@/components/mode-toggle";
 import Image from "next/image";
 
@@ -60,6 +61,8 @@ export default function Home() {
             Documentation
           </a>
           <ModeToggle />
+
+          <UserProfile />
         </div>
       </main>
     </div>
