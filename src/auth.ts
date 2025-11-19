@@ -27,7 +27,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       try {
         await connectDB();
         const existingUser = await checkClientEmailExists(user.email as string);
-        if (!existingUser) {
+        if (!existingUser.status) {
           const username = user.email?.split("@")[0] as string;
           const author: AuthorType = {
             username: username,
@@ -42,15 +42,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
           return true;
         } else {
-          await Author.findOneAndUpdate(
-            { "authorInfo.email": user.email },
-            {
-              $set: {
-                "authorInfo.name": user.name,
-                "authorInfo.image": user.image,
-              },
-            }
-          );
+          const isNameChanged =
+            existingUser.author?.authorInfo.name !== user.name;
+          const isImageChanged =
+            existingUser.author?.authorInfo.image !== user.image;
+
+          if (isNameChanged || isImageChanged) {
+            await Author.updateOne(
+              { "authorInfo.email": user.email },
+              {
+                $set: {
+                  "authorInfo.name": user.name,
+                  "authorInfo.image": user.image,
+                },
+              }
+            );
+          }
           return true;
         }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars

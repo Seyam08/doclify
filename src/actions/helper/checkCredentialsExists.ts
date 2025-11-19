@@ -1,16 +1,31 @@
 import { Author } from "@/models/author";
+import { AuthorType } from "@/types/schema.types";
 
-export async function checkClientEmailExists(email: string): Promise<boolean> {
+export async function checkClientEmailExists(email: string): Promise<{
+  status: boolean;
+  author: AuthorType | null;
+}> {
   try {
-    const client = await Author.findOne({
+    const author = await Author.findOne({
       "authorInfo.email": email,
     });
 
-    return client ? true : false;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
+    if (author) {
+      return {
+        status: true,
+        author: author,
+      };
+    } else {
+      return {
+        status: false,
+        author: null,
+      };
     }
-    return false;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return {
+      status: false,
+      author: null,
+    };
   }
 }
