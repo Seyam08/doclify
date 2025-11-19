@@ -18,7 +18,7 @@ import SocialLogOut from "./social-logout";
 
 export async function UserProfile() {
   const session = await auth();
-  console.log(session);
+  // console.log(session);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

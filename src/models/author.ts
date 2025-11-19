@@ -15,18 +15,19 @@ const authorFrontMatterSchema = new Schema(
     designation: { type: String },
     image: { type: String, required: true },
     email: { type: String, required: true, unique: true, trim: true },
-    socialLinks: { type: [socialLinkSchema], default: [] },
+    socialLinks: { type: [socialLinkSchema], required: false },
   },
   { _id: false }
 );
 
-const authorSchema = new Schema(
+export const AuthorSchema = new Schema(
   {
     username: { type: String, required: true, unique: true, trim: true },
-    authorFrontMatter: { type: authorFrontMatterSchema, required: true },
+    authorInfo: { type: authorFrontMatterSchema, required: true },
     authorContent: { type: String },
   },
   { timestamps: true }
 );
 
-export default mongoose.models.Author || mongoose.model("Author", authorSchema);
+export const Author =
+  mongoose.models.Author || mongoose.model("Author", AuthorSchema);
