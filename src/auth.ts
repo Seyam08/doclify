@@ -38,11 +38,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             },
           };
 
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const createdAuthor = await Author.create(author);
+          await Author.create(author);
 
           return true;
         } else {
+          await Author.findOneAndUpdate(
+            { "authorInfo.email": user.email },
+            {
+              $set: {
+                "authorInfo.name": user.name,
+                "authorInfo.image": user.image,
+              },
+            }
+          );
           return true;
         }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
