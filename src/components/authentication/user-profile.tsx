@@ -1,4 +1,10 @@
-import { BadgeCheck, Bell, CreditCard, Sparkles, User } from "lucide-react";
+import {
+  BadgeCheck,
+  Bell,
+  CreditCard,
+  LayoutDashboard,
+  User,
+} from "lucide-react";
 
 import { auth } from "@/auth";
 import SocialLogin from "@/components/authentication/social-login";
@@ -14,11 +20,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
+import Link from "next/link";
 import SocialLogOut from "./social-logout";
 
 export async function UserProfile() {
   const session = await auth();
-  // console.log(session);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -62,10 +69,12 @@ export async function UserProfile() {
         {session && (
           <>
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
-              </DropdownMenuItem>
+              <Link href="/dashboard">
+                <DropdownMenuItem className="cursor-pointer">
+                  <LayoutDashboard />
+                  Dashboard
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
