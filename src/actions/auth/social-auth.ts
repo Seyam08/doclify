@@ -3,7 +3,7 @@
 import { signIn, signOut } from "@/auth";
 
 export async function singInWithGoogle() {
-  await signIn("google", { redirectTo: "/" });
+  await signIn("google", { redirectTo: "/dashboard" });
 }
 
 export async function signOutSocialAuth() {
