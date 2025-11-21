@@ -1,5 +1,5 @@
 import { signOutSocialAuth } from "@/actions/auth/social-auth";
-import { Button } from "@/components/ui/button";
+import SubmitButton from "@/components/authentication/submit-button";
 import { Field } from "@/components/ui/field";
 import { LogOut } from "lucide-react";
 
@@ -7,10 +7,14 @@ export default function SocialLogOut() {
   return (
     <form action={signOutSocialAuth}>
       <Field>
-        <Button variant="outline" type="submit" className="cursor-pointer">
-          <LogOut />
+        <SubmitButton
+          variant="outline"
+          type="submit"
+          className="cursor-pointer"
+          icon={<LogOut />}
+        >
           LogOut
-        </Button>
+        </SubmitButton>
       </Field>
     </form>
   );
