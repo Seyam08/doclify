@@ -61,8 +61,8 @@ const data = {
           url: "/dashboard",
         },
         {
-          title: "Settings",
-          url: "#",
+          title: "Add Posts",
+          url: "/dashboard/add-post",
         },
       ],
     },
