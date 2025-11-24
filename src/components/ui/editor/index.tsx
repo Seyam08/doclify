@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Spinner } from "@/components/ui/spinner";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Toggle } from "@/components/ui/toggle";
 import { cn } from "@/lib/utils";
 import { EditorContent, useEditor } from "@tiptap/react";
@@ -68,7 +68,12 @@ function MinimalTiptap({
   });
 
   if (!editor) {
-    return <Spinner />;
+    return (
+      <div className="space-y-3">
+        <Skeleton className="h-10" />
+        <Skeleton className="h-96 w-full rounded-lg" />
+      </div>
+    );
   }
 
   return (

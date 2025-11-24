@@ -48,13 +48,13 @@ export default function AddPost() {
     >
       <ResizablePanel defaultSize={50}>
         <div className="h-full p-3">
-          <div className="size-full flex flex-col items-center space-y-3">
+          <div className="size-full flex flex-col items-start space-y-3">
             <div className="w-full max-w-full">
               <MinimalTiptap
                 content={content}
                 onChange={setContent}
                 placeholder="Start typing your content here..."
-                className="min-h-[400px]"
+                className="min-h-96"
               />
             </div>
             <Button variant="outline" onClick={handleSave}>
