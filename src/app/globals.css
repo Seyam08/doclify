@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+/* @plugin "@tailwindcss/typography"; */
 
 @custom-variant dark (&:is(.dark *));
 
@@ -164,5 +165,49 @@
   }
   button {
     @apply cursor-pointer;
+  }
+
+  .tiptap :first-child {
+    @apply mt-0;
+  }
+  .tiptap ul {
+    @apply my-6 ml-6 list-disc [&>li]:mt-2;
+  }
+  .tiptap ol {
+    @apply my-6 ml-6 list-decimal [&>li]:mt-2;
+  }
+  .tiptap ul li p,
+  .tiptap ol li p {
+    @apply text-base leading-5 not-first:mt-2 text-secondary;
+  }
+  .tiptap h1 {
+    @apply scroll-m-20 text-4xl font-extrabold tracking-tight text-balance;
+  }
+  .tiptap h2 {
+    @apply scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0;
+  }
+  .tiptap h3 {
+    @apply scroll-m-20 text-2xl font-semibold tracking-tight;
+  }
+  .tiptap h4 {
+    @apply scroll-m-20 text-xl font-semibold tracking-tight;
+  }
+  .tiptap p {
+    @apply leading-7 not-first:mt-2;
+  }
+  .tiptap code {
+    @apply bg-accent relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold;
+  }
+  .tiptap pre {
+    @apply bg-accent relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold;
+  }
+  .tiptap pre code {
+    @apply bg-accent relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold;
+  }
+  .tiptap blockquote {
+    @apply mt-6 border-l-2 pl-6 italic border-sidebar-primary;
+  }
+  .tiptap hr {
+    @apply border-t border-sidebar-primary my-2;
   }
 }
