@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { DoclifyImageWithSkeleton } from "@/components/ui/image";
 import UnderlineLink, {
   TypographyH1,
   TypographyP,
@@ -11,7 +11,8 @@ const post = {
     title: "The Power of Consistency",
     description:
       "Consistency is the secret ingredient behind long-term success. Small steps every day build massive results.",
-    image: "/images/blog/demo-consistency.jpg",
+    image:
+      "https://plus.unsplash.com/premium_photo-1674489620667-eaf4a0094996?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     date: "2024-05-12T10:30:00+06:00",
     featured: true,
     postOfTheMonth: false,
@@ -71,11 +72,20 @@ export default function Page() {
         </p>
       </div>
 
-      <Skeleton className="h-24 w-3/5 rounded-md" />
+      {/* thumbnail image section */}
+      <div className="my-2 md:my-8">
+        <DoclifyImageWithSkeleton
+          src={post.frontMatter.image}
+          alt={post.frontMatter.title}
+          width={1050}
+          height={400}
+        />
+      </div>
+      {/* <Skeleton className="h-24 w-3/5 rounded-md" />
       <Skeleton className="h-32 w-full rounded-md" />
       <Skeleton className="h-52 w-full rounded-md" />
       <Skeleton className="h-6 w-full rounded-md" />
-      <Skeleton className="h-28 w-2/5 rounded-md" />
+      <Skeleton className="h-28 w-2/5 rounded-md" /> */}
     </div>
   );
 }
