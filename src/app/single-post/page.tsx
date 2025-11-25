@@ -4,6 +4,7 @@ import UnderlineLink, {
   TypographyH1,
   TypographyP,
 } from "@/components/ui/typography";
+import { contentPurify } from "@/lib/utils";
 import { Calendar1Icon, ClockFading, User } from "lucide-react";
 
 const post = {
@@ -31,6 +32,7 @@ const post = {
 };
 
 export default function Page() {
+  const cleanContent = contentPurify(post.content);
   return (
     <div className="content-holder space-y-2">
       {/* categories and reading time section */}
@@ -90,7 +92,7 @@ export default function Page() {
 
       {/* post content section  */}
       <div
-        dangerouslySetInnerHTML={{ __html: post.content || "" }}
+        dangerouslySetInnerHTML={{ __html: cleanContent }}
         className="tiptap"
       ></div>
 

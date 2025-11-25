@@ -6,6 +6,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { contentPurify } from "@/lib/utils";
 import { useState } from "react";
 
 const initialContent = `
@@ -38,8 +39,9 @@ export default function AddPost() {
   const [html, setHtml] = useState<string>();
 
   const handleSave = () => {
-    setHtml(content);
-    console.log(content);
+    const cleanContent = contentPurify(content);
+    setHtml(cleanContent);
+    console.log(cleanContent);
   };
 
   return (
