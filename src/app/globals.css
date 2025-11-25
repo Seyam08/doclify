@@ -166,7 +166,9 @@
   button {
     @apply cursor-pointer;
   }
-
+  .width-holder {
+    @apply max-w-6xl 2xl:max-w-7xl w-full mx-auto py-20 px-4 md:px-10 min-h-screen;
+  }
   .tiptap :first-child {
     @apply mt-0;
   }
