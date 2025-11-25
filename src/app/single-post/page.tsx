@@ -20,8 +20,13 @@ const post = {
     categories: ["Self Improvement", "Productivity"],
     tags: ["Motivation", "Consistency", "Habits"],
   },
-  content:
-    "\n### Consistency beats intensity\nA lot of people believe success requires huge bursts of effort. But in reality, the people who win long-term are the ones who stay consistent.\n\nEven if the progress seems small each day, it compounds. Just like saving money, little habits build big results over time.\n\n### Small habits matter\nWhen you commit to something every day—even for five minutes—you train your brain to show up. Showing up becomes a habit, not a decision.\n\n> Success doesn’t come from what you do occasionally. It comes from what you do consistently.\n\n### How to stay consistent\nHere are a few simple tactics:\n\n- Start small\n- Set achievable goals\n- Track your daily progress\n- Don’t break the chain\n\nConsistency isn’t glamorous, but it works. And the longer you stick with it, the more unstoppable you become.",
+  content: `<h1>Welcome to Doclify ✨</h1><p>Doclify is a minimal, modern blogging platform designed to help you write and publish your ideas effortlessly. This editor is powered by <strong>Tiptap</strong>, giving you a smooth and flexible writing experience with rich formatting options.</p><hr><ul><li><p>Format your text using <strong>bold</strong>, <em>italic</em>, or <u>underline</u></p></li><li><p>Create structured content using headings and subheadings</p></li><li><p>Build ordered and unordered lists</p></li><li><p>Add blockquotes, links, code blocks, or images</p></li><li><p>Experiment with rich content to see how it renders on Doclify</p></li></ul><blockquote><p>“Good writing begins with clarity. Doclify helps you stay focused, organized, and expressive — one word at a time.”</p></blockquote><ol><li><p>Format your text using <strong>bold</strong>, <em>italic</em>, or <u>underline</u></p></li><li><p>Create structured content using headings and subheadings</p></li><li><p>Build ordered and unordered lists</p></li><li><p>Add blockquotes, links, code blocks, or images</p></li><li><p>Experiment with rich content to see how it renders on Doclify</p></li></ol><h2>Through this situation</h2><hr><p>“<strong>Through this situation,</strong> <em>I think employees saw the true colour of businesses, of how they treated their people,</em>” he added. “Employers that may not have handled it the right <s>away</s> are still feeling the repercussions. We had to re-educate our managers to think, it’s all new - how do we work through this? In the beginning, a lot of people tried to remotely replicate culture from what was in an office environment. However, we eventually had to look at things in a different way and redefine what culture is to a workplace.”</p><p></p><pre><code class="language-typescriptreact"> const [content, setContent] = useState&lt;string&gt;initialContent);
+  const [html, setHtml] = useState&lt;string&gt;();
+
+  const handleSave = () =&gt; {
+    setHtml(content);
+    console.log(content);
+  };</code></pre><p></p>`,
 };
 
 export default function Page() {
@@ -81,6 +86,12 @@ export default function Page() {
           height={400}
         />
       </div>
+
+      {/* post content section  */}
+      <div
+        dangerouslySetInnerHTML={{ __html: post.content || "" }}
+        className="tiptap"
+      ></div>
       {/* <Skeleton className="h-24 w-3/5 rounded-md" />
       <Skeleton className="h-32 w-full rounded-md" />
       <Skeleton className="h-52 w-full rounded-md" />
