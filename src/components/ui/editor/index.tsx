@@ -60,7 +60,7 @@ function MinimalTiptap({
       attributes: {
         class: cn(
           "prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl mx-auto focus:outline-none",
-          "min-h-[200px] p-4 border-0"
+          "min-h-96 p-4 border-0"
         ),
       },
     },
@@ -209,8 +209,9 @@ function MinimalTiptap({
           <Redo className="h-4 w-4" />
         </Button>
       </div>
-
-      <EditorContent editor={editor} placeholder={placeholder} />
+      <div className="h-96 overflow-y-scroll">
+        <EditorContent editor={editor} placeholder={placeholder} />
+      </div>
     </div>
   );
 }

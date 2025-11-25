@@ -39,6 +39,7 @@ export default function AddPost() {
 
   const handleSave = () => {
     setHtml(content);
+    console.log(content);
   };
 
   return (
