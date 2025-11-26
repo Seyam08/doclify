@@ -15,7 +15,7 @@ export async function DoclifyImage({
 }) {
   await new Promise((resolve) => setTimeout(resolve, 5000)); // Simulate a delay
   return (
-    <div className="h-96 w-full overflow-hidden flex items-center justify-center">
+    <div className="w-full aspect-video overflow-hidden flex items-center justify-center rounded-2xl">
       <Image
         src={src}
         alt={alt}
@@ -39,7 +39,7 @@ export function DoclifyImageWithSkeleton({
   height: number;
 }) {
   return (
-    <Suspense fallback={<Skeleton className="h-96 w-full" />}>
+    <Suspense fallback={<Skeleton className="w-full aspect-video" />}>
       <DoclifyImage src={src} alt={alt} width={width} height={height} />
     </Suspense>
   );
