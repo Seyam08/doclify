@@ -1,4 +1,5 @@
 "use client";
+import AddPostContainer from "@/components/ui/add-post/add-post-container";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { MinimalTiptap } from "@/components/ui/editor";
@@ -21,11 +22,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
 import { contentPurify } from "@/lib/utils";
 import { addPostSchema } from "@/zod-schemas/schema";
@@ -34,7 +31,6 @@ import { CircleMinus, Eye, Save } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import z from "zod";
-import { Skeleton } from "../skeleton";
 
 const initialContent = `
        <h1>Welcome to Doclify ✨</h1>
@@ -86,11 +82,8 @@ export default function AddPost() {
   }
 
   return (
-    <ResizablePanelGroup
-      direction="horizontal"
-      className="min-h-screen max-w-full rounded-lg border md:min-w-[450px]"
-    >
-      <ResizablePanel defaultSize={50}>
+    <AddPostContainer
+      editorPanel={
         <div className="h-full p-3">
           <div className="size-full flex flex-col items-start">
             <div className="w-full max-w-full h-screen overflow-y-auto">
@@ -212,10 +205,6 @@ export default function AddPost() {
                   className="min-h-96 my-4"
                 />
                 <Field orientation="horizontal" className="mt-5">
-                  <Button variant="outline" onClick={handleSave} type="button">
-                    <Eye className="size-4" />
-                    Preview
-                  </Button>
                   <Button variant="outline" type="submit">
                     {form.formState.isSubmitting ? (
                       <Spinner />
@@ -229,19 +218,25 @@ export default function AddPost() {
             </div>
           </div>
         </div>
-      </ResizablePanel>
-      <ResizableHandle withHandle />
-      <ResizablePanel defaultSize={50}>
+      }
+      previewPanel={
         <div className="h-full p-3">
-          <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-            Content Preview
-          </h2>
+          <div className="border-b pb-2 mb-4 flex items-center justify-between">
+            <h2 className="scroll-m-20 text-xl md:text-2xl font-semibold tracking-tight">
+              Content Preview
+            </h2>
+            <Button variant="outline" onClick={handleSave} type="button">
+              <Eye className="size-4" />
+              Preview
+            </Button>
+          </div>
+
           <div
             dangerouslySetInnerHTML={{ __html: html || "" }}
             className="tiptap"
           ></div>
         </div>
-      </ResizablePanel>
-    </ResizablePanelGroup>
+      }
+    />
   );
 }
