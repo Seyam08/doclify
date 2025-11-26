@@ -1,13 +1,40 @@
 "use client";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { MinimalTiptap } from "@/components/ui/editor";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  InputGroupTextarea,
+} from "@/components/ui/input-group";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { Spinner } from "@/components/ui/spinner";
 import { contentPurify } from "@/lib/utils";
+import { addPostSchema } from "@/zod-schemas/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CircleMinus, Eye, Save } from "lucide-react";
 import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import z from "zod";
+import { Skeleton } from "../skeleton";
 
 const initialContent = `
        <h1>Welcome to Doclify ✨</h1>
@@ -37,12 +64,26 @@ const initialContent = `
 export default function AddPost() {
   const [content, setContent] = useState<string>(initialContent);
   const [html, setHtml] = useState<string>();
+  const form = useForm<z.infer<typeof addPostSchema>>({
+    resolver: zodResolver(addPostSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      thumbnail: undefined,
+    },
+  });
 
-  const handleSave = () => {
+  async function onSubmit(data: z.infer<typeof addPostSchema>) {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    // Do something with the form values.
+    console.log(data);
+    form.reset();
+  }
+
+  function handleSave() {
     const cleanContent = contentPurify(content);
     setHtml(cleanContent);
-    console.log(cleanContent);
-  };
+  }
 
   return (
     <ResizablePanelGroup
@@ -51,18 +92,141 @@ export default function AddPost() {
     >
       <ResizablePanel defaultSize={50}>
         <div className="h-full p-3">
-          <div className="size-full flex flex-col items-start space-y-3">
-            <div className="w-full max-w-full">
-              <MinimalTiptap
-                content={content}
-                onChange={setContent}
-                placeholder="Start typing your content here..."
-                className="min-h-96"
-              />
+          <div className="size-full flex flex-col items-start">
+            <div className="w-full max-w-full h-screen overflow-y-auto">
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <FieldGroup>
+                  <Controller
+                    name="title"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel htmlFor="post-title">Blog Title</FieldLabel>
+                        <Input
+                          {...field}
+                          id="post-title"
+                          aria-invalid={fieldState.invalid}
+                          placeholder="Choose a concise and descriptive title"
+                          autoComplete="off"
+                        />
+                        {fieldState.invalid && (
+                          <FieldError errors={[fieldState.error]} />
+                        )}
+                      </Field>
+                    )}
+                  />
+                  <Controller
+                    name="description"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel htmlFor="post-description">
+                          Description
+                        </FieldLabel>
+                        <InputGroup>
+                          <InputGroupTextarea
+                            {...field}
+                            id="post-description"
+                            placeholder="Provide a brief summary of your blog post."
+                            rows={6}
+                            className="min-h-24 resize-none"
+                            aria-invalid={fieldState.invalid}
+                          />
+                          <InputGroupAddon align="block-end">
+                            <InputGroupText className="tabular-nums">
+                              {field.value.length}/200 characters
+                            </InputGroupText>
+                          </InputGroupAddon>
+                        </InputGroup>
+
+                        {fieldState.invalid && (
+                          <FieldError errors={[fieldState.error]} />
+                        )}
+                      </Field>
+                    )}
+                  />
+                  <Controller
+                    control={form.control}
+                    name="thumbnail"
+                    render={({ field, fieldState }) => {
+                      const { onChange } = field;
+                      const selectedFile = field.value;
+                      const fileUrl = selectedFile
+                        ? URL.createObjectURL(selectedFile)
+                        : null;
+                      return (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel>Thumbnail</FieldLabel>
+
+                          {fileUrl ? (
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Avatar className="w-full h-52 cursor-pointer rounded-2xl">
+                                  <AvatarImage
+                                    src={fileUrl}
+                                    alt={selectedFile?.name}
+                                  />
+                                  <AvatarFallback>
+                                    <Skeleton className="w-full h-52" />
+                                  </AvatarFallback>
+                                </Avatar>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-auto p-1">
+                                <Button
+                                  size="sm"
+                                  className="bg-red-400 hover:bg-red-500 transition-all cursor-pointer text-white shadow-xs"
+                                  onClick={() => {
+                                    form.setValue("thumbnail", undefined);
+                                  }}
+                                >
+                                  <CircleMinus />
+                                </Button>
+                              </PopoverContent>
+                            </Popover>
+                          ) : (
+                            <Input
+                              id="avatar"
+                              type="file"
+                              onChange={(e) => onChange(e.target.files?.[0])}
+                            />
+                          )}
+
+                          <FieldDescription>
+                            {selectedFile
+                              ? selectedFile?.name
+                              : "Maintain aspect ratio 16:9. Max size 2MB. JPG or PNG."}
+                          </FieldDescription>
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </Field>
+                      );
+                    }}
+                  />
+                </FieldGroup>
+
+                <MinimalTiptap
+                  content={content}
+                  onChange={setContent}
+                  placeholder="Start typing your content here..."
+                  className="min-h-96 my-4"
+                />
+                <Field orientation="horizontal" className="mt-5">
+                  <Button variant="outline" onClick={handleSave} type="button">
+                    <Eye className="size-4" />
+                    Preview
+                  </Button>
+                  <Button variant="outline" type="submit">
+                    {form.formState.isSubmitting ? (
+                      <Spinner />
+                    ) : (
+                      <Save className="size-4" />
+                    )}
+                    Post
+                  </Button>
+                </Field>
+              </form>
             </div>
-            <Button variant="outline" onClick={handleSave}>
-              Preview
-            </Button>
           </div>
         </div>
       </ResizablePanel>
@@ -70,7 +234,7 @@ export default function AddPost() {
       <ResizablePanel defaultSize={50}>
         <div className="h-full p-3">
           <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-            Preview
+            Content Preview
           </h2>
           <div
             dangerouslySetInnerHTML={{ __html: html || "" }}
