@@ -209,7 +209,7 @@ function MinimalTiptap({
           <Redo className="h-4 w-4" />
         </Button>
       </div>
-      <div className="h-96 overflow-y-scroll">
+      <div className="h-96 overflow-y-scroll scrollbar scrollbar-thumb-primary">
         <EditorContent editor={editor} placeholder={placeholder} />
       </div>
     </div>

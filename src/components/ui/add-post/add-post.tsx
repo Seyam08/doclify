@@ -86,7 +86,7 @@ export default function AddPost() {
       editorPanel={
         <div className="h-full p-3">
           <div className="size-full flex flex-col items-start">
-            <div className="w-full max-w-full h-screen overflow-y-auto">
+            <div className="w-full max-w-full h-screen overflow-y-auto scrollbar scrollbar-thumb-primary scrollbar-track-transparent scrollbar-corner-transparent">
               <form onSubmit={form.handleSubmit(onSubmit)}>
                 <FieldGroup>
                   <Controller
@@ -202,7 +202,7 @@ export default function AddPost() {
                   content={content}
                   onChange={setContent}
                   placeholder="Start typing your content here..."
-                  className="min-h-96 my-4"
+                  className="my-4"
                 />
                 <Field orientation="horizontal" className="mt-5">
                   <Button variant="outline" type="submit">
