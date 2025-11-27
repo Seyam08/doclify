@@ -16,13 +16,13 @@ const frontMatterSchema = new Schema(
     featured: { type: Boolean, default: false },
     postOfTheMonth: { type: Boolean, default: false },
     author: { type: String, required: true },
-    categories: [{ type: String }],
-    tags: [{ type: String }],
+    categories: { type: [String], default: [] },
+    tags: { type: [String], default: [] },
   },
   { _id: false }
 );
 
-const blogSchema = new Schema(
+export const BlogSchema = new Schema(
   {
     slug: { type: String, required: true, unique: true },
     frontMatter: { type: frontMatterSchema, required: true },
@@ -31,4 +31,4 @@ const blogSchema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.models.Blog || mongoose.model("Blog", blogSchema);
+export const Blog = mongoose.models.Blog || mongoose.model("Blog", BlogSchema);

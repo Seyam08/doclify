@@ -1,4 +1,5 @@
 "use client";
+import { addPost } from "@/actions/post/post-actions";
 import AddPostContainer from "@/components/ui/add-post/add-post-container";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -25,11 +26,13 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
 import { contentPurify } from "@/lib/utils";
+import { ServerActionResponse } from "@/types/global-types";
 import { addPostSchema } from "@/zod-schemas/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleMinus, Eye, Save } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 
 const initialContent = `
@@ -59,7 +62,8 @@ const initialContent = `
 
 export default function AddPost() {
   const [content, setContent] = useState<string>(initialContent);
-  const [html, setHtml] = useState<string>();
+  const [editorKey, setEditorKey] = useState<number>(0);
+  const [cleanContent, setCleanContent] = useState<string>("");
   const form = useForm<z.infer<typeof addPostSchema>>({
     resolver: zodResolver(addPostSchema),
     defaultValues: {
@@ -70,15 +74,30 @@ export default function AddPost() {
   });
 
   async function onSubmit(data: z.infer<typeof addPostSchema>) {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    // Do something with the form values.
-    console.log(data);
-    form.reset();
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const purify = contentPurify(content);
+      const response: ServerActionResponse<string | undefined> = await addPost({
+        ...data,
+        content: purify,
+      });
+
+      if (response.success === true) {
+        toast.success(response.message);
+        setContent("");
+        setEditorKey((prev) => prev + 1); // changing the key to destroy the old state
+        form.reset();
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      toast.error("Failed to add post");
+    }
   }
 
-  function handleSave() {
-    const cleanContent = contentPurify(content);
-    setHtml(cleanContent);
+  function handlePreview() {
+    const purify = contentPurify(content);
+    setCleanContent(purify);
   }
 
   return (
@@ -203,6 +222,7 @@ export default function AddPost() {
                   onChange={setContent}
                   placeholder="Start typing your content here..."
                   className="my-4"
+                  key={editorKey} // maintaining a key to destroy the old state
                 />
                 <Field orientation="horizontal" className="mt-5">
                   <Button variant="outline" type="submit">
@@ -225,14 +245,14 @@ export default function AddPost() {
             <h2 className="scroll-m-20 text-xl md:text-2xl font-semibold tracking-tight">
               Content Preview
             </h2>
-            <Button variant="outline" onClick={handleSave} type="button">
+            <Button variant="outline" onClick={handlePreview} type="button">
               <Eye className="size-4" />
               Preview
             </Button>
           </div>
 
           <div
-            dangerouslySetInnerHTML={{ __html: html || "" }}
+            dangerouslySetInnerHTML={{ __html: cleanContent || "" }}
             className="tiptap"
           ></div>
         </div>
