@@ -1,3 +1,5 @@
+"use server";
+
 import { Author } from "@/models/author";
 import { AuthorType } from "@/types/schema.types";
 
