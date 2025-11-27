@@ -3,7 +3,7 @@
 import { Author } from "@/models/author";
 import { AuthorType } from "@/types/schema.types";
 
-export async function checkClientEmailExists(email: string): Promise<{
+export async function checkAuthorEmailExists(email: string): Promise<{
   status: boolean;
   author: AuthorType | null;
 }> {

@@ -1,4 +1,4 @@
-import { checkClientEmailExists } from "@/actions/helper/checkCredentialsExists";
+import { checkAuthorEmailExists } from "@/actions/helper/checkCredentialsExists";
 import { connectDB } from "@/lib/mongoConnection";
 import { Author } from "@/models/author";
 import { AuthorType } from "@/types/schema.types";
@@ -26,7 +26,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     signIn: async ({ user }) => {
       try {
         await connectDB();
-        const existingUser = await checkClientEmailExists(user.email as string);
+        const existingUser = await checkAuthorEmailExists(user.email as string);
         if (!existingUser.status) {
           const username = user.email?.split("@")[0] as string;
           const author: AuthorType = {
