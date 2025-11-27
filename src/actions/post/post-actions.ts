@@ -5,11 +5,13 @@ import {
   checkBlogSlugExists,
 } from "@/actions/helper/checkCredentialsExists";
 import { auth } from "@/auth";
+import { uploadImage } from "@/lib/cloudinary/upload-image";
 import { connectDB } from "@/lib/mongoConnection";
 import { Blog } from "@/models/blog";
 import { ServerActionResponse } from "@/types/global-types";
 import { BlogType } from "@/types/schema.types";
 import { addPostSchema } from "@/zod-schemas/schema";
+import { UploadApiResponse } from "cloudinary";
 import slugify from "slugify";
 import z from "zod";
 
@@ -43,6 +45,14 @@ export async function addPost(
       if (authorInfo.status === true) {
         const author = authorInfo.author?.username as string;
 
+        const image = params.thumbnail;
+
+        // upload the image
+        const uploadResult: UploadApiResponse = await uploadImage(
+          image,
+          process.env.CLOUDINARY_DOCLIFY_BLOG_THUMB_FOLDER as string
+        );
+
         const post: BlogType = {
           slug,
           content: params.content,
@@ -52,8 +62,8 @@ export async function addPost(
             description: params.description,
             date: new Date(),
             image: {
-              url: "string",
-              publicId: "string",
+              publicId: uploadResult.public_id,
+              url: uploadResult.secure_url,
             },
             categories: [],
             tags: [],

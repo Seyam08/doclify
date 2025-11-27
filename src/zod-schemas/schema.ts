@@ -4,7 +4,7 @@ export const addPostSchema = z.object({
   title: z
     .string()
     .min(5, "Bug title must be at least 5 characters.")
-    .max(42, "Bug title must be at most 32 characters."),
+    .max(60, "Bug title must be at most 32 characters."),
   description: z
     .string()
     .min(20, "Description must be at least 20 characters.")
@@ -16,6 +16,5 @@ export const addPostSchema = z.object({
     })
     .mime(["image/png", "image/jpeg"], {
       error: "Only accept JPG and PNG",
-    })
-    .optional(),
+    }),
 });
