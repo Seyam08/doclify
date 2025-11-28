@@ -69,7 +69,7 @@ function MinimalTiptap({
 
   if (!editor) {
     return (
-      <div className="space-y-3">
+      <div className={cn("space-y-3", className)}>
         <Skeleton className="h-10" />
         <Skeleton className="h-96 w-full rounded-lg" />
       </div>
