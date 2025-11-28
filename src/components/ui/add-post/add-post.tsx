@@ -4,7 +4,6 @@ import SearchInput from "@/components/SearchInput/SearchInput";
 import AddPostContainer from "@/components/ui/add-post/add-post-container";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { MinimalTiptap } from "@/components/ui/editor";
 import {
   Field,
   FieldDescription,
@@ -26,50 +25,25 @@ import {
 } from "@/components/ui/popover";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
-import { contentPurify } from "@/lib/utils";
 import { ServerActionResponse } from "@/types/global-types";
 import { addPostSchema } from "@/zod-schemas/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CircleMinus, Eye, Save } from "lucide-react";
+import { CircleMinus, Save } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
-
-const initialContent = `
-       <h1>Welcome to Doclify ✨</h1>
-    <p>
-       Doclify is a minimal, modern blogging platform designed to help you write and publish your ideas effortlessly. 
-       This editor is powered by <strong>Tiptap</strong>, giving you a smooth and flexible writing experience with rich formatting options.
-    </p>
-    <hr/>
-    
-    <ul>
-       <li>Format your text using <strong>bold</strong>, <em>italic</em>, or <u>underline</u></li>
-       <li>Create structured content using headings and subheadings</li>
-       <li>Build ordered and unordered lists</li>
-       <li>Add blockquotes, links, code blocks, or images</li>
-       <li>Experiment with rich content to see how it renders on Doclify</li>
-    </ul>
-    
-    <blockquote>
-       <p>
-          “Good writing begins with clarity. Doclify helps you stay focused, organized, and expressive
-          — one word at a time.”
-       </p>
-    </blockquote>
-    
-      `;
+import EditorWrapper from "../editor/editor-wrapper";
 
 const categoryList = ["life", "work", "travel"];
 const tagList = ["solo", "peace", "nature"];
 
 export default function AddPost() {
-  const [content, setContent] = useState<string>(initialContent);
+  const [content, setContent] = useState<string>("");
   const [editorKey, setEditorKey] = useState<number>(0);
-  const [cleanContent, setCleanContent] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
+  const [sync, setSync] = useState<boolean>(false);
   const [clear, setClear] = useState<boolean>(false); // to clear tag and category state
   const form = useForm<z.infer<typeof addPostSchema>>({
     resolver: zodResolver(addPostSchema),
@@ -77,28 +51,24 @@ export default function AddPost() {
       title: "",
       description: "",
       thumbnail: undefined,
+      content: "",
     },
   });
 
-  const selectedFile = form.watch("thumbnail");
-  const fileUrl = selectedFile ? URL.createObjectURL(selectedFile) : null;
-
   useEffect(() => {
-    return () => {
-      if (fileUrl) {
-        console.log("I am running");
-        URL.revokeObjectURL(fileUrl);
-      }
-    };
-  }, [fileUrl]);
+    form.setValue("content", content);
+  }, [content]);
 
   async function onSubmit(data: z.infer<typeof addPostSchema>) {
+    if (!sync) {
+      form.setError("content", { message: "You haven't saved content!" });
+      return;
+    }
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
-      const purify = contentPurify(content);
+
       const response: ServerActionResponse<string | undefined> = await addPost({
         ...data,
-        content: purify,
         tags: tags,
         categories: categories,
       });
@@ -118,11 +88,7 @@ export default function AddPost() {
     }
   }
 
-  function handlePreview() {
-    const purify = contentPurify(content);
-    setCleanContent(purify);
-  }
-
+  console.log("rendering");
   return (
     <AddPostContainer
       editorPanel={
@@ -240,17 +206,6 @@ export default function AddPost() {
                   />
                 </FieldGroup>
 
-                {/* add tags  */}
-                <Field className="mt-5">
-                  <FieldLabel>Add tags</FieldLabel>
-                  <SearchInput
-                    itemList={tagList}
-                    setItem={setTags}
-                    featureName="tag"
-                    clear={clear}
-                  />
-                </Field>
-
                 {/* add categories  */}
 
                 <Field className="mt-5">
@@ -263,13 +218,28 @@ export default function AddPost() {
                   />
                 </Field>
 
-                <MinimalTiptap
-                  content={content}
-                  onChange={setContent}
-                  placeholder="Start typing your content here..."
-                  className="mt-4"
-                  key={editorKey} // maintaining a key to destroy the old state
-                />
+                {/* add tags  */}
+                <Field className="mt-5">
+                  <FieldLabel>Add tags</FieldLabel>
+                  <SearchInput
+                    itemList={tagList}
+                    setItem={setTags}
+                    featureName="tag"
+                    clear={clear}
+                  />
+                </Field>
+
+                <Field className="mt-5">
+                  <EditorWrapper
+                    setContent={setContent}
+                    content={content}
+                    key={editorKey}
+                    syncContent={setSync}
+                  />
+                  {form.formState.errors.content && (
+                    <FieldError errors={[form.formState.errors.content]} />
+                  )}
+                </Field>
 
                 <Field orientation="horizontal" className="mt-5">
                   <Button variant="outline" type="submit">
@@ -292,14 +262,10 @@ export default function AddPost() {
             <h2 className="scroll-m-20 text-xl md:text-2xl font-semibold tracking-tight">
               Content Preview
             </h2>
-            <Button variant="outline" onClick={handlePreview} type="button">
-              <Eye className="size-4" />
-              Preview
-            </Button>
           </div>
 
           <div
-            dangerouslySetInnerHTML={{ __html: cleanContent || "" }}
+            dangerouslySetInnerHTML={{ __html: content || "" }}
             className="tiptap"
           ></div>
         </div>
