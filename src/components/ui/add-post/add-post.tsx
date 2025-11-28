@@ -1,5 +1,6 @@
 "use client";
 import { addPost } from "@/actions/post/post-actions";
+import SearchInput from "@/components/SearchInput/SearchInput";
 import AddPostContainer from "@/components/ui/add-post/add-post-container";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -30,7 +31,7 @@ import { ServerActionResponse } from "@/types/global-types";
 import { addPostSchema } from "@/zod-schemas/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleMinus, Eye, Save } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
@@ -60,10 +61,16 @@ const initialContent = `
     
       `;
 
+const categoryList = ["life", "work", "travel"];
+const tagList = ["solo", "peace", "nature"];
+
 export default function AddPost() {
   const [content, setContent] = useState<string>(initialContent);
   const [editorKey, setEditorKey] = useState<number>(0);
   const [cleanContent, setCleanContent] = useState<string>("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [clear, setClear] = useState<boolean>(false); // to clear tag and category state
   const form = useForm<z.infer<typeof addPostSchema>>({
     resolver: zodResolver(addPostSchema),
     defaultValues: {
@@ -73,6 +80,18 @@ export default function AddPost() {
     },
   });
 
+  const selectedFile = form.watch("thumbnail");
+  const fileUrl = selectedFile ? URL.createObjectURL(selectedFile) : null;
+
+  useEffect(() => {
+    return () => {
+      if (fileUrl) {
+        console.log("I am running");
+        URL.revokeObjectURL(fileUrl);
+      }
+    };
+  }, [fileUrl]);
+
   async function onSubmit(data: z.infer<typeof addPostSchema>) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -80,13 +99,17 @@ export default function AddPost() {
       const response: ServerActionResponse<string | undefined> = await addPost({
         ...data,
         content: purify,
+        tags: tags,
+        categories: categories,
       });
 
       if (response.success === true) {
         toast.success(response.message);
+        console.log(response);
         setContent("");
-        setEditorKey((prev) => prev + 1); // changing the key to destroy the old state
+        setClear(true);
         form.reset();
+        setEditorKey((prev) => prev + 1); // changing the key to destroy the old state
       } else {
         toast.error(response.message);
       }
@@ -176,7 +199,7 @@ export default function AddPost() {
                                 <Avatar className="w-full h-52 cursor-pointer rounded-2xl">
                                   <AvatarImage
                                     src={fileUrl}
-                                    alt={selectedFile?.name}
+                                    alt={selectedFile.name}
                                   />
                                   <AvatarFallback>
                                     <Skeleton className="w-full h-52" />
@@ -188,7 +211,7 @@ export default function AddPost() {
                                   size="sm"
                                   className="bg-red-400 hover:bg-red-500 transition-all cursor-pointer text-white shadow-xs"
                                   onClick={() => {
-                                    form.setValue("thumbnail", undefined);
+                                    field.onChange(undefined);
                                   }}
                                 >
                                   <CircleMinus />
@@ -217,13 +240,37 @@ export default function AddPost() {
                   />
                 </FieldGroup>
 
+                {/* add tags  */}
+                <Field className="mt-5">
+                  <FieldLabel>Add tags</FieldLabel>
+                  <SearchInput
+                    itemList={tagList}
+                    setItem={setTags}
+                    featureName="tag"
+                    clear={clear}
+                  />
+                </Field>
+
+                {/* add categories  */}
+
+                <Field className="mt-5">
+                  <FieldLabel>Add categories</FieldLabel>
+                  <SearchInput
+                    itemList={categoryList}
+                    setItem={setCategories}
+                    featureName="category"
+                    clear={clear}
+                  />
+                </Field>
+
                 <MinimalTiptap
                   content={content}
                   onChange={setContent}
                   placeholder="Start typing your content here..."
-                  className="my-4"
+                  className="mt-4"
                   key={editorKey} // maintaining a key to destroy the old state
                 />
+
                 <Field orientation="horizontal" className="mt-5">
                   <Button variant="outline" type="submit">
                     {form.formState.isSubmitting ? (

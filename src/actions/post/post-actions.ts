@@ -17,6 +17,8 @@ import z from "zod";
 
 type AddPost = z.infer<typeof addPostSchema> & {
   content: string;
+  categories: string[];
+  tags: string[];
 };
 export async function addPost(
   params: AddPost
@@ -65,8 +67,8 @@ export async function addPost(
               publicId: uploadResult.public_id,
               url: uploadResult.secure_url,
             },
-            categories: [],
-            tags: [],
+            categories: params.categories,
+            tags: params.tags,
             featured: false,
             postOfTheMonth: false,
           },
