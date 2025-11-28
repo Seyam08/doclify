@@ -15,6 +15,7 @@ type SearchInputProps = {
   setItem: React.Dispatch<React.SetStateAction<string[]>>;
   existedItems?: string[];
   featureName: string;
+  clear?: boolean;
 };
 
 export default function SearchInput({
@@ -23,6 +24,7 @@ export default function SearchInput({
   existedItems = [],
   featureName,
   className,
+  clear,
 }: SearchInputProps & React.ComponentProps<"div">) {
   const [search, setSearch] = useState<string>("");
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
@@ -44,6 +46,13 @@ export default function SearchInput({
       item.toLowerCase().includes(search.toLowerCase()) &&
       !selectedItems.some((i) => i === item)
   );
+
+  // clear the selectedItems
+  useEffect(() => {
+    if (clear) {
+      setSelectedItems([]);
+    }
+  }, [clear, setSelectedItems]);
   // Add new item
   const selectItem = (item: string) => {
     const trimmedItem = item.trim();
