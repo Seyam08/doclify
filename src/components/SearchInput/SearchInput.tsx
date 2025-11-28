@@ -66,14 +66,19 @@ export default function SearchInput({
   return (
     <div className={cn("w-full relative", className)}>
       {/* Selected Users */}
-      <div className="flex flex-wrap gap-2 mb-2">
+      <div
+        className={`flex flex-wrap gap-2 ${selectedItems.length > 0 && "mb-2"}`}
+      >
         {selectedItems.map((item, index) => (
           <Badge variant="outline" key={index}>
             {item}
             <Button
               size="icon-sm"
               variant="outline"
-              onClick={() => removeItem(item)}
+              onClick={(e) => {
+                e.preventDefault();
+                removeItem(item);
+              }}
               className="size-5 border-0 p-0 bg-transparent! hover:bg-accent hover:text-destructive"
             >
               <CircleX />
@@ -102,7 +107,13 @@ export default function SearchInput({
           />
           {search && (
             <InputGroupAddon align="inline-end">
-              <InputGroupButton variant="outline" onClick={() => setSearch("")}>
+              <InputGroupButton
+                variant="outline"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setSearch("");
+                }}
+              >
                 <CircleX className="text-foreground" />
               </InputGroupButton>
             </InputGroupAddon>
@@ -118,7 +129,8 @@ export default function SearchInput({
               <li
                 key={index}
                 className="p-2 rounded-lg cursor-pointer hover:bg-accent"
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
                   selectItem(item);
                   setSearch("");
                 }}
@@ -135,7 +147,8 @@ export default function SearchInput({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 selectItem(search);
                 setSearch("");
               }}
