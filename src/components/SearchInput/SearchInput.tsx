@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/input-group";
 import { cn } from "@/lib/utils";
 import { CircleX } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 type SearchInputProps = {
   itemList: string[];
@@ -16,7 +16,7 @@ type SearchInputProps = {
   existedItems?: string[];
   featureName: string;
   clear?: boolean;
-};
+} & React.ComponentProps<"div">;
 
 export default function SearchInput({
   itemList = [],
@@ -25,61 +25,64 @@ export default function SearchInput({
   featureName,
   className,
   clear,
-}: SearchInputProps & React.ComponentProps<"div">) {
+}: SearchInputProps) {
   const [search, setSearch] = useState<string>("");
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
-  // Pass selected usernames to parent
-  useEffect(() => {
-    setItem(selectedItems);
-  }, [selectedItems, setItem]);
-
-  // Add existedUsers initially
+  /** Add existing items only ONCE (initial mount) */
   useEffect(() => {
     if (existedItems.length > 0) {
-      setSelectedItems((prev) => [...prev, ...existedItems]);
+      setSelectedItems(existedItems);
     }
-  }, [existedItems]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const filteredItems = itemList.filter(
-    (item) =>
-      item.toLowerCase().includes(search.toLowerCase()) &&
-      !selectedItems.some((i) => i === item)
-  );
+  /** Parent state update ONLY when items change */
+  useEffect(() => {
+    setItem(selectedItems);
+  }, [selectedItems]); // safe (setter not needed)
 
-  // clear the selectedItems
+  /** Clear trigger */
   useEffect(() => {
     if (clear) {
       setSelectedItems([]);
     }
-  }, [clear, setSelectedItems]);
-  // Add new item
+  }, [clear]);
+
+  /** Filter items for dropdown */
+  const filteredItems = useMemo(() => {
+    return itemList.filter(
+      (item) =>
+        item.toLowerCase().includes(search.toLowerCase()) &&
+        !selectedItems.includes(item)
+    );
+  }, [itemList, search, selectedItems]);
+
+  /** Add new item */
   const selectItem = (item: string) => {
-    const trimmedItem = item.trim();
+    const trimmed = item.trim();
+    if (!trimmed) return;
 
-    if (!trimmedItem) return;
-
-    setSelectedItems((prev) => {
-      if (prev.includes(trimmedItem)) {
-        return prev;
-      }
-      return [...prev, trimmedItem];
-    });
+    setSelectedItems((prev) =>
+      prev.includes(trimmed) ? prev : [...prev, trimmed]
+    );
   };
 
-  // Remove item
+  /** Remove selected */
   const removeItem = (item: string) => {
     setSelectedItems((prev) => prev.filter((i) => i !== item));
   };
 
   return (
     <div className={cn("w-full relative", className)}>
-      {/* Selected Users */}
+      {/* Selected Item Badges */}
       <div
-        className={`flex flex-wrap gap-2 ${selectedItems.length > 0 && "mb-2"}`}
+        className={cn("flex flex-wrap gap-2", {
+          "mb-2": selectedItems.length > 0,
+        })}
       >
-        {selectedItems.map((item, index) => (
-          <Badge variant="outline" key={index}>
+        {selectedItems.map((item) => (
+          <Badge variant="outline" key={item}>
             {item}
             <Button
               size="icon-sm"
@@ -96,16 +99,13 @@ export default function SearchInput({
         ))}
       </div>
 
-      {/* Search Input */}
+      {/* Input Search */}
       <div className="w-full relative">
         <InputGroup className="overflow-hidden">
           <InputGroupInput
             placeholder={`Type to search ${featureName}...`}
             value={search}
-            onChange={(e) => {
-              e.preventDefault();
-              setSearch(e.target.value);
-            }}
+            onChange={(e) => setSearch(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 e.preventDefault();
@@ -114,6 +114,7 @@ export default function SearchInput({
               }
             }}
           />
+
           {search && (
             <InputGroupAddon align="inline-end">
               <InputGroupButton
@@ -130,13 +131,13 @@ export default function SearchInput({
         </InputGroup>
       </div>
 
-      {/* Dropdown */}
+      {/* Dropdown List */}
       {search && (
         <ul className="absolute mt-1 p-1 w-full bg-popover border rounded-lg shadow-lg max-h-60 overflow-auto z-10 space-y-2">
           {filteredItems.length > 0 ? (
-            filteredItems.map((item, index) => (
+            filteredItems.map((item) => (
               <li
-                key={index}
+                key={item}
                 className="p-2 rounded-lg cursor-pointer hover:bg-accent"
                 onClick={(e) => {
                   e.preventDefault();
@@ -152,16 +153,18 @@ export default function SearchInput({
               <div className="text-foreground">No {featureName}s found</div>
             </li>
           )}
+
+          {/* Add Custom */}
           <li>
             <Button
               variant="outline"
               size="sm"
+              className="cursor-pointer"
               onClick={(e) => {
                 e.preventDefault();
                 selectItem(search);
                 setSearch("");
               }}
-              className="cursor-pointer"
             >
               Add this {featureName}
             </Button>
