@@ -4,6 +4,7 @@ import SearchInput from "@/components/SearchInput/SearchInput";
 import AddPostContainer from "@/components/ui/add-post/add-post-container";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import EditorWrapper from "@/components/ui/editor/editor-wrapper";
 import {
   Field,
   FieldDescription,
@@ -29,11 +30,10 @@ import { ServerActionResponse } from "@/types/global-types";
 import { addPostSchema } from "@/zod-schemas/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleMinus, Save } from "lucide-react";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
-import EditorWrapper from "../editor/editor-wrapper";
 
 export default function AddPost({
   categoryList,
@@ -69,8 +69,6 @@ export default function AddPost({
       return;
     }
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
       const response: ServerActionResponse<string | undefined> = await addPost({
         ...data,
         tags: tags,
@@ -214,18 +212,17 @@ export default function AddPost({
                 </FieldGroup>
 
                 {/* add categories  */}
-                <Suspense fallback={<Skeleton className="h-10" />}>
-                  <Field className="mt-5">
-                    <FieldLabel>Add categories</FieldLabel>
-                    <SearchInput
-                      itemList={categoryList}
-                      setItem={setCategories}
-                      featureName="category"
-                      clear={clear}
-                      existedItems={categories}
-                    />
-                  </Field>
-                </Suspense>
+
+                <Field className="mt-5">
+                  <FieldLabel>Add categories</FieldLabel>
+                  <SearchInput
+                    itemList={categoryList}
+                    setItem={setCategories}
+                    featureName="category"
+                    clear={clear}
+                    existedItems={categories}
+                  />
+                </Field>
 
                 {/* add tags  */}
                 <Field className="mt-5">

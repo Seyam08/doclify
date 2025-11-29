@@ -13,7 +13,6 @@ export async function DoclifyImage({
   width: number;
   height: number;
 }) {
-  await new Promise((resolve) => setTimeout(resolve, 5000)); // Simulate a delay
   return (
     <div className="w-full aspect-video overflow-hidden flex items-center justify-center rounded-2xl">
       <Image
