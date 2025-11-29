@@ -61,6 +61,7 @@ export default function AddPost() {
 
   async function onSubmit(data: z.infer<typeof addPostSchema>) {
     if (!sync) {
+      toast.error("You haven't saved content!");
       form.setError("content", { message: "You haven't saved content!" });
       return;
     }
@@ -77,6 +78,8 @@ export default function AddPost() {
         toast.success(response.message);
         console.log(response);
         setContent("");
+        setCategories([]);
+        setTags([]);
         setClear(true);
         form.reset();
         setEditorKey((prev) => prev + 1); // changing the key to destroy the old state
@@ -91,6 +94,7 @@ export default function AddPost() {
   console.log("rendering");
   return (
     <AddPostContainer
+      disabled={!sync}
       editorPanel={
         <div className="h-full p-3">
           <div className="size-full flex flex-col items-start">
@@ -215,6 +219,7 @@ export default function AddPost() {
                     setItem={setCategories}
                     featureName="category"
                     clear={clear}
+                    existedItems={categories}
                   />
                 </Field>
 
@@ -226,6 +231,7 @@ export default function AddPost() {
                     setItem={setTags}
                     featureName="tag"
                     clear={clear}
+                    existedItems={tags}
                   />
                 </Field>
 
