@@ -60,8 +60,7 @@ export default function SearchInput({
 
   /** Add new item */
   const selectItem = (item: string) => {
-    const trimmed = item.trim();
-    if (!trimmed) return;
+    const trimmed = item.trim().toLowerCase();
 
     setSelectedItems((prev) =>
       prev.includes(trimmed) ? prev : [...prev, trimmed]
@@ -82,7 +81,7 @@ export default function SearchInput({
         })}
       >
         {selectedItems.map((item) => (
-          <Badge variant="outline" key={item}>
+          <Badge variant="outline" key={item} className="capitalize">
             {item}
             <Button
               size="icon-sm"
@@ -138,18 +137,18 @@ export default function SearchInput({
             filteredItems.map((item) => (
               <li
                 key={item}
-                className="p-2 rounded-lg cursor-pointer hover:bg-accent"
+                className="p-2 rounded-lg cursor-pointer hover:bg-accent text-sm"
                 onClick={(e) => {
                   e.preventDefault();
                   selectItem(item);
                   setSearch("");
                 }}
               >
-                <div className="text-foreground">{item}</div>
+                <div className="text-foreground capitalize">{item}</div>
               </li>
             ))
           ) : (
-            <li className="p-2 rounded-lg">
+            <li className="p-2 rounded-lg text-sm">
               <div className="text-foreground">No {featureName}s found</div>
             </li>
           )}
