@@ -29,16 +29,19 @@ import { ServerActionResponse } from "@/types/global-types";
 import { addPostSchema } from "@/zod-schemas/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleMinus, Save } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 import EditorWrapper from "../editor/editor-wrapper";
 
-const categoryList = ["life", "work", "travel"];
-const tagList = ["solo", "peace", "nature"];
-
-export default function AddPost() {
+export default function AddPost({
+  categoryList,
+  tagList,
+}: {
+  categoryList: Array<string>;
+  tagList: Array<string>;
+}) {
   const [content, setContent] = useState<string>("");
   const [editorKey, setEditorKey] = useState<number>(0);
   const [tags, setTags] = useState<string[]>([]);
@@ -211,17 +214,18 @@ export default function AddPost() {
                 </FieldGroup>
 
                 {/* add categories  */}
-
-                <Field className="mt-5">
-                  <FieldLabel>Add categories</FieldLabel>
-                  <SearchInput
-                    itemList={categoryList}
-                    setItem={setCategories}
-                    featureName="category"
-                    clear={clear}
-                    existedItems={categories}
-                  />
-                </Field>
+                <Suspense fallback={<Skeleton className="h-10" />}>
+                  <Field className="mt-5">
+                    <FieldLabel>Add categories</FieldLabel>
+                    <SearchInput
+                      itemList={categoryList}
+                      setItem={setCategories}
+                      featureName="category"
+                      clear={clear}
+                      existedItems={categories}
+                    />
+                  </Field>
+                </Suspense>
 
                 {/* add tags  */}
                 <Field className="mt-5">

@@ -92,3 +92,27 @@ export async function addPost(
     throw new Error("Failed to add post");
   }
 }
+
+export async function getPostMeta(
+  meta: "categories" | "tags"
+): Promise<ServerActionResponse<Array<string>>> {
+  try {
+    await connectDB();
+
+    // Get all unique categories
+    const categories = await Blog.distinct(`frontMatter.${meta}`);
+
+    return {
+      success: true,
+      message: "Categories received.",
+      content: categories,
+    };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed to load categories!",
+      content: [],
+    };
+  }
+}
