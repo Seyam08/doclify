@@ -118,3 +118,32 @@ export async function getPostMeta(
     };
   }
 }
+
+export async function getPost(
+  params: string
+): Promise<ServerActionResponse<BlogType>> {
+  try {
+    await connectDB();
+    const blog: BlogType | null = await Blog.findOne({ slug: params });
+
+    if (blog) {
+      return {
+        success: true,
+        message: "Blog Found",
+        content: blog,
+      };
+    } else {
+      return {
+        success: false,
+        message: "Blog not Found",
+      };
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed to find blog!",
+    };
+  }
+}
