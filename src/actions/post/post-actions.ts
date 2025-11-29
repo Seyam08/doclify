@@ -28,6 +28,8 @@ export async function addPost(
     // making slug from title
     const slug = slugify(params.title, {
       lower: true,
+      strict: true,
+      remove: /[']/g,
     });
     // checking if slug exist
     const slugExist = await checkBlogSlugExists(slug);
