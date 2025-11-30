@@ -8,13 +8,33 @@ import UnderlineLink, {
 import { contentPurify } from "@/lib/utils";
 import { BlogType } from "@/types/schema.types";
 import { Calendar1Icon, ClockFading } from "lucide-react";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-export default async function Page({
-  params,
-}: {
+type Props = {
   params: Promise<{ slug: string }>;
-}) {
+};
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+
+  // fetch post information
+  const response = await getPost(slug);
+
+  if (response.success === true) {
+    const blog = response.content as BlogType;
+    return {
+      title: blog.frontMatter.title,
+      description: "Doclify Blog",
+    };
+  } else {
+    return {
+      title: "Not Found",
+      description: "Doclify",
+    };
+  }
+}
+
+export default async function Page({ params }: Props) {
   const { slug } = await params;
   const response = await getPost(slug);
 
