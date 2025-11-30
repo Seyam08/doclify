@@ -12,6 +12,7 @@ import { ServerActionResponse } from "@/types/global-types";
 import { BlogType } from "@/types/schema.types";
 import { addPostSchema } from "@/zod-schemas/schema";
 import { UploadApiResponse } from "cloudinary";
+import { cache } from "react";
 import slugify from "slugify";
 import z from "zod";
 
@@ -119,31 +120,31 @@ export async function getPostMeta(
   }
 }
 
-export async function getPost(
-  params: string
-): Promise<ServerActionResponse<BlogType>> {
-  try {
-    await connectDB();
-    const blog: BlogType | null = await Blog.findOne({ slug: params });
+export const getPost = cache(
+  async (params: string): Promise<ServerActionResponse<BlogType>> => {
+    try {
+      await connectDB();
+      const blog: BlogType | null = await Blog.findOne({ slug: params });
 
-    if (blog) {
-      return {
-        success: true,
-        message: "Blog Found",
-        content: blog,
-      };
-    } else {
+      if (blog) {
+        return {
+          success: true,
+          message: "Blog Found",
+          content: blog,
+        };
+      } else {
+        return {
+          success: false,
+          message: "Blog not Found",
+        };
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
       return {
         success: false,
-        message: "Blog not Found",
+        message: "Failed to find blog!",
       };
     }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error) {
-    return {
-      success: false,
-      message: "Failed to find blog!",
-    };
   }
-}
+);
