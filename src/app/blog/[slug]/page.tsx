@@ -44,7 +44,7 @@ export default async function Page({ params }: Props) {
     const blog = response.content as BlogType;
     const cleanContent = contentPurify(blog.content as string);
     return (
-      <div className="content-holder space-y-2">
+      <>
         {/* categories and reading time section */}
         <p className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
           <ClockFading className="h-4 w-4 mr-2" />
@@ -179,7 +179,7 @@ export default async function Page({ params }: Props) {
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }
