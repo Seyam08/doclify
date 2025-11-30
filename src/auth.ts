@@ -4,6 +4,7 @@ import { Author } from "@/models/author";
 import { AuthorType } from "@/types/schema.types";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import slugify from "slugify";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
@@ -28,9 +29,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         await connectDB();
         const existingUser = await checkAuthorEmailExists(user.email as string);
         if (!existingUser.status) {
-          const username = user.email?.split("@")[0] as string;
+          const username = user.email
+            ?.split("@")[0]
+            .replace(/\./g, "-") as string;
+          // slugify username
+          const slugifyUsername = slugify(username, {
+            lower: true,
+            strict: true,
+            remove: /[']/g,
+          });
           const author: AuthorType = {
-            username: username,
+            username: slugifyUsername,
             authorInfo: {
               name: user.name as string,
               email: user.email as string,
