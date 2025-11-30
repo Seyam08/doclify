@@ -77,7 +77,7 @@ export default async function Page({
         {/* post content section  */}
         <div
           dangerouslySetInnerHTML={{ __html: cleanContent }}
-          className="tiptap text-muted-foreground"
+          className="blog"
         ></div>
 
         {/* tags and share section  */}

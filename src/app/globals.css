@@ -215,4 +215,42 @@
   .tiptap hr {
     @apply border-t border-sidebar-primary my-2;
   }
+  /* blog content style  */
+  .blog h1 {
+    @apply scroll-m-20 border-b pb-2 text-2xl md:text-3xl font-semibold tracking-tight my-5;
+  }
+  .blog h2 {
+    @apply scroll-m-20 text-xl md:text-2xl font-semibold tracking-tight my-3;
+  }
+  .blog h3 {
+    @apply scroll-m-20 text-lg md:text-xl font-semibold tracking-tight my-2;
+  }
+  .blog p {
+    @apply leading-7 first:mt-3 not-first:my-3 text-muted-foreground;
+  }
+  .blog ul {
+    @apply my-6 ml-6 list-disc [&>li]:my-1;
+  }
+  .blog ol {
+    @apply my-6 ml-6 list-decimal [&>li]:my-1;
+  }
+  .blog ul li p,
+  .blog ol li p {
+    @apply text-base leading-5 first:mt-1 not-first:my-1 text-secondary;
+  }
+  .blog code {
+    @apply bg-accent relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold;
+  }
+  .blog pre {
+    @apply bg-accent relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold my-6;
+  }
+  .blog pre code {
+    @apply bg-accent relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold;
+  }
+  .blog blockquote {
+    @apply my-6 border-l-2 pl-6 italic border-sidebar-primary;
+  }
+  .blog hr {
+    @apply border-t border-sidebar-primary my-2;
+  }
 }
