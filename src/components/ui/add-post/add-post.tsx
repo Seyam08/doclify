@@ -77,7 +77,7 @@ export default function AddPost({
 
       if (response.success === true) {
         toast.success(response.message);
-        console.log(response);
+
         setContent("");
         setCategories([]);
         setTags([]);
@@ -92,7 +92,6 @@ export default function AddPost({
     }
   }
 
-  console.log("rendering");
   return (
     <AddPostContainer
       disabled={!sync}

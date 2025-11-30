@@ -17,7 +17,6 @@ export default async function Page({
 }) {
   const { slug } = await params;
   const response = await getPost(slug);
-  console.log(response);
 
   if (response.success === false) {
     return notFound();

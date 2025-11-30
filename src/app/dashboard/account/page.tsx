@@ -39,12 +39,7 @@ export default function Page() {
           className="min-h-[400px]"
         />
       </div>
-      <Button
-        variant="outline"
-        onClick={() => {
-          console.log(content);
-        }}
-      >
+      <Button variant="outline" onClick={() => {}}>
         Save
       </Button>
     </div>
