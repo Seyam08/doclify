@@ -21,7 +21,7 @@ export function DoclifyImage({
   return (
     <div
       className={cn(
-        "w-full aspect-video overflow-hidden flex items-center justify-center rounded-2xl",
+        "group w-full aspect-video overflow-hidden flex items-center justify-center rounded-2xl",
         className
       )}
     >
@@ -30,7 +30,7 @@ export function DoclifyImage({
         alt={alt}
         width={width}
         height={height}
-        className="max-w-full max-h-full object-cover"
+        className="max-w-full max-h-full object-cover group-hover:scale-110 transition-all duration-500"
       />
     </div>
   );
