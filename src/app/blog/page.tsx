@@ -1,4 +1,5 @@
 import { getAllPost } from "@/actions/post/post-actions";
+import { DoclifyBlogCard } from "@/components/DoclifyCards/DoclifyCards";
 import { DoclifyAuthorMeta, DoclifyImage } from "@/components/ui/image";
 import {
   TypographyH2,
@@ -7,7 +8,13 @@ import {
 } from "@/components/ui/typography";
 import { BlogType } from "@/types/schema.types";
 import { Calendar1Icon } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Latest Blogs",
+  description: "Doclify",
+};
 
 export default async function Page() {
   const response = await getAllPost();
@@ -82,54 +89,7 @@ export default async function Page() {
               if (index === 1) {
                 return null;
               } else {
-                return (
-                  <div
-                    className="space-y-5 hover:bg-accent transition-all duration-500 p-2 rounded-2xl"
-                    key={blog.slug}
-                  >
-                    {/* image side */}
-                    <div>
-                      <Link href={`/blog/${blog.slug}`}>
-                        <DoclifyImage
-                          src={blog.frontMatter.image.url}
-                          height={400}
-                          width={1200}
-                          alt="Image"
-                        />
-                      </Link>
-                    </div>
-
-                    {/* content side  */}
-                    <div className="px-5 pb-5">
-                      <div className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
-                        <DoclifyAuthorMeta username={blog.frontMatter.author} />
-                      </div>
-                      <div className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
-                        <Calendar1Icon className="h-4 w-4 mr-2" />
-                        Published at{" "}
-                        {new Date(blog.frontMatter.date).toLocaleString(
-                          "en-GB",
-                          {
-                            day: "2-digit",
-                            month: "long",
-                            year: "numeric",
-                          }
-                        )}
-                      </div>
-                      <TypographyH3>
-                        <Link
-                          href={`/blog/${blog.slug}`}
-                          className="hover:underline"
-                        >
-                          {blog.frontMatter.title}
-                        </Link>
-                      </TypographyH3>
-                      <TypographyP>
-                        {blog.frontMatter.description.slice(0, 80) + "..."}
-                      </TypographyP>
-                    </div>
-                  </div>
-                );
+                return <DoclifyBlogCard blog={blog} key={blog.slug} />;
               }
             })}
           </div>
