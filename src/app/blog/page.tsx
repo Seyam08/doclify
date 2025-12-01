@@ -1,187 +1,141 @@
+import { getAllPost } from "@/actions/post/post-actions";
 import { DoclifyAuthorMeta, DoclifyImage } from "@/components/ui/image";
 import {
   TypographyH2,
   TypographyH3,
   TypographyP,
 } from "@/components/ui/typography";
+import { BlogType } from "@/types/schema.types";
 import { Calendar1Icon } from "lucide-react";
+import Link from "next/link";
 
-const text = `Working in cybersecurity means you’re constantly playing a game of
-            catch-up. Every day you learn something new, but your work is also
-            never finished.`;
-export default function Page() {
-  return (
-    <div>
-      <TypographyH2 className="mb-14">Blog Page</TypographyH2>
+export default async function Page() {
+  const response = await getAllPost();
 
-      {/* all blogs */}
-      <div className="space-y-5">
-        {/* top blog */}
-        <div className="grid grid-cols-1 grid-rows-2 md:grid-cols-2 md:grid-rows-1 gap-5 md:gap-10 hover:bg-accent transition-all duration-500 p-2 rounded-2xl">
-          {/* image side */}
-          <div>
-            <DoclifyImage
-              src="https://plus.unsplash.com/premium_photo-1763922901071-374d798c5062?q=80&w=730&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              height={400}
-              width={800}
-              alt="Image"
-            />
-          </div>
-          {/* content side  */}
-          <div className="flex flex-col justify-center px-5 md:px-0">
-            <div className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
-              <DoclifyAuthorMeta username={"ayan519600"} />
-            </div>
-            <div className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
-              <Calendar1Icon className="h-4 w-4 mr-2" />
-              Published at{" "}
-              {new Date("2025-11-30T12:56:29.572+00:00").toLocaleString(
-                "en-GB",
-                {
-                  day: "2-digit",
-                  month: "long",
-                  year: "numeric",
-                }
-              )}
-            </div>
-            <TypographyH3>Blog name</TypographyH3>
-            <TypographyP>{text.slice(0, 80) + "..."}</TypographyP>
-          </div>
-        </div>
-
-        {/* rest of the blog */}
-        <div className="grid grid-cols-1 grid-rows-2 md:grid-cols-2 md:grid-rows-1 gap-5">
-          {/* each item  */}
-          <div className="space-y-5 hover:bg-accent transition-all duration-500 p-2 rounded-2xl">
-            {/* image side */}
-            <div>
-              <DoclifyImage
-                src="https://plus.unsplash.com/premium_photo-1763922901071-374d798c5062?q=80&w=730&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                height={400}
-                width={1200}
-                alt="Image"
-              />
-            </div>
-            {/* content side  */}
-            <div className="px-5 pb-5">
-              <div className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
-                <DoclifyAuthorMeta username={"ayan519600"} />
-              </div>
-              <div className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
-                <Calendar1Icon className="h-4 w-4 mr-2" />
-                Published at{" "}
-                {new Date("2025-11-30T12:56:29.572+00:00").toLocaleString(
-                  "en-GB",
-                  {
-                    day: "2-digit",
-                    month: "long",
-                    year: "numeric",
-                  }
-                )}
-              </div>
-              <TypographyH3>Blog name</TypographyH3>
-              <TypographyP>{text.slice(0, 80) + "..."}</TypographyP>
-            </div>
-          </div>
-          {/* each item  */}
-          <div className="space-y-5 hover:bg-accent transition-all duration-500 p-2 rounded-2xl">
-            {/* image side */}
-            <div>
-              <DoclifyImage
-                src="https://plus.unsplash.com/premium_photo-1763922901071-374d798c5062?q=80&w=730&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                height={400}
-                width={1200}
-                alt="Image"
-              />
-            </div>
-            {/* content side  */}
-            <div className="px-5 pb-5">
-              <div className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
-                <DoclifyAuthorMeta username={"ayan519600"} />
-              </div>
-              <div className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
-                <Calendar1Icon className="h-4 w-4 mr-2" />
-                Published at{" "}
-                {new Date("2025-11-30T12:56:29.572+00:00").toLocaleString(
-                  "en-GB",
-                  {
-                    day: "2-digit",
-                    month: "long",
-                    year: "numeric",
-                  }
-                )}
-              </div>
-              <TypographyH3>Blog name</TypographyH3>
-              <TypographyP>{text.slice(0, 80) + "..."}</TypographyP>
-            </div>
-          </div>
-          {/* each item  */}
-          <div className="space-y-5 hover:bg-accent transition-all duration-500 p-2 rounded-2xl">
-            {/* image side */}
-            <div>
-              <DoclifyImage
-                src="https://plus.unsplash.com/premium_photo-1763922901071-374d798c5062?q=80&w=730&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                height={400}
-                width={1200}
-                alt="Image"
-              />
-            </div>
-            {/* content side  */}
-            <div className="px-5 pb-5">
-              <div className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
-                <DoclifyAuthorMeta username={"ayan519600"} />
-              </div>
-              <div className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
-                <Calendar1Icon className="h-4 w-4 mr-2" />
-                Published at{" "}
-                {new Date("2025-11-30T12:56:29.572+00:00").toLocaleString(
-                  "en-GB",
-                  {
-                    day: "2-digit",
-                    month: "long",
-                    year: "numeric",
-                  }
-                )}
-              </div>
-              <TypographyH3>Blog name</TypographyH3>
-              <TypographyP>{text.slice(0, 80) + "..."}</TypographyP>
-            </div>
-          </div>
-          {/* each item  */}
-          <div className="space-y-5 hover:bg-accent transition-all duration-500 p-2 rounded-2xl">
-            {/* image side */}
-            <div>
-              <DoclifyImage
-                src="https://plus.unsplash.com/premium_photo-1763922901071-374d798c5062?q=80&w=730&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                height={400}
-                width={1200}
-                alt="Image"
-              />
-            </div>
-            {/* content side  */}
-            <div className="px-5 pb-5">
-              <div className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
-                <DoclifyAuthorMeta username={"ayan519600"} />
-              </div>
-              <div className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
-                <Calendar1Icon className="h-4 w-4 mr-2" />
-                Published at{" "}
-                {new Date("2025-11-30T12:56:29.572+00:00").toLocaleString(
-                  "en-GB",
-                  {
-                    day: "2-digit",
-                    month: "long",
-                    year: "numeric",
-                  }
-                )}
-              </div>
-              <TypographyH3>Blog name</TypographyH3>
-              <TypographyP>{text.slice(0, 80) + "..."}</TypographyP>
-            </div>
-          </div>
-        </div>
-        {/* post horizontal */}
+  if (response.success === false) {
+    return (
+      <div className="m-auto">
+        <TypographyH2 className="mb-14">{response.message}</TypographyH2>
       </div>
-    </div>
-  );
+    );
+  } else {
+    const blogs = response.content as BlogType[];
+    const firstBlog = blogs[1] as BlogType;
+
+    return (
+      <div>
+        <TypographyH2 className="mb-14">Latest Blogs</TypographyH2>
+
+        {/* all blogs */}
+        <div className="space-y-5">
+          {/* top blog */}
+          {firstBlog && (
+            <div
+              className="grid grid-cols-1 grid-rows-2 md:grid-cols-2 md:grid-rows-1 gap-5 md:gap-10 hover:bg-accent transition-all duration-500 p-2 rounded-2xl mb-5"
+              key={firstBlog.slug}
+            >
+              {/* image side */}
+              <Link href={`/blog/${firstBlog.slug}`}>
+                <DoclifyImage
+                  src={firstBlog.frontMatter.image.url}
+                  height={400}
+                  width={800}
+                  alt={firstBlog.frontMatter.title}
+                />
+              </Link>
+              {/* content side  */}
+              <div className="flex flex-col justify-center px-5 md:px-0">
+                <div className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
+                  <DoclifyAuthorMeta username={firstBlog.frontMatter.author} />
+                </div>
+                <div className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
+                  <Calendar1Icon className="h-4 w-4 mr-2" />
+                  Published at{" "}
+                  {new Date(firstBlog.frontMatter.date).toLocaleString(
+                    "en-GB",
+                    {
+                      day: "2-digit",
+                      month: "long",
+                      year: "numeric",
+                    }
+                  )}
+                </div>
+                <TypographyH3>
+                  <Link
+                    href={`/blog/${firstBlog.slug}`}
+                    className="hover:underline"
+                  >
+                    {firstBlog.frontMatter.title}
+                  </Link>
+                </TypographyH3>
+                <TypographyP>
+                  {firstBlog.frontMatter.description.slice(0, 80) + "..."}
+                </TypographyP>
+              </div>
+            </div>
+          )}
+
+          {/* rest of the blog */}
+          <div className="grid grid-cols-1 grid-rows-2 md:grid-cols-2 md:grid-rows-1 gap-5">
+            {/* each item  */}
+            {blogs.map((blog, index) => {
+              if (index === 1) {
+                return null;
+              } else {
+                return (
+                  <div
+                    className="space-y-5 hover:bg-accent transition-all duration-500 p-2 rounded-2xl"
+                    key={blog.slug}
+                  >
+                    {/* image side */}
+                    <div>
+                      <Link href={`/blog/${blog.slug}`}>
+                        <DoclifyImage
+                          src={blog.frontMatter.image.url}
+                          height={400}
+                          width={1200}
+                          alt="Image"
+                        />
+                      </Link>
+                    </div>
+
+                    {/* content side  */}
+                    <div className="px-5 pb-5">
+                      <div className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
+                        <DoclifyAuthorMeta username={blog.frontMatter.author} />
+                      </div>
+                      <div className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
+                        <Calendar1Icon className="h-4 w-4 mr-2" />
+                        Published at{" "}
+                        {new Date(blog.frontMatter.date).toLocaleString(
+                          "en-GB",
+                          {
+                            day: "2-digit",
+                            month: "long",
+                            year: "numeric",
+                          }
+                        )}
+                      </div>
+                      <TypographyH3>
+                        <Link
+                          href={`/blog/${blog.slug}`}
+                          className="hover:underline"
+                        >
+                          {blog.frontMatter.title}
+                        </Link>
+                      </TypographyH3>
+                      <TypographyP>
+                        {blog.frontMatter.description.slice(0, 80) + "..."}
+                      </TypographyP>
+                    </div>
+                  </div>
+                );
+              }
+            })}
+          </div>
+          {/* post horizontal */}
+        </div>
+      </div>
+    );
+  }
 }

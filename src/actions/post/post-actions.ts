@@ -148,3 +148,32 @@ export const getPost = cache(
     }
   }
 );
+
+export async function getAllPost(): Promise<ServerActionResponse<BlogType[]>> {
+  try {
+    await connectDB();
+    const blogs: BlogType[] | null = await Blog.find()
+      .select({ _id: 0 })
+      .sort({ createdAt: -1 });
+
+    if (blogs) {
+      return {
+        success: true,
+        message: "Blogs Found",
+        content: blogs,
+      };
+    } else {
+      return {
+        success: false,
+        message: "There is no blogs at this moment!",
+      };
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed to get blogs!",
+    };
+  }
+}
