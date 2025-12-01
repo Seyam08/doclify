@@ -120,6 +120,52 @@ export async function getPostMeta(
   }
 }
 
+export const getSingleMeta = cache(
+  async (
+    meta: "categories" | "tags",
+    params: string
+  ): Promise<ServerActionResponse<BlogType[]>> => {
+    try {
+      await connectDB();
+
+      let blogs: BlogType[] | null;
+
+      switch (meta) {
+        case "categories":
+          blogs = await Blog.find({
+            "frontMatter.categories": params,
+          });
+          break;
+        case "tags":
+          blogs = await Blog.find({ "frontMatter.tags": params });
+          break;
+      }
+
+      // const blog: BlogType | null = await Blog.findOne({ slug: params });
+
+      if (blogs.length > 0) {
+        return {
+          success: true,
+          message: `Blogs Found for ${params}`,
+          content: blogs,
+        };
+      } else {
+        return {
+          success: false,
+          message: `There are no Blog in ${params}`,
+        };
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      return {
+        success: false,
+        message: "Failed to find blogs!",
+      };
+    }
+  }
+);
+
 export const getPost = cache(
   async (params: string): Promise<ServerActionResponse<BlogType>> => {
     try {
