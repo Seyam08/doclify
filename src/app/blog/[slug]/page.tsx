@@ -51,7 +51,9 @@ export default async function Page({ params }: Props) {
           02 min reading in<span className="mx-2">—</span>
           {blog.frontMatter.categories.map((category, index) => (
             <span key={index}>
-              <UnderlineLink href="#">{category}</UnderlineLink>
+              <UnderlineLink href={`/categories/${category}`}>
+                {category}
+              </UnderlineLink>
               {index < blog.frontMatter.categories.length - 1 && (
                 <span className="mx-1">,</span>
               )}
@@ -108,7 +110,10 @@ export default async function Page({ params }: Props) {
             <div className="flex flex-wrap gap-2">
               {blog.frontMatter.tags.map((tag, index) => (
                 <div className="border border-ring px-2 py-1" key={index}>
-                  <UnderlineLink href={`/#`} className="text-sm text-primary">
+                  <UnderlineLink
+                    href={`/tags/${tag}`}
+                    className="text-sm text-primary"
+                  >
                     # {tag}
                   </UnderlineLink>
                 </div>
