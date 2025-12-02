@@ -21,6 +21,9 @@ type AddPost = z.infer<typeof addPostSchema> & {
   categories: string[];
   tags: string[];
 };
+
+export type MetaStats = Array<{ _id: string; count: number }>;
+
 export async function addPost(
   params: AddPost
 ): Promise<ServerActionResponse<string | undefined>> {
@@ -116,6 +119,48 @@ export async function getPostMeta(
       success: false,
       message: "Failed to load categories!",
       content: [],
+    };
+  }
+}
+
+export async function getDetailedPostMeta(
+  meta: "categories" | "tags"
+): Promise<ServerActionResponse<MetaStats>> {
+  try {
+    await connectDB();
+
+    const metaStats: MetaStats = await Blog.aggregate([
+      {
+        $unwind: `$frontMatter.${meta}`,
+      },
+      {
+        $group: {
+          _id: `$frontMatter.${meta}`,
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { count: -1 },
+      },
+    ]);
+
+    if (metaStats.length > 0) {
+      return {
+        success: true,
+        message: `${meta} received.`,
+        content: metaStats,
+      };
+    } else {
+      return {
+        success: false,
+        message: `There are no ${meta}`,
+      };
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return {
+      success: false,
+      message: `Failed to load ${meta}!`,
     };
   }
 }
