@@ -12,7 +12,7 @@ const socialLinkSchema = new Schema(
 const authorFrontMatterSchema = new Schema(
   {
     name: { type: String, required: true },
-    designation: { type: String },
+    bio: { type: String },
     image: { type: String, required: true },
     email: { type: String, required: true, unique: true, trim: true },
     socialLinks: { type: [socialLinkSchema], required: false },
@@ -24,7 +24,6 @@ export const AuthorSchema = new Schema(
   {
     username: { type: String, required: true, unique: true, trim: true },
     authorInfo: { type: authorFrontMatterSchema, required: true },
-    authorContent: { type: String },
   },
   { timestamps: true }
 );
