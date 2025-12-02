@@ -3,13 +3,13 @@ import { Button } from "@/components/ui/button";
 import { DoclifyAuthorMeta, DoclifyImage } from "@/components/ui/image";
 import UnderlineLink, {
   TypographyH1,
+  TypographyH2,
   TypographyP,
 } from "@/components/ui/typography";
 import { contentPurify } from "@/lib/utils";
 import { BlogType } from "@/types/schema.types";
 import { Calendar1Icon, ClockFading } from "lucide-react";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   } else {
     return {
-      title: "Not Found",
+      title: "Blog Not Found",
       description: "Doclify",
     };
   }
@@ -39,12 +39,18 @@ export default async function Page({ params }: Props) {
   const response = await getPost(slug);
 
   if (response.success === false) {
-    return notFound();
+    return (
+      <div className="m-auto">
+        <TypographyH2 className="mb-14 capitalize">
+          {response.message}
+        </TypographyH2>
+      </div>
+    );
   } else {
     const blog = response.content as BlogType;
     const cleanContent = contentPurify(blog.content as string);
     return (
-      <>
+      <div className="content-holder space-y-2">
         {/* categories and reading time section */}
         <p className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
           <ClockFading className="h-4 w-4 mr-2" />
@@ -184,7 +190,7 @@ export default async function Page({ params }: Props) {
             </div>
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }
