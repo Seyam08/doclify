@@ -1,6 +1,7 @@
 import { getPost } from "@/actions/post/post-actions";
+import { DoclifyAuthorMeta } from "@/components/DoclifyAuthor/DoclifyAuthor";
 import { Button } from "@/components/ui/button";
-import { DoclifyAuthorMeta, DoclifyImage } from "@/components/ui/image";
+import { DoclifyImage } from "@/components/ui/image";
 import UnderlineLink, {
   TypographyH1,
   TypographyH2,

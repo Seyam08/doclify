@@ -1,10 +1,11 @@
-import { DoclifyAuthorMeta, DoclifyImage } from "@/components/ui/image";
+import { DoclifyImage } from "@/components/ui/image";
 import { TypographyH3, TypographyP } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
 import { BlogType } from "@/types/schema.types";
 import { Calendar1Icon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import { DoclifyAuthorMeta } from "../DoclifyAuthor/DoclifyAuthor";
 
 type DoclifyBlogCardProps = {
   blog: BlogType;

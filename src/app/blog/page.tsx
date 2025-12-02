@@ -1,6 +1,7 @@
 import { getAllPost } from "@/actions/post/post-actions";
+import { DoclifyAuthorMeta } from "@/components/DoclifyAuthor/DoclifyAuthor";
 import { DoclifyBlogCard } from "@/components/DoclifyCards/DoclifyCards";
-import { DoclifyAuthorMeta, DoclifyImage } from "@/components/ui/image";
+import { DoclifyImage } from "@/components/ui/image";
 import {
   TypographyH2,
   TypographyH3,
