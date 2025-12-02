@@ -1,9 +1,29 @@
 import { getAuthor } from "@/actions/author/author-action";
+import { Button } from "@/components/ui/button";
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemTitle,
+} from "@/components/ui/item";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import UnderlineLink from "@/components/ui/typography";
-import { User } from "lucide-react";
+import { ExternalLink, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { ReactNode } from "react";
+
+type DoclifyWarnPopoverProps = {
+  itemTitle: string;
+  itemDesc?: string;
+  externalLink?: string;
+  trigger: ReactNode;
+};
 
 export async function DoclifyAuthorMeta({
   username,
@@ -49,4 +69,44 @@ export async function DoclifyAuthorMeta({
       </>
     );
   }
+}
+
+export function DoclifyWarnPopover({
+  trigger,
+  itemTitle,
+  itemDesc,
+  externalLink,
+}: DoclifyWarnPopoverProps) {
+  return (
+    <Popover>
+      <PopoverTrigger asChild>{trigger}</PopoverTrigger>
+      <PopoverContent className="w-96">
+        <Item variant="outline">
+          <ItemContent>
+            <ItemTitle>{itemTitle}</ItemTitle>
+            {itemDesc && (
+              <ItemDescription>
+                Please click on the button to change
+              </ItemDescription>
+            )}
+          </ItemContent>
+          {externalLink && (
+            <ItemActions>
+              <Button
+                size="icon-sm"
+                variant="outline"
+                className="rounded-full"
+                aria-label="Invite"
+                asChild
+              >
+                <Link href={externalLink} target="_blank" className="group">
+                  <ExternalLink className="group-hover:rotate-45 transition-all" />
+                </Link>
+              </Button>
+            </ItemActions>
+          )}
+        </Item>
+      </PopoverContent>
+    </Popover>
+  );
 }
