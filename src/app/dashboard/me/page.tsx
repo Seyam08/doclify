@@ -1,8 +1,12 @@
 import { getAuthorByEmail } from "@/actions/author/author-action";
 import { auth } from "@/auth";
 import { ForceLogout } from "@/components/authentication/ForceLogout";
-import { EditBio } from "@/components/DoclifyAccount/DoclifyAccount";
+import {
+  EditBio,
+  EditSocialLinks,
+} from "@/components/DoclifyAccount/DoclifyAccount";
 import { DoclifyWarnPopover } from "@/components/DoclifyAuthor/DoclifyAuthor";
+import { DoclifySocialLinkItem } from "@/components/DoclifyItem/DoclifyItem";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -182,6 +186,46 @@ export default async function Page() {
               </Dialog>
             </InputGroupAddon>
           </InputGroup>
+        </div>
+        {/* social links */}
+        <div className="bg-input/30 rounded-md p-3 border">
+          <div className="border-b mb-5 flex text-muted-foreground">
+            <TypographyP>Social Links</TypographyP>
+            {/* dialog trigger */}
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" className="ml-auto" size="icon-sm">
+                  <Pencil />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="w-full md:max-w-[625px]">
+                <DialogHeader>
+                  <DialogTitle>Edit Social Links</DialogTitle>
+                  <DialogDescription>
+                    You can add your social links
+                  </DialogDescription>
+                </DialogHeader>
+                <EditSocialLinks />
+                <DialogFooter className="sm:justify-start">
+                  <DialogClose asChild>
+                    <Button type="button" variant="outline">
+                      cancel
+                    </Button>
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
+
+          <div className="w-full md:w-3/4 space-y-3">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <DoclifySocialLinkItem
+                key={index}
+                name="facebook"
+                socialLink="https://facebook.com"
+              />
+            ))}
+          </div>
         </div>
       </section>
     );
