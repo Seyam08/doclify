@@ -1,4 +1,10 @@
+import {
+  Facebook,
+  Linkedin,
+  Twitter,
+} from "@/components/DoclifyIcon/DoclifyIcon";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Item,
   ItemActions,
@@ -8,6 +14,7 @@ import {
   ItemTitle,
 } from "@/components/ui/item";
 import { cn } from "@/lib/utils";
+import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -51,6 +58,54 @@ export function DoclifyItem({
         )}
         <ItemActions>{icon}</ItemActions>
       </Link>
+    </Item>
+  );
+}
+
+export function DoclifySocialLinkItem({
+  name,
+  socialLink,
+}: {
+  name: "facebook" | "linkedin" | "twitter";
+  socialLink: string;
+}) {
+  let Icon;
+  switch (name) {
+    case "facebook":
+      Icon = Facebook;
+      break;
+    case "linkedin":
+      Icon = Linkedin;
+      break;
+    case "twitter":
+      Icon = Twitter;
+      break;
+    default:
+      Icon = Facebook;
+      break;
+  }
+  return (
+    <Item variant="outline">
+      <ItemMedia variant="icon">
+        <Icon />
+      </ItemMedia>
+      <ItemContent>
+        <ItemTitle>Your {name} account's link</ItemTitle>
+        <ItemDescription>{socialLink}</ItemDescription>
+      </ItemContent>
+      <ItemActions>
+        <Button
+          size="icon-sm"
+          variant="outline"
+          className="rounded-full"
+          aria-label="Invite"
+          asChild
+        >
+          <Link href={socialLink} target="_blank" className="group">
+            <ExternalLink className="group-hover:rotate-45 transition-all" />
+          </Link>
+        </Button>
+      </ItemActions>
     </Item>
   );
 }
