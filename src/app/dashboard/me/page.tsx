@@ -1,12 +1,25 @@
 import { getAuthorByEmail } from "@/actions/author/author-action";
 import { auth } from "@/auth";
 import { ForceLogout } from "@/components/authentication/ForceLogout";
+import { EditBio } from "@/components/DoclifyAccount/DoclifyAccount";
 import { DoclifyWarnPopover } from "@/components/DoclifyAuthor/DoclifyAuthor";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
+  InputGroupText,
+  InputGroupTextarea,
 } from "@/components/ui/input-group";
 import { Label } from "@/components/ui/label";
 import {
@@ -15,7 +28,7 @@ import {
   TypographyP,
 } from "@/components/ui/typography";
 import { AuthorType } from "@/types/schema.types";
-import { RefreshCcw } from "lucide-react";
+import { Pencil, RefreshCcw, SquareStack } from "lucide-react";
 import Image from "next/image";
 
 export default async function Page() {
@@ -60,6 +73,7 @@ export default async function Page() {
           </div>
         </div>
 
+        {/* name and email  */}
         <div className="grid gap-6 sm:grid-cols-2">
           {/* name  */}
           <div className="space-y-2">
@@ -122,6 +136,52 @@ export default async function Page() {
               </InputGroupAddon>
             </InputGroup>
           </div>
+        </div>
+        {/* bio */}
+        <div>
+          <InputGroup>
+            <InputGroupTextarea
+              id="bio"
+              placeholder="Tell us about yourself, by clicking on the edit icon..."
+              className="min-h-[200px]"
+              disabled
+              defaultValue={user?.authorInfo?.bio ?? ""}
+            />
+
+            <InputGroupAddon align="block-start" className="border-b">
+              <InputGroupText className="font-mono font-medium">
+                <SquareStack />
+                Bio
+              </InputGroupText>
+
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="ghost" className="ml-auto" size="icon-sm">
+                    <Pencil />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="w-full md:max-w-[625px]">
+                  <DialogHeader>
+                    <DialogTitle>Edit Bio</DialogTitle>
+                    <DialogDescription>
+                      You can place a little details about yourself
+                    </DialogDescription>
+                  </DialogHeader>
+                  <EditBio
+                    email={user.authorInfo.email}
+                    prevBio={user.authorInfo.bio ?? null}
+                  />
+                  <DialogFooter className="sm:justify-start">
+                    <DialogClose asChild>
+                      <Button type="button" variant="outline">
+                        cancel
+                      </Button>
+                    </DialogClose>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </InputGroupAddon>
+          </InputGroup>
         </div>
       </section>
     );

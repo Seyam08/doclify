@@ -6,6 +6,12 @@ import { ServerActionResponse } from "@/types/global-types";
 import { AuthorType } from "@/types/schema.types";
 import { cache } from "react";
 
+export type BioState = {
+  submitted: boolean;
+  success: boolean | null; // null means "not submitted yet"
+  message: string;
+  prevBio?: string | null;
+};
 export async function getAuthor(
   username: string
 ): Promise<ServerActionResponse<AuthorType>> {
@@ -65,3 +71,57 @@ export const getAuthorByEmail = cache(
     }
   }
 );
+
+export async function updateBio(
+  prevState: BioState,
+  formData: FormData
+): Promise<BioState> {
+  await new Promise((r) =>
+    setTimeout(() => {
+      r("f");
+    }, 3000)
+  );
+  const newBio = formData.get("edit-bio") as string;
+  const trimmedBio = newBio.trim();
+  const email = formData.get("email") as string;
+
+  // 1️⃣ Compare previous & new bio
+  if (prevState.prevBio === trimmedBio) {
+    return {
+      submitted: true,
+      success: false,
+      message: "No changes to update!",
+    };
+  }
+
+  try {
+    const updatedBio = await Author.findOneAndUpdate(
+      { "authorInfo.email": email }, // find author by email
+      { "authorInfo.bio": trimmedBio }, // update field
+      { new: true } // return updated doc
+    );
+
+
+    if (updatedBio) {
+      return {
+        success: true,
+        submitted: true,
+        message: "Bio updated successfully",
+      };
+    } else {
+      return {
+        success: false,
+        submitted: true,
+        message: "Bio update failed!",
+      };
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return {
+      success: false,
+      submitted: true,
+      message: "Unable to update Bio!",
+    };
+  }
+}
