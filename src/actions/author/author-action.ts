@@ -13,34 +13,36 @@ export type BioState = {
   message: string;
   prevBio?: string | null;
 };
-export async function getAuthor(
-  username: string
-): Promise<ServerActionResponse<AuthorType>> {
-  try {
-    await connectDB();
-    const author: AuthorType | null = await Author.findOne({ username });
+export const getAuthor = cache(
+  async (username: string): Promise<ServerActionResponse<AuthorType>> => {
+    try {
+      await connectDB();
+      const author: AuthorType | null = await Author.findOne({ username })
+        .select({ _id: 0, createdAt: 0, updatedAt: 0, __v: 0 })
+        .lean<AuthorType>();
 
-    if (author) {
-      return {
-        success: true,
-        message: "Author Found",
-        content: author,
-      };
-    } else {
+      if (author) {
+        return {
+          success: true,
+          message: "Author Found",
+          content: author,
+        };
+      } else {
+        return {
+          success: false,
+          message: "Author not Found",
+        };
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
       return {
         success: false,
-        message: "Author not Found",
+        message: "Failed to find Author!",
       };
     }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error) {
-    return {
-      success: false,
-      message: "Failed to find Author!",
-    };
   }
-}
+);
 
 export const getAuthorByEmail = cache(
   async (email: string): Promise<ServerActionResponse<AuthorType>> => {
