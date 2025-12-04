@@ -268,3 +268,36 @@ export async function getAllPost(): Promise<ServerActionResponse<BlogType[]>> {
     };
   }
 }
+
+export const getPostByAuthor = cache(
+  async (username: string): Promise<ServerActionResponse<BlogType[]>> => {
+    try {
+      await connectDB();
+      const blogs: BlogType[] = await Blog.find({
+        "frontMatter.author": username,
+      })
+        .select({ _id: 0 })
+        .sort({ createdAt: -1 });
+
+      if (blogs.length > 0) {
+        return {
+          success: true,
+          message: "Blogs Found",
+          content: blogs,
+        };
+      } else {
+        return {
+          success: false,
+          message: "This Author have no blog till yet!",
+        };
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      return {
+        success: false,
+        message: "Failed to get blogs!",
+      };
+    }
+  }
+);

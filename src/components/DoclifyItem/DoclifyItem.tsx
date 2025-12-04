@@ -14,9 +14,10 @@ import {
   ItemTitle,
 } from "@/components/ui/item";
 import { cn } from "@/lib/utils";
+import { SocialLinksType } from "@/types/schema.types";
 import { ExternalLink, Link as LinkIcon } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { ComponentProps } from "react";
 
 type DoclifyItemType = {
   link: string;
@@ -106,6 +107,47 @@ export function DoclifySocialLinkItem({
           </Link>
         </Button>
       </ItemActions>
+    </Item>
+  );
+}
+
+export function DoclifySocialLinkShow({
+  address,
+  platform,
+  className,
+}: SocialLinksType & ComponentProps<"div">) {
+  let Icon;
+  switch (platform) {
+    case "facebook":
+      Icon = Facebook;
+      break;
+    case "linkedin":
+      Icon = Linkedin;
+      break;
+    case "twitter":
+      Icon = Twitter;
+      break;
+    default:
+      Icon = LinkIcon;
+      break;
+  }
+  return (
+    <Item variant="default" asChild className={cn(className)}>
+      <Link
+        href={address}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group"
+      >
+        <ItemMedia variant="icon">
+          <Icon className="h-4 w-4" />
+        </ItemMedia>
+        <ItemContent>
+          <ItemTitle className="group-hover:underline capitalize text-center">
+            {platform}
+          </ItemTitle>
+        </ItemContent>
+      </Link>
     </Item>
   );
 }
