@@ -14,7 +14,7 @@ import {
   ItemTitle,
 } from "@/components/ui/item";
 import { cn } from "@/lib/utils";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Link as LinkIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -66,7 +66,7 @@ export function DoclifySocialLinkItem({
   name,
   socialLink,
 }: {
-  name: "facebook" | "linkedin" | "twitter";
+  name: "facebook" | "linkedin" | "twitter" | string;
   socialLink: string;
 }) {
   let Icon;
@@ -81,7 +81,7 @@ export function DoclifySocialLinkItem({
       Icon = Twitter;
       break;
     default:
-      Icon = Facebook;
+      Icon = LinkIcon;
       break;
   }
   return (
