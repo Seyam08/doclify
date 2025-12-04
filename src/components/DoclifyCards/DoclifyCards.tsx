@@ -27,6 +27,7 @@ export function DoclifyBlogCard({ blog, className }: DoclifyBlogCardProps) {
             height={400}
             width={1200}
             alt="Image"
+            className="aspect-video"
           />
         </Link>
       </div>

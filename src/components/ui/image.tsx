@@ -17,7 +17,7 @@ export function DoclifyImage({
   return (
     <div
       className={cn(
-        "bg-accent group w-full aspect-video overflow-hidden flex items-center justify-center rounded-2xl",
+        "bg-accent group w-full overflow-hidden flex items-center justify-center rounded-2xl",
         className
       )}
     >

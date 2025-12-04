@@ -49,6 +49,7 @@ export default async function Page() {
                   height={400}
                   width={800}
                   alt={firstBlog.frontMatter.title}
+                  className="aspect-video"
                 />
               </Link>
               {/* content side  */}

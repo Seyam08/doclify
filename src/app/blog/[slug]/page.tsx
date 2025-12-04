@@ -105,6 +105,7 @@ export default async function Page({ params }: Props) {
             alt={blog.frontMatter.title}
             width={1050}
             height={400}
+            className="aspect-video"
           />
         </div>
 
