@@ -31,7 +31,7 @@ import {
   TypographyH3,
   TypographyP,
 } from "@/components/ui/typography";
-import { AuthorType } from "@/types/schema.types";
+import { AuthorType, SocialLinksType } from "@/types/schema.types";
 import { Pencil, RefreshCcw, SquareStack } from "lucide-react";
 import Image from "next/image";
 
@@ -221,13 +221,16 @@ export default async function Page() {
           </div>
 
           <div className="w-full md:w-3/4 space-y-3">
-            {Array.from({ length: 3 }).map((_, index) => (
-              <DoclifySocialLinkItem
-                key={index}
-                name="facebook"
-                socialLink="https://facebook.com"
-              />
-            ))}
+            {user.authorInfo.socialLinks &&
+              user.authorInfo.socialLinks.map(
+                (item: SocialLinksType, index) => (
+                  <DoclifySocialLinkItem
+                    key={index}
+                    name={item.platform}
+                    socialLink={item.address}
+                  />
+                )
+              )}
           </div>
         </div>
       </section>

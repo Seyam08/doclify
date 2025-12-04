@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/select";
 import { Check } from "lucide-react";
 import { redirect } from "next/navigation";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -112,17 +112,23 @@ export function EditSocialLinks({
       links: [{ address: "", platform: "" }],
     },
   });
-
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "links",
   });
-  console.log(socialLink);
+  const [finish, setFinish] = useState<boolean>(false);
+
   useEffect(() => {
     if (socialLink && socialLink.length > 0) {
       form.setValue("links", socialLink);
     }
   }, [socialLink]);
+
+  useEffect(() => {
+    if (finish === true) {
+      redirect("/dashboard/me");
+    }
+  }, [finish]);
 
   async function onSubmit(data: SocialLinkSchemaType) {
     if (JSON.stringify(data.links) === JSON.stringify(socialLink)) {
@@ -131,11 +137,9 @@ export function EditSocialLinks({
 
     const response = await editSocialLinks(data, email);
 
-    console.log(response);
-
     if (response.success === true) {
       toast.success(response.message);
-      form.reset();
+      setFinish(true);
     } else {
       toast.error(response.message);
     }
@@ -202,7 +206,7 @@ export function EditSocialLinks({
                           {...controllerField}
                           id={`form-rhf-array-email-${index}`}
                           aria-invalid={fieldState.invalid}
-                          placeholder="https://www.facebook.com/"
+                          placeholder="https://www.facebook.com/jhon.doe"
                           type="url"
                           autoComplete="url"
                         />
@@ -214,7 +218,7 @@ export function EditSocialLinks({
                               variant="ghost"
                               size="icon-xs"
                               onClick={() => remove(index)}
-                              aria-label={`Remove email ${index + 1}`}
+                              aria-label={`Remove ${index + 1}`}
                             >
                               <XIcon />
                             </InputGroupButton>
@@ -236,6 +240,7 @@ export function EditSocialLinks({
             type="button"
             variant="outline"
             size="sm"
+            className="disabled:cursor-not-allowed disabled:pointer-events-auto"
             onClick={() => append({ address: "", platform: "" })}
             disabled={fields.length >= 3}
           >
