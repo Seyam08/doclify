@@ -69,7 +69,7 @@ export function TypographyP({
   return (
     <p
       className={cn(
-        "text-muted-foreground text-sm md:text-base leading-7 not-first:mt-6",
+        "text-muted-foreground text-sm md:text-base leading-7",
         className
       )}
     >
