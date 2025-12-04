@@ -1,6 +1,6 @@
 "use client";
 
-import { updateBio } from "@/actions/author/author-action";
+import { editSocialLinks, updateBio } from "@/actions/author/author-action";
 import SubmitButton from "@/components/authentication/submit-button";
 import { Input } from "@/components/ui/input";
 import {
@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Check } from "lucide-react";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 
@@ -30,11 +30,16 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import { InputGroupButton, InputGroupInput } from "@/components/ui/input-group";
+import { Spinner } from "@/components/ui/spinner";
+import { SocialLinksType } from "@/types/schema.types";
+import {
+  socialLinkSchema,
+  SocialLinkSchemaType,
+} from "@/zod-schemas/social-link-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SelectSeparator } from "@radix-ui/react-select";
 import { XIcon } from "lucide-react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-import * as z from "zod";
 
 export function EditBio({
   email,
@@ -43,7 +48,6 @@ export function EditBio({
   email: string;
   prevBio: string | null;
 }) {
-  const router = useRouter();
   const [state, formAction, _] = useActionState(updateBio, {
     success: null,
     submitted: false,
@@ -95,40 +99,56 @@ const socialMedia = [
   { platform: "Twitter", value: "twitter" },
 ] as const;
 
-const formSchema = z.object({
-  links: z
-    .array(
-      z.object({
-        address: z.url("Enter a valid URL."),
-        platform: z.string().min(1, "Please select your spoken language."),
-      })
-    )
-    .min(1, "Add at least one social links.")
-    .max(3, "You can add up to 3 social links."),
-});
-export function EditSocialLinks() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+export function EditSocialLinks({
+  socialLink,
+  email,
+}: {
+  socialLink?: SocialLinksType[] | null | undefined;
+  email: string;
+}) {
+  const form = useForm<SocialLinkSchemaType>({
+    resolver: zodResolver(socialLinkSchema),
     defaultValues: {
       links: [{ address: "", platform: "" }],
     },
   });
+
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "links",
   });
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(data);
+  console.log(socialLink);
+  useEffect(() => {
+    if (socialLink && socialLink.length > 0) {
+      form.setValue("links", socialLink);
+    }
+  }, [socialLink]);
+
+  async function onSubmit(data: SocialLinkSchemaType) {
+    if (JSON.stringify(data.links) === JSON.stringify(socialLink)) {
+      return toast.error("Nothing to update!");
+    }
+
+    const response = await editSocialLinks(data, email);
+
+    console.log(response);
+
+    if (response.success === true) {
+      toast.success(response.message);
+      form.reset();
+    } else {
+      toast.error(response.message);
+    }
   }
   return (
-    <form id="form-rhf-array" onSubmit={form.handleSubmit(onSubmit)}>
+    <form id="edit-social-link" onSubmit={form.handleSubmit(onSubmit)}>
       <FieldSet className="gap-4">
         <FieldDescription>
           Add up to 3 social links, where user can find you.
         </FieldDescription>
         <FieldGroup className="gap-4">
           {fields.map((field, index) => (
-            <div key={index} className="flex">
+            <div key={field.id} className="flex">
               <Controller
                 name={`links.${index}.platform`}
                 control={form.control}
@@ -138,32 +158,36 @@ export function EditSocialLinks() {
                     data-invalid={fieldState.invalid}
                     className="basis-1/3"
                   >
-                    <Select
-                      name={controllerField.name}
-                      value={controllerField.value}
-                      onValueChange={controllerField.onChange}
-                    >
-                      <SelectTrigger
-                        id="platform-select"
-                        aria-invalid={fieldState.invalid}
-                        className="min-w-full rounded-br-none rounded-tr-none"
+                    <FieldContent>
+                      <Select
+                        name={controllerField.name}
+                        value={controllerField.value}
+                        onValueChange={controllerField.onChange}
                       >
-                        <SelectValue placeholder="Select" />
-                      </SelectTrigger>
-                      <SelectContent position="item-aligned">
-                        <SelectSeparator />
-                        {socialMedia.map((media) => (
-                          <SelectItem key={media.value} value={media.value}>
-                            {media.platform}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                        <SelectTrigger
+                          id="platform-select"
+                          aria-invalid={fieldState.invalid}
+                          className="min-w-full rounded-br-none rounded-tr-none"
+                        >
+                          <SelectValue placeholder="Select" />
+                        </SelectTrigger>
+                        <SelectContent position="item-aligned">
+                          <SelectSeparator />
+                          {socialMedia.map((media) => (
+                            <SelectItem key={media.value} value={media.value}>
+                              {media.platform}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </FieldContent>
                   </Field>
                 )}
               />
               <Controller
-                key={field.id}
                 name={`links.${index}.address`}
                 control={form.control}
                 render={({ field: controllerField, fieldState }) => (
@@ -217,7 +241,9 @@ export function EditSocialLinks() {
           >
             Add Social Link
           </Button>
-          <Button type="submit" size="sm" form="form-rhf-array">
+
+          <Button type="submit" size="sm" form="edit-social-link">
+            {form.formState.isSubmitting ? <Spinner /> : <Check />}
             Save
           </Button>
         </Field>

@@ -1,9 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 
-const socialLinkSchema = new Schema(
+export const socialLinkSchema = new Schema(
   {
-    address: { type: String },
-    platform: { type: String },
+    address: { type: String, required: true },
+    platform: { type: String, required: true },
   },
   { _id: false }
 );

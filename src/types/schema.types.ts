@@ -1,4 +1,4 @@
-import { AuthorSchema } from "@/models/author";
+import { AuthorSchema, socialLinkSchema } from "@/models/author";
 import { BlogSchema } from "@/models/blog";
 import type { InferSchemaType } from "mongoose";
 
@@ -9,5 +9,10 @@ export type AuthorType = Omit<
 
 export type BlogType = Omit<
   InferSchemaType<typeof BlogSchema>,
+  "DefaultTimestampProps" | "createdAt" | "updatedAt"
+>;
+
+export type SocialLinksType = Omit<
+  InferSchemaType<typeof socialLinkSchema>,
   "DefaultTimestampProps" | "createdAt" | "updatedAt"
 >;

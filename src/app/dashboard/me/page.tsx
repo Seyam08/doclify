@@ -205,7 +205,10 @@ export default async function Page() {
                     You can add your social links
                   </DialogDescription>
                 </DialogHeader>
-                <EditSocialLinks />
+                <EditSocialLinks
+                  email={user.authorInfo.email}
+                  socialLink={user.authorInfo.socialLinks}
+                />
                 <DialogFooter className="sm:justify-start">
                   <DialogClose asChild>
                     <Button type="button" variant="outline">
