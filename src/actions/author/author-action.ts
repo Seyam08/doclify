@@ -76,11 +76,6 @@ export async function updateBio(
   prevState: BioState,
   formData: FormData
 ): Promise<BioState> {
-  await new Promise((r) =>
-    setTimeout(() => {
-      r("f");
-    }, 3000)
-  );
   const newBio = formData.get("edit-bio") as string;
   const trimmedBio = newBio.trim();
   const email = formData.get("email") as string;
@@ -100,7 +95,6 @@ export async function updateBio(
       { "authorInfo.bio": trimmedBio }, // update field
       { new: true } // return updated doc
     );
-
 
     if (updatedBio) {
       return {
