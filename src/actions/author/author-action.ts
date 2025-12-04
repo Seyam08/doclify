@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/mongoConnection";
 import { Author } from "@/models/author";
 import { ServerActionResponse } from "@/types/global-types";
 import { AuthorType } from "@/types/schema.types";
+import { SocialLinkSchemaType } from "@/zod-schemas/social-link-schema";
 import { cache } from "react";
 
 export type BioState = {
@@ -47,7 +48,9 @@ export const getAuthorByEmail = cache(
       await connectDB();
       const author: AuthorType | null = await Author.findOne({
         "authorInfo.email": email,
-      });
+      })
+        .select({ _id: 0, createdAt: 0, updatedAt: 0, __v: 0 })
+        .lean<AuthorType>();
 
       if (author) {
         return {
@@ -116,6 +119,38 @@ export async function updateBio(
       success: false,
       submitted: true,
       message: "Unable to update Bio!",
+    };
+  }
+}
+
+export async function editSocialLinks(
+  socialLinks: SocialLinkSchemaType,
+  email: string
+): Promise<ServerActionResponse> {
+  try {
+    const updatedLinks = await Author.findOneAndUpdate(
+      { "authorInfo.email": email }, // find author by email
+      { "authorInfo.socialLinks": socialLinks.links }, // update field
+      { new: true } // return updated doc
+    );
+
+    if (updatedLinks) {
+      return {
+        success: true,
+        message: "Social links updated successfully",
+      };
+    } else {
+      return {
+        success: false,
+        message: "Social links update failed!",
+      };
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return {
+      success: false,
+      message: "Social links to update Bio!",
     };
   }
 }
