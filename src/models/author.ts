@@ -2,9 +2,8 @@ import mongoose, { Schema } from "mongoose";
 
 const socialLinkSchema = new Schema(
   {
-    name: { type: String },
-    icon: { type: String },
-    link: { type: String },
+    address: { type: String },
+    platform: { type: String },
   },
   { _id: false }
 );
