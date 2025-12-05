@@ -58,3 +58,33 @@ export function DoclifyBlogCard({ blog, className }: DoclifyBlogCardProps) {
     </div>
   );
 }
+
+type DoclifyBlogMiniCardProps = {
+  blog: BlogType;
+} & React.ComponentProps<"div">;
+export function DoclifyBlogMiniCard({
+  blog,
+  className,
+}: DoclifyBlogMiniCardProps) {
+  return (
+    <div className={cn(className)} key={blog.slug}>
+      {/* content side  */}
+      <div className="pb-5 space-y-3">
+        <TypographyH3 className="text-sm md:text-base">
+          <Link href={`/blog/${blog.slug}`} className="hover:underline">
+            {blog.frontMatter.title}
+          </Link>
+        </TypographyH3>
+        <div className="flex items-center justify-start mb-4 text-primary text-sm">
+          <Calendar1Icon className="h-4 w-4 mr-2" />
+
+          {new Date(blog.frontMatter.date).toLocaleString("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
