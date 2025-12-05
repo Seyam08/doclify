@@ -156,3 +156,34 @@ export async function editSocialLinks(
     };
   }
 }
+
+export async function getAllAuthor(): Promise<
+  ServerActionResponse<AuthorType[]>
+> {
+  try {
+    await connectDB();
+    const author: AuthorType[] = await Author.find()
+      .select({ _id: 0, createdAt: 0, updatedAt: 0, __v: 0 })
+      .lean<AuthorType[]>();
+
+    if (author.length > 0) {
+      return {
+        success: true,
+        message: "Authors Found",
+        content: author,
+      };
+    } else {
+      return {
+        success: false,
+        message: "Authors not Found",
+      };
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed to find Authors!",
+    };
+  }
+}
