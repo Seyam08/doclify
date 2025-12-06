@@ -3,9 +3,5 @@ export default function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <div className="bg-[radial-gradient(circle_at_top_center,rgb(161,210,247,0.6),transparent_70%)] dark:bg-[radial-gradient(circle_at_top_center,rgb(2,13,25,1),transparent_70%)] bg-fixed">
-      <div className="flex flex-col width-holder">{children}</div>
-    </div>
-  );
+  return <div className="flex flex-col width-holder">{children}</div>;
 }
