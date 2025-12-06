@@ -1,6 +1,6 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
+import { Monitor, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { useEffect, useState } from "react";
+import { Skeleton } from "./ui/skeleton";
 
 export function ModeToggle() {
   const { setTheme } = useTheme();
@@ -38,5 +42,49 @@ export function ModeToggle() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+}
+
+export function DashboardModeToggle() {
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted && theme) {
+      setTheme(theme);
+    }
+  }, []);
+
+  if (!mounted) {
+    return <Skeleton className="w-full h-8" />;
+  }
+
+  return (
+    <ToggleGroup
+      type="single"
+      value={theme || resolvedTheme}
+      onValueChange={(value) => {
+        if (!value) return; // prevent unselect
+        setTheme(value);
+      }}
+      className="justify-center border p-1"
+      size="sm"
+    >
+      <ToggleGroupItem value="light">
+        <Sun className="h-4 w-4" />
+      </ToggleGroupItem>
+
+      <ToggleGroupItem value="dark">
+        <Moon className="h-4 w-4" />
+      </ToggleGroupItem>
+
+      <ToggleGroupItem value="system">
+        <Monitor className="h-4 w-4" />
+      </ToggleGroupItem>
+    </ToggleGroup>
   );
 }
