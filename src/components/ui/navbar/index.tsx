@@ -17,13 +17,13 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { Menu, User } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import * as React from "react";
 
 // Types
 export interface NavbarNavLink {
   href: string;
   label: string;
-  active?: boolean;
 }
 
 type NavbarProps = {
@@ -34,7 +34,7 @@ type NavbarProps = {
 
 // Default navigation links
 const defaultNavigationLinks: NavbarNavLink[] = [
-  { href: "#", label: "Home", active: true },
+  { href: "#", label: "Home" },
   { href: "#features", label: "Features" },
   { href: "#pricing", label: "Pricing" },
   { href: "#about", label: "About" },
@@ -48,6 +48,8 @@ export function Navbar({
   ...props
 }: NavbarProps) {
   const isMobile = useIsMobile();
+  const pathname = usePathname();
+  console.log(pathname);
 
   return (
     <header
@@ -83,7 +85,7 @@ export function Navbar({
                         <Link
                           className={cn(
                             "w-full flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground cursor-pointer no-underline",
-                            link.active
+                            link.href === pathname
                               ? "bg-accent text-accent-foreground"
                               : "text-foreground/80"
                           )}
@@ -110,7 +112,7 @@ export function Navbar({
                       <Link
                         className={cn(
                           "group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer no-underline",
-                          link.active
+                          link.href === pathname
                             ? "bg-accent text-accent-foreground"
                             : "text-foreground/80 hover:text-foreground"
                         )}
