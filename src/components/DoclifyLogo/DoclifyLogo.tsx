@@ -1,4 +1,6 @@
+import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { ComponentProps } from "react";
 const Logo = (props: React.SVGAttributes<SVGElement>) => {
   return (
     <svg
@@ -34,11 +36,17 @@ const Logo = (props: React.SVGAttributes<SVGElement>) => {
   );
 };
 
-export function DoclifyFullLogo({ logoHref }: { logoHref: string }) {
+export function DoclifyFullLogo({
+  logoHref,
+  className,
+}: { logoHref: string } & ComponentProps<"link">) {
   return (
     <Link
       href={logoHref}
-      className="flex items-center space-x-2 text-primary hover:text-primary/90 transition-colors cursor-pointer"
+      className={cn(
+        "flex items-center space-x-2 text-primary hover:text-primary/90 transition-colors cursor-pointer",
+        className
+      )}
     >
       <div className="text-2xl">
         <Logo />
