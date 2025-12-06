@@ -1,152 +1,59 @@
 "use client";
 
-import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
-} from "lucide-react";
+import { ChartLine, Frame, PieChart, SquarePen } from "lucide-react";
 import * as React from "react";
 
 import { NavMain } from "@/components/dashboard-layout/nav-main";
 import { NavProjects } from "@/components/dashboard-layout/nav-projects";
 import { NavUser } from "@/components/dashboard-layout/nav-user";
-import { TeamSwitcher } from "@/components/dashboard-layout/team-switcher";
+import { DoclifyFullLogo } from "@/components/DoclifyLogo/DoclifyLogo";
+import { DashboardModeToggle } from "@/components/mode-toggle";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
 
 // This is sample data.
 const data = {
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
   navMain: [
     {
-      title: "Playground",
+      title: "Blogs",
       url: "#",
-      icon: SquareTerminal,
+      icon: SquarePen,
       isActive: true,
       items: [
         {
-          title: "History",
-          url: "/dashboard/account",
+          title: "My Blogs",
+          url: "/dashboard/coming-soon",
         },
         {
-          title: "Starred",
-          url: "/dashboard",
-        },
-        {
-          title: "Add Posts",
+          title: "Add Blog",
           url: "/dashboard/add-post",
-        },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
         },
       ],
     },
   ],
   projects: [
     {
-      name: "Design Engineering",
-      url: "#",
+      name: "Categories",
+      url: "/dashboard/coming-soon",
       icon: Frame,
     },
     {
-      name: "Sales & Marketing",
-      url: "#",
+      name: "Tags",
+      url: "/dashboard/coming-soon",
       icon: PieChart,
     },
     {
-      name: "Travel",
-      url: "#",
-      icon: Map,
+      name: "Growth",
+      url: "/dashboard/coming-soon",
+      icon: ChartLine,
     },
   ],
 };
@@ -164,13 +71,22 @@ export function AppSidebar({
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" asChild>
+              <DoclifyFullLogo logoHref="/dashboard" />
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
+        <div className="flex justify-center">
+          <DashboardModeToggle />
+        </div>
         <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />

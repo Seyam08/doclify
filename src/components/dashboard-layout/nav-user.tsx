@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  BadgeCheck,
-  Bell,
-  ChevronsUpDown,
-  CreditCard,
-  LogOut,
-  Sparkles,
-} from "lucide-react";
+import { ChevronsUpDown, LayoutDashboard } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -25,7 +18,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { userProfileLinks } from "@/const/navLink";
 import Image from "next/image";
+import Link from "next/link";
 import SocialLogOut from "../authentication/social-logout";
 
 export function NavUser({
@@ -86,33 +81,37 @@ export function NavUser({
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
-              </DropdownMenuItem>
+              <Link href="/dashboard">
+                <DropdownMenuItem className="cursor-pointer">
+                  <LayoutDashboard />
+                  Dashboard
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
-              </DropdownMenuItem>
+              {userProfileLinks.map((item, index) => {
+                const { label, href, icon: Icon } = item;
+                return (
+                  <div key={index}>
+                    {href ? (
+                      <Link href={href}>
+                        <DropdownMenuItem className="cursor-pointer">
+                          {Icon && <Icon />}
+                          {label}
+                        </DropdownMenuItem>
+                      </Link>
+                    ) : (
+                      <DropdownMenuItem>
+                        {Icon && <Icon />}
+                        {label}
+                      </DropdownMenuItem>
+                    )}
+                  </div>
+                );
+              })}
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut />
-              Log out
-            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <SocialLogOut />
           </DropdownMenuContent>
