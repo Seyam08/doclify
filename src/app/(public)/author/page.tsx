@@ -10,11 +10,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  await new Promise((r) =>
-    setTimeout(() => {
-      r("s");
-    }, 5000)
-  );
   const response = await getAllAuthor();
 
   if (response.success === false) {
