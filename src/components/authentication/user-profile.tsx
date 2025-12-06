@@ -34,7 +34,7 @@ export async function UserProfile() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+        className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80"
         side="top"
         align="end"
         sideOffset={4}

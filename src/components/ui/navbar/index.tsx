@@ -72,7 +72,10 @@ export function Navbar({
                   <Menu />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent align="center" className="w-36 p-2">
+              <PopoverContent
+                align="center"
+                className="w-36 p-2 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80"
+              >
                 <NavigationMenu className="max-w-full block">
                   <NavigationMenuList className="flex-col items-start gap-1">
                     {navigationLinks.map((link, index) => (
