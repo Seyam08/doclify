@@ -1,10 +1,4 @@
-import {
-  BadgeCheck,
-  Bell,
-  CreditCard,
-  LayoutDashboard,
-  User,
-} from "lucide-react";
+import { LayoutDashboard, LucideProps, User } from "lucide-react";
 
 import { auth } from "@/auth";
 import SocialLogin from "@/components/authentication/social-login";
@@ -19,9 +13,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { userProfileLinks } from "@/const/navLink";
 import Image from "next/image";
 import Link from "next/link";
+import { ForwardRefExoticComponent, RefAttributes } from "react";
 import SocialLogOut from "./social-logout";
+
+export type UserProfileDropDownItem = {
+  href?: string;
+  icon?: ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
+  >;
+  label: string;
+};
 
 export async function UserProfile() {
   const session = await auth();
@@ -78,18 +82,26 @@ export async function UserProfile() {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
-              </DropdownMenuItem>
+              {userProfileLinks.map((item, index) => {
+                const { label, href, icon: Icon } = item;
+                return (
+                  <div key={index}>
+                    {href ? (
+                      <Link href={href}>
+                        <DropdownMenuItem className="cursor-pointer">
+                          {Icon && <Icon />}
+                          {label}
+                        </DropdownMenuItem>
+                      </Link>
+                    ) : (
+                      <DropdownMenuItem>
+                        {Icon && <Icon />}
+                        {label}
+                      </DropdownMenuItem>
+                    )}
+                  </div>
+                );
+              })}
             </DropdownMenuGroup>
           </>
         )}
