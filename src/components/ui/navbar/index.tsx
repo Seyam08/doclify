@@ -49,7 +49,6 @@ export function Navbar({
 }: NavbarProps) {
   const isMobile = useIsMobile();
   const pathname = usePathname();
-  console.log(pathname);
 
   return (
     <header
