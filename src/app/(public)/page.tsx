@@ -3,10 +3,11 @@ import NewsLetter from "@/components/DoclifySections/NewsLetter";
 import TopCategories from "@/components/DoclifySections/TopCategories";
 import { Separator } from "@/components/ui/separator";
 import { TypographyH1, TypographyP } from "@/components/ui/typography";
+import { cn } from "@/lib/utils";
 
 export default function Home() {
   return (
-    <div className="width-holder">
+    <div className={cn("width-holder", "py-0 pt-5 md:pt-10")}>
       {/* hero section */}
       <div className="content-holder m-auto space-y-10 py-28 px-5 text-center">
         <TypographyH1 className="text-3xl md:text-5xl animate-fade-down animate-duration-700">
@@ -40,7 +41,6 @@ export default function Home() {
       <div>
         <NewsLetter />
       </div>
-      <Separator className="w-full h-1" />
     </div>
   );
 }
