@@ -1,4 +1,4 @@
-import { getLimitedPost } from "@/actions/post/post-actions";
+import { getAllPost } from "@/actions/post/post-actions";
 import { DoclifyBlogCard } from "@/components/DoclifyCards/DoclifyCards";
 import { TypographyH3, UnderlineLink02 } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
@@ -14,7 +14,7 @@ export default async function FeaturedPosts({
   limit: number;
   title: string;
 } & ComponentProps<"div">) {
-  const response = await getLimitedPost(limit);
+  const response = await getAllPost(3);
 
   if (response.success === false) {
     return (

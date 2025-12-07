@@ -243,12 +243,24 @@ export const getPost = cache(
   }
 );
 
-export async function getAllPost(): Promise<ServerActionResponse<BlogType[]>> {
+export async function getAllPost(
+  limit?: number,
+  order: "asc" | "desc" = "desc"
+): Promise<ServerActionResponse<BlogType[]>> {
   try {
     await connectDB();
-    const blogs: BlogType[] | null = await Blog.find()
-      .select({ _id: 0 })
-      .sort({ createdAt: -1 });
+    const sortOrder = order === "desc" ? -1 : 1;
+
+    let blogsQuery = Blog.find()
+      .sort({ createdAt: sortOrder })
+      .select({ _id: 0 });
+
+    // Apply limit only if it's a positive number
+    if (typeof limit === "number" && limit > 0) {
+      blogsQuery = blogsQuery.limit(limit);
+    }
+
+    const blogs: BlogType[] = await blogsQuery.lean<BlogType[]>();
 
     if (blogs) {
       return {
@@ -304,38 +316,3 @@ export const getPostByAuthor = cache(
     }
   }
 );
-
-export async function getLimitedPost(
-  limit: number = 10,
-  order: "asc" | "desc" = "desc"
-): Promise<ServerActionResponse<BlogType[]>> {
-  try {
-    await connectDB();
-
-    const sortOrder = order === "desc" ? -1 : 1;
-
-    const blogs: BlogType[] = await Blog.find()
-      .sort({ createdAt: sortOrder })
-      .limit(limit)
-      .select({ _id: 0 });
-
-    if (blogs.length > 0) {
-      return {
-        success: true,
-        message: "Blogs Found",
-        content: blogs,
-      };
-    } else {
-      return {
-        success: false,
-        message: "There is no blogs at this moment!",
-      };
-    }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error) {
-    return {
-      success: false,
-      message: "Failed to get blogs!",
-    };
-  }
-}
