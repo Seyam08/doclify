@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { ReactNode } from "react";
+import { ComponentProps, ReactNode } from "react";
 
 export function TypographyH1({
   children,
@@ -78,19 +78,41 @@ export function TypographyP({
   );
 }
 
-export default function UnderlineLink({
+export function UnderlineLink({
   href,
   children,
-  className = "",
+  className,
 }: {
   href: string;
   children: ReactNode;
-  className?: string;
-}) {
+} & ComponentProps<"link">) {
   return (
     <Link href={href} className={cn("group relative", className)}>
       <span>{children}</span>
       <span className="absolute -bottom-0.5 left-0 w-0 transition-all h-[0.2] bg-primary group-hover:w-full"></span>
+    </Link>
+  );
+}
+
+export function UnderlineLink02({
+  href,
+  children,
+  className,
+}: {
+  href: string;
+  children: ReactNode;
+} & ComponentProps<"link">) {
+  return (
+    <Link
+      href={href}
+      className={cn(
+        "relative group w-fit overflow-hidden flex items-center leading-7 gap-1",
+        className
+      )}
+    >
+      {children}
+      {/* bottom border using after */}
+      <span className="group-hover:-translate-x-full absolute left-0 bottom-0.5 h-0.5 w-full bg-current after:content-[''] transition-all duration-300"></span>
     </Link>
   );
 }
