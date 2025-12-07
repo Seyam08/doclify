@@ -1,11 +1,13 @@
 import FeaturedPosts from "@/components/DoclifySections/FeaturedPosts";
+import TopCategories from "@/components/DoclifySections/TopCategories";
+import { Separator } from "@/components/ui/separator";
 import { TypographyH1, TypographyP } from "@/components/ui/typography";
 
 export default function Home() {
   return (
     <div className="width-holder">
       {/* hero section */}
-      <div className="content-holder m-auto space-y-10 py-36 px-5 text-center">
+      <div className="content-holder m-auto space-y-10 py-28 px-5 text-center">
         <TypographyH1 className="text-3xl md:text-5xl animate-fade-down animate-duration-700">
           Sharing ideas, stories, and
           <br /> lessons along the way
@@ -16,9 +18,19 @@ export default function Home() {
         </TypographyP>
       </div>
 
-      {/* featured post */}
-      <div>
-        <FeaturedPosts title="Featured Blogs" limit={3} />
+      <Separator className="w-full h-1" />
+
+      {/* latest post */}
+
+      <div className="py-10">
+        <FeaturedPosts title="Latest Blogs" limit={3} />
+      </div>
+
+      <Separator className="w-full h-1" />
+
+      {/* categories */}
+      <div className="py-10">
+        <TopCategories title="Top Categories" limit={6} />
       </div>
     </div>
   );
