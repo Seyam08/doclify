@@ -124,25 +124,30 @@ export async function getPostMeta(
 }
 
 export async function getDetailedPostMeta(
-  meta: "categories" | "tags"
+  meta: "categories" | "tags",
+  limit: number = 0
 ): Promise<ServerActionResponse<MetaStats>> {
   try {
     await connectDB();
 
-    const metaStats: MetaStats = await Blog.aggregate([
-      {
-        $unwind: `$frontMatter.${meta}`,
-      },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const pipeline: any[] = [
+      { $unwind: `$frontMatter.${meta}` },
       {
         $group: {
           _id: `$frontMatter.${meta}`,
           count: { $sum: 1 },
         },
       },
-      {
-        $sort: { count: -1 },
-      },
-    ]);
+      { $sort: { count: -1 } },
+    ];
+
+    // Apply limit only if limit > 0
+    if (limit > 0) {
+      pipeline.push({ $limit: limit });
+    }
+
+    const metaStats: MetaStats = await Blog.aggregate(pipeline);
 
     if (metaStats.length > 0) {
       return {
