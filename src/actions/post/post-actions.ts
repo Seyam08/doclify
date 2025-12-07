@@ -186,8 +186,6 @@ export const getSingleMeta = cache(
           break;
       }
 
-      // const blog: BlogType | null = await Blog.findOne({ slug: params });
-
       if (blogs.length > 0) {
         return {
           success: true,

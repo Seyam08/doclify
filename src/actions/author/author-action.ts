@@ -85,7 +85,7 @@ export async function updateBio(
   const trimmedBio = newBio.trim();
   const email = formData.get("email") as string;
 
-  // 1️⃣ Compare previous & new bio
+  // Compare previous & new bio
   if (prevState.prevBio === trimmedBio) {
     return {
       submitted: true,

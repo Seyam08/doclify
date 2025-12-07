@@ -35,7 +35,7 @@ export async function checkAuthorEmailExists(email: string): Promise<{
 /**
  * Check if a blog slug already exists.
  *
- * ⚠️ NOTICE:
+ * NOTICE:
  * You MUST slugify the title before calling this function.
  *
  * Example:
