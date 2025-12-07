@@ -1,10 +1,9 @@
 import { getLimitedPost } from "@/actions/post/post-actions";
 import { DoclifyBlogCard } from "@/components/DoclifyCards/DoclifyCards";
-import { TypographyH3 } from "@/components/ui/typography";
+import { TypographyH3, UnderlineLink02 } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
 import { BlogType } from "@/types/schema.types";
 import { ArrowUpRight } from "lucide-react";
-import Link from "next/link";
 import { ComponentProps } from "react";
 
 export default async function FeaturedPosts({
@@ -31,15 +30,10 @@ export default async function FeaturedPosts({
       <div className={cn("w-full", className)}>
         <div className="flex flex-row justify-between items-center mb-14">
           <TypographyH3 className="capitalize">{title}</TypographyH3>
-          <Link
-            href="/blog"
-            className="relative group w-fit overflow-hidden flex items-center leading-7 gap-1"
-          >
+          <UnderlineLink02 href="/blog">
             All Blogs
             <ArrowUpRight className="h-5 w-5 group-hover:rotate-45 transition-all duration-300" />
-            {/* bottom border using after */}
-            <span className="group-hover:-translate-x-full absolute left-0 bottom-0.5 h-0.5 w-full bg-current after:content-[''] transition-all duration-300"></span>
-          </Link>
+          </UnderlineLink02>
         </div>
 
         {/* each item */}

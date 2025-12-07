@@ -16,9 +16,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
-import UnderlineLink, {
+import {
   TypographyH3,
   TypographyP,
+  UnderlineLink,
 } from "@/components/ui/typography";
 import { AuthorType, BlogType } from "@/types/schema.types";
 import { ExternalLink, SquarePen, User } from "lucide-react";
