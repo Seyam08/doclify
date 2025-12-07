@@ -1,4 +1,5 @@
 import FeaturedPosts from "@/components/DoclifySections/FeaturedPosts";
+import NewsLetter from "@/components/DoclifySections/NewsLetter";
 import TopCategories from "@/components/DoclifySections/TopCategories";
 import { Separator } from "@/components/ui/separator";
 import { TypographyH1, TypographyP } from "@/components/ui/typography";
@@ -32,6 +33,14 @@ export default function Home() {
       <div className="py-10">
         <TopCategories title="Top Categories" limit={6} />
       </div>
+
+      <Separator className="w-full h-1" />
+
+      {/* newsletter */}
+      <div>
+        <NewsLetter />
+      </div>
+      <Separator className="w-full h-1" />
     </div>
   );
 }
