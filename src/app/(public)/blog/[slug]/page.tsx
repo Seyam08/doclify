@@ -7,10 +7,11 @@ import {
 } from "@/components/DoclifyIcon/DoclifyIcon";
 import { Button } from "@/components/ui/button";
 import { DoclifyImage } from "@/components/ui/image";
-import UnderlineLink, {
+import {
   TypographyH1,
   TypographyH2,
   TypographyP,
+  UnderlineLink,
 } from "@/components/ui/typography";
 import { contentPurify } from "@/lib/utils";
 import { BlogType } from "@/types/schema.types";
