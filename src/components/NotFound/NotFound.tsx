@@ -1,0 +1,43 @@
+import { DoclifyFullLogo } from "@/components/DoclifyLogo/DoclifyLogo";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { TypographyH1 } from "@/components/ui/typography";
+import { cn } from "@/lib/utils";
+import { ComponentProps, ReactNode } from "react";
+
+export function DoclifyNotFound({
+  cta,
+  className,
+}: { cta?: ReactNode } & ComponentProps<"div">) {
+  return (
+    <div
+      className={cn(
+        "relative w-full bg-[radial-gradient(circle_at_top_center,rgb(161,210,247,0.6),transparent_70%)] dark:bg-[radial-gradient(circle_at_top_center,rgb(2,13,25,1),transparent_70%)] bg-fixed flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10",
+        className
+      )}
+    >
+      <div className="flex w-full max-w-xl flex-col gap-4 items-center justify-center">
+        <div className="w-4/5 flex flex-col gap-6">
+          <Card className="bg-background/60 backdrop-blur supports-backdrop-filter:bg-background/60">
+            <CardHeader className="text-center">
+              <div className="w-fit m-auto">
+                <DoclifyFullLogo logoHref="/" />
+              </div>
+              <TypographyH1>404</TypographyH1>
+              <CardTitle className="text-xl">Not Found</CardTitle>
+              <CardDescription>
+                There is no content in this route
+              </CardDescription>
+            </CardHeader>
+            {cta && <CardContent className="w-fit m-auto">{cta}</CardContent>}
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
