@@ -87,9 +87,11 @@ export default async function Page() {
                 </ItemDescription>
               </ItemContent>
               <ItemActions>
-                <Button variant="outline" size="sm" aria-label="View">
-                  <span className="hidden md:block">View</span>
-                  <ArrowUpRight />
+                <Button variant="outline" size="sm" aria-label="View" asChild>
+                  <Link href={`/blog/${blog.slug}`}>
+                    <span className="hidden md:block">View</span>
+                    <ArrowUpRight />
+                  </Link>
                 </Button>
               </ItemActions>
             </Item>
