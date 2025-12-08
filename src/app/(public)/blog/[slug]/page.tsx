@@ -13,7 +13,6 @@ import {
   TypographyP,
   UnderlineLink,
 } from "@/components/ui/typography";
-import { contentPurify } from "@/lib/utils";
 import { BlogType } from "@/types/schema.types";
 import { Calendar1Icon, ClockFading } from "lucide-react";
 import type { Metadata } from "next";
@@ -55,7 +54,7 @@ export default async function Page({ params }: Props) {
     );
   } else {
     const blog = response.content as BlogType;
-    const cleanContent = contentPurify(blog.content as string);
+    const content = blog.content as string;
     return (
       <div className="content-holder space-y-2">
         {/* categories and reading time section */}
@@ -112,7 +111,7 @@ export default async function Page({ params }: Props) {
 
         {/* post content section  */}
         <div
-          dangerouslySetInnerHTML={{ __html: cleanContent }}
+          dangerouslySetInnerHTML={{ __html: content }}
           className="blog"
         ></div>
 

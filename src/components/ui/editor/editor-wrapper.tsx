@@ -1,5 +1,7 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
-import { contentPurify } from "@/lib/utils";
+import { contentPurify } from "@/lib/utils-client";
 import { Check } from "lucide-react";
 import {
   Dispatch,

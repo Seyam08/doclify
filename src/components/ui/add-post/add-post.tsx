@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/popover";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
+import { contentPurify } from "@/lib/utils-client";
 import { ServerActionResponse } from "@/types/global-types";
 import { addPostSchema } from "@/zod-schemas/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -59,7 +60,8 @@ export default function AddPost({
   });
 
   useEffect(() => {
-    form.setValue("content", content);
+    const cleanContent = contentPurify(content);
+    form.setValue("content", cleanContent);
   }, [content]);
 
   async function onSubmit(data: z.infer<typeof addPostSchema>) {
