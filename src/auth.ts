@@ -74,5 +74,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         return false;
       }
     },
+    jwt: async ({ token }) => {
+      await connectDB();
+      const author: AuthorType | null = await Author.findOne({
+        "authorInfo.email": token.email,
+      });
+
+      if (author) {
+        token.username = author.username;
+      }
+      return token;
+    },
+    session: async ({ session, token }) => {
+      if (session.user && token.username) {
+        session.user.username = token.username as string;
+      }
+
+      return session;
+    },
   },
 });
