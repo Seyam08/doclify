@@ -44,39 +44,6 @@ export const getAuthor = cache(
   }
 );
 
-export const getAuthorByEmail = cache(
-  async (email: string): Promise<ServerActionResponse<AuthorType>> => {
-    try {
-      await connectDB();
-      const author: AuthorType | null = await Author.findOne({
-        "authorInfo.email": email,
-      })
-        .select({ _id: 0, createdAt: 0, updatedAt: 0, __v: 0 })
-        .lean<AuthorType>();
-
-      if (author) {
-        return {
-          success: true,
-          message: "Author Found",
-          content: author,
-        };
-      } else {
-        return {
-          success: false,
-          message: "Author not Found",
-        };
-      }
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      return {
-        success: false,
-        message: "Failed to find Author!",
-      };
-    }
-  }
-);
-
 export async function updateBio(
   prevState: BioState,
   formData: FormData

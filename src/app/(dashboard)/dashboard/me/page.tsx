@@ -1,4 +1,4 @@
-import { getAuthorByEmail } from "@/actions/author/author-action";
+import { getAuthor } from "@/actions/author/author-action";
 import { auth } from "@/auth";
 import { ForceLogout } from "@/components/authentication/ForceLogout";
 import {
@@ -37,7 +37,7 @@ import Image from "next/image";
 
 export default async function Page() {
   const session = await auth();
-  const response = await getAuthorByEmail(session?.user?.email as string);
+  const response = await getAuthor(session?.user?.username as string);
 
   if (response.success === false) {
     return <ForceLogout />;
