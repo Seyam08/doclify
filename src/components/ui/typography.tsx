@@ -116,3 +116,25 @@ export function UnderlineLink02({
     </Link>
   );
 }
+export function UnderlineLink03({
+  href,
+  children,
+  className,
+}: {
+  href: string;
+  children: ReactNode;
+} & ComponentProps<"link">) {
+  return (
+    <Link
+      href={href}
+      className={cn(
+        "relative group w-fit overflow-hidden flex items-center leading-7 gap-1",
+        className
+      )}
+    >
+      {children}
+      {/* bottom border using after */}
+      <span className="group-hover:translate-x-0 -translate-x-full absolute left-0 bottom-0.5 h-0.5 w-full bg-current after:content-[''] transition-all duration-300"></span>
+    </Link>
+  );
+}
