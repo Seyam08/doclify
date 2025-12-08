@@ -1,6 +1,5 @@
 "use client";
 
-import { ChartLine, Frame, PieChart, SquarePen } from "lucide-react";
 import * as React from "react";
 
 import { NavMain } from "@/components/dashboard-layout/nav-main";
@@ -18,45 +17,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-
-// This is sample data.
-const data = {
-  navMain: [
-    {
-      title: "Blogs",
-      url: "#",
-      icon: SquarePen,
-      isActive: true,
-      items: [
-        {
-          title: "My Blogs",
-          url: "/dashboard/coming-soon",
-        },
-        {
-          title: "Add Blog",
-          url: "/dashboard/add-post",
-        },
-      ],
-    },
-  ],
-  projects: [
-    {
-      name: "Categories",
-      url: "/dashboard/coming-soon",
-      icon: Frame,
-    },
-    {
-      name: "Tags",
-      url: "/dashboard/coming-soon",
-      icon: PieChart,
-    },
-    {
-      name: "Growth",
-      url: "/dashboard/coming-soon",
-      icon: ChartLine,
-    },
-  ],
-};
+import { dashboardSidebarLinks } from "@/const/navLink";
 
 export function AppSidebar({
   user,
@@ -80,8 +41,8 @@ export function AppSidebar({
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavMain items={dashboardSidebarLinks.navMain} />
+        <NavProjects projects={dashboardSidebarLinks.projects} />
       </SidebarContent>
       <SidebarFooter>
         <div className="flex justify-center">
