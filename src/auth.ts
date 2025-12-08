@@ -1,4 +1,5 @@
 import { checkAuthorEmailExists } from "@/actions/helper/checkCredentialsExists";
+import { authConfig } from "@/auth.config";
 import { connectDB } from "@/lib/mongoConnection";
 import { Author } from "@/models/author";
 import { AuthorType } from "@/types/schema.types";
@@ -7,6 +8,7 @@ import GoogleProvider from "next-auth/providers/google";
 import slugify from "slugify";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  ...authConfig,
   providers: [
     GoogleProvider({
       clientId: process.env.AUTH_GOOGLE_ID,
@@ -20,9 +22,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
-  session: {
-    strategy: "jwt",
-  },
   callbacks: {
     signIn: async ({ user }) => {
       try {
