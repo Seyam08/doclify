@@ -1,7 +1,13 @@
 import { DoclifyComingSoon01 } from "@/components/DoclifyComingSoon/DoclifyComingSoon";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Coming soon",
+  description: "Dashboard",
+};
 
 export default function Page() {
   return (

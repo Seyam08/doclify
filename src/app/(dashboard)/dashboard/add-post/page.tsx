@@ -1,6 +1,11 @@
 import { getPostMeta } from "@/actions/post/post-actions";
 import AddPost from "@/components/ui/add-post/add-post";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Add Blog",
+  description: "Dashboard",
+};
 export default async function Page() {
   const category = await getPostMeta("categories");
   const tags = await getPostMeta("tags");
