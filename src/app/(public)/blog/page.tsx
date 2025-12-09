@@ -11,6 +11,7 @@ import { BlogType } from "@/types/schema.types";
 import { Calendar1Icon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Latest Blogs",
@@ -21,11 +22,7 @@ export default async function Page() {
   const response = await getAllPost();
 
   if (response.success === false) {
-    return (
-      <div className="m-auto">
-        <TypographyH2 className="mb-14">{response.message}</TypographyH2>
-      </div>
-    );
+    return notFound();
   } else {
     const blogs = response.content as BlogType[];
     const firstBlog = blogs[1] as BlogType;

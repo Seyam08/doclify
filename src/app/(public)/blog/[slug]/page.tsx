@@ -9,13 +9,13 @@ import { Button } from "@/components/ui/button";
 import { DoclifyImage } from "@/components/ui/image";
 import {
   TypographyH1,
-  TypographyH2,
   TypographyP,
   UnderlineLink,
 } from "@/components/ui/typography";
 import { BlogType } from "@/types/schema.types";
 import { Calendar1Icon, ClockFading } from "lucide-react";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -45,13 +45,7 @@ export default async function Page({ params }: Props) {
   const response = await getPost(slug);
 
   if (response.success === false) {
-    return (
-      <div className="m-auto">
-        <TypographyH2 className="mb-14 capitalize">
-          {response.message}
-        </TypographyH2>
-      </div>
-    );
+    return notFound();
   } else {
     const blog = response.content as BlogType;
     const content = blog.content as string;
