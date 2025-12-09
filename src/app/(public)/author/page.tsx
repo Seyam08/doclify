@@ -3,6 +3,7 @@ import { DoclifyAuthorCard } from "@/components/DoclifyAuthor/DoclifyAuthor";
 import { TypographyH2 } from "@/components/ui/typography";
 import { AuthorType } from "@/types/schema.types";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "All Authors",
@@ -13,11 +14,7 @@ export default async function Page() {
   const response = await getAllAuthor();
 
   if (response.success === false) {
-    return (
-      <div className="m-auto">
-        <TypographyH2 className="mb-14">{response.message}</TypographyH2>
-      </div>
-    );
+    return notFound();
   } else {
     const authors = response.content as AuthorType[];
     return (

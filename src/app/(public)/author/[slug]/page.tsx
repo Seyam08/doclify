@@ -12,6 +12,7 @@ import {
 import { AuthorType, BlogType } from "@/types/schema.types";
 import { Sparkles, SquarePen } from "lucide-react";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -41,13 +42,7 @@ export default async function page({ params }: Props) {
   const response = await getAuthor(slug);
 
   if (response.success === false) {
-    return (
-      <div className="m-auto">
-        <TypographyH2 className="mb-14 capitalize">
-          {response.message}
-        </TypographyH2>
-      </div>
-    );
+    return notFound();
   } else {
     const author = response.content as AuthorType;
     const blogResponse = await getPostByAuthor(author.username);
