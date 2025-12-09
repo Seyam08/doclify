@@ -3,6 +3,7 @@ import { DoclifyBlogCard } from "@/components/DoclifyCards/DoclifyCards";
 import { TypographyH2 } from "@/components/ui/typography";
 import { BlogType } from "@/types/schema.types";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -25,13 +26,7 @@ export default async function page({ params }: Props) {
   const response = await getSingleMeta("tags", decodedSlug);
 
   if (response.success === false) {
-    return (
-      <div className="m-auto">
-        <TypographyH2 className="mb-14 capitalize">
-          {response.message}
-        </TypographyH2>
-      </div>
-    );
+    return notFound();
   } else {
     const blogs = response.content as BlogType[];
     return (
