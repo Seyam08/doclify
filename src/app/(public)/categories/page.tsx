@@ -3,6 +3,7 @@ import { DoclifyItem } from "@/components/DoclifyItem/DoclifyItem";
 import { TypographyH2 } from "@/components/ui/typography";
 import { ExternalLinkIcon } from "lucide-react";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Categories of Doclify",
@@ -13,13 +14,7 @@ export default async function page() {
   const response = await getDetailedPostMeta("categories");
 
   if (response.success === false) {
-    return (
-      <div className="m-auto">
-        <TypographyH2 className="mb-14 capitalize">
-          {response.message}
-        </TypographyH2>
-      </div>
-    );
+    return notFound();
   } else {
     const categories = response.content as MetaStats;
 
