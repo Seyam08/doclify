@@ -1,3 +1,4 @@
+import ErrorWrapper from "@/components/ErrorWrapper";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
@@ -36,7 +37,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <ErrorWrapper>{children}</ErrorWrapper>
+
           <Toaster position="top-center" duration={5000} />
         </ThemeProvider>
       </body>
