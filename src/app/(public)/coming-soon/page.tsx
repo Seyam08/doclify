@@ -1,4 +1,5 @@
 import { DoclifyComingSoon01 } from "@/components/DoclifyComingSoon/DoclifyComingSoon";
+import GoBackBtn from "@/components/NotFound/GoBackBtn";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <DoclifyComingSoon01 className="min-h-dvh p-0 md:p-0" />;
+  return <DoclifyComingSoon01 className="px-4" cta={<GoBackBtn />} />;
 }
