@@ -16,8 +16,9 @@ export function DoclifyBreadcrumb() {
   const crumbs = segments.map((seg, i) => {
     const href = "/" + segments.slice(0, i + 1).join("/");
     const label = seg.charAt(0).toUpperCase() + seg.slice(1);
+    const decodedLabel = decodeURIComponent(label);
 
-    return { href, label };
+    return { href, label: decodedLabel };
   });
   const lastItem = crumbs.length - 1;
 
