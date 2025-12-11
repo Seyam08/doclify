@@ -1,4 +1,5 @@
 import { getAllPost } from "@/actions/post/post-actions";
+import { DoclifyBreadcrumb } from "@/components/Breadcrumb/Breadcrumb";
 import { DoclifyAuthorMeta } from "@/components/DoclifyAuthor/DoclifyAuthor";
 import { DoclifyBlogCard } from "@/components/DoclifyCards/DoclifyCards";
 import { DoclifyImage } from "@/components/ui/image";
@@ -29,7 +30,10 @@ export default async function Page() {
 
     return (
       <div>
-        <TypographyH2 className="mb-14">Latest Blogs</TypographyH2>
+        <div className="flex justify-between items-center mb-14">
+          <TypographyH2>Latest Blogs</TypographyH2>
+          <DoclifyBreadcrumb />
+        </div>
 
         {/* all blogs */}
         <div className="space-y-5">

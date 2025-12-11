@@ -1,4 +1,5 @@
 import { getAllAuthor } from "@/actions/author/author-action";
+import { DoclifyBreadcrumb } from "@/components/Breadcrumb/Breadcrumb";
 import { DoclifyAuthorCard } from "@/components/DoclifyAuthor/DoclifyAuthor";
 import { TypographyH2 } from "@/components/ui/typography";
 import { AuthorType } from "@/types/schema.types";
@@ -19,7 +20,11 @@ export default async function Page() {
     const authors = response.content as AuthorType[];
     return (
       <div>
-        <TypographyH2 className="mb-14">All Authors</TypographyH2>
+        <div className="flex justify-between items-center mb-14">
+          <TypographyH2>All Authors</TypographyH2>
+          <DoclifyBreadcrumb />
+        </div>
+
         {authors?.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {authors.map((author) => (

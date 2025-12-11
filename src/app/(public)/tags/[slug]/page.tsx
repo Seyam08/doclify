@@ -1,4 +1,5 @@
 import { getSingleMeta } from "@/actions/post/post-actions";
+import { DoclifyBreadcrumb } from "@/components/Breadcrumb/Breadcrumb";
 import { DoclifyBlogCard } from "@/components/DoclifyCards/DoclifyCards";
 import { TypographyH2 } from "@/components/ui/typography";
 import { BlogType } from "@/types/schema.types";
@@ -31,7 +32,10 @@ export default async function page({ params }: Props) {
     const blogs = response.content as BlogType[];
     return (
       <div>
-        <TypographyH2 className="mb-14 capitalize">{decodedSlug}</TypographyH2>
+        <div className="flex justify-between items-center mb-14">
+          <TypographyH2 className="capitalize">{decodedSlug}</TypographyH2>
+          <DoclifyBreadcrumb />
+        </div>
 
         {/* each item */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
