@@ -37,12 +37,7 @@ export function DoclifyItem({
 }: DoclifyItemType) {
   return (
     <Item variant="outline" asChild className={cn(className)}>
-      <Link
-        href={link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group"
-      >
+      <Link href={link} rel="noopener noreferrer" className="group">
         <ItemContent>
           <ItemTitle className="group-hover:underline">{title}</ItemTitle>
           {description && <ItemDescription>{description}</ItemDescription>}
