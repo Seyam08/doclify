@@ -12,6 +12,7 @@ import { ServerActionResponse } from "@/types/global-types";
 import { BlogType } from "@/types/schema.types";
 import { addPostSchema } from "@/zod-schemas/schema";
 import { UploadApiResponse } from "cloudinary";
+import { cacheLife } from "next/cache";
 import { cache } from "react";
 import slugify from "slugify";
 import z from "zod";
@@ -216,9 +217,15 @@ export const getSingleMeta = cache(
 
 export const getPost = cache(
   async (params: string): Promise<ServerActionResponse<BlogType>> => {
+    "use cache";
+    cacheLife("hours");
     try {
       await connectDB();
-      const blog: BlogType | null = await Blog.findOne({ slug: params });
+      const blog: BlogType | null = await Blog.findOne({
+        slug: params,
+      })
+        .select({ _id: 0 })
+        .lean<BlogType>();
 
       if (blog) {
         return {
