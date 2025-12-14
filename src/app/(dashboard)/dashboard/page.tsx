@@ -21,7 +21,7 @@ export default async function Page() {
 
   if (response.success === false) {
     return (
-      <div className="flex w-full flex-col gap-6 p-4 pt-0">
+      <main className="flex w-full flex-col gap-6 p-4 pt-0">
         <TypographyH2>My Blogs</TypographyH2>
 
         <Item variant="outline">
@@ -46,14 +46,14 @@ export default async function Page() {
             </Button>
           </ItemActions>
         </Item>
-      </div>
+      </main>
     );
   } else {
     const blogs = response.content as BlogType[]; // blogs can be undefine or null
     const numberOfBlogs = blogs?.length; // number of blog can be undefine also, because of blog
 
     return (
-      <div className="flex w-full flex-col gap-6 p-4 pt-0">
+      <main className="flex w-full flex-col gap-6 p-4 pt-0">
         <TypographyH2>My Blogs</TypographyH2>
         {numberOfBlogs > 0 &&
           blogs.map((blog) => (
@@ -96,7 +96,7 @@ export default async function Page() {
               </ItemActions>
             </Item>
           ))}
-      </div>
+      </main>
     );
   }
 }
