@@ -1,3 +1,5 @@
+"use cache";
+
 import { getPost } from "@/actions/post/post-actions";
 import { DoclifyAuthorMeta } from "@/components/DoclifyAuthor/DoclifyAuthor";
 import {
@@ -15,6 +17,8 @@ import {
 import { BlogType } from "@/types/schema.types";
 import { Calendar1Icon, ClockFading } from "lucide-react";
 import type { Metadata } from "next";
+import { cacheLife } from "next/cache";
+import { ImageProps } from "next/image";
 import { notFound } from "next/navigation";
 
 type Props = {
@@ -41,6 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Props) {
+  cacheLife("hours");
   const { slug } = await params;
   const response = await getPost(slug);
 
@@ -100,6 +105,12 @@ export default async function Page({ params }: Props) {
             width={1050}
             height={400}
             className="aspect-video"
+            imageProps={
+              {
+                loading: "eager",
+                priority: true,
+              } as ImageProps
+            }
           />
         </div>
 
