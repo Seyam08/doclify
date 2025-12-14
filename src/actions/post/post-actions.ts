@@ -128,6 +128,8 @@ export async function getDetailedPostMeta(
   meta: "categories" | "tags",
   limit: number = 0
 ): Promise<ServerActionResponse<MetaStats>> {
+  "use cache";
+  cacheLife("hours");
   try {
     await connectDB();
 
@@ -176,6 +178,8 @@ export const getSingleMeta = cache(
     meta: "categories" | "tags",
     params: string
   ): Promise<ServerActionResponse<BlogType[]>> => {
+    "use cache";
+    cacheLife("hours");
     try {
       await connectDB();
 
@@ -185,10 +189,14 @@ export const getSingleMeta = cache(
         case "categories":
           blogs = await Blog.find({
             "frontMatter.categories": params,
-          });
+          })
+            .select({ _id: 0 })
+            .lean<BlogType[]>();
           break;
         case "tags":
-          blogs = await Blog.find({ "frontMatter.tags": params });
+          blogs = await Blog.find({ "frontMatter.tags": params })
+            .select({ _id: 0 })
+            .lean<BlogType[]>();
           break;
       }
 
