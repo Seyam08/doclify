@@ -16,6 +16,8 @@ export type BioState = {
 };
 export const getAuthor = cache(
   async (username: string): Promise<ServerActionResponse<AuthorType>> => {
+    "use cache";
+    cacheLife("hours");
     try {
       await connectDB();
       const author: AuthorType | null = await Author.findOne({ username })

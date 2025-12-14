@@ -12,6 +12,7 @@ import {
 import { AuthorType, BlogType } from "@/types/schema.types";
 import { Sparkles, SquarePen } from "lucide-react";
 import { Metadata } from "next";
+import { cacheLife } from "next/cache";
 import { notFound } from "next/navigation";
 
 type Props = {
@@ -38,6 +39,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function page({ params }: Props) {
+  "use cache";
+  cacheLife("hours");
+
   const { slug } = await params;
   const response = await getAuthor(slug);
 
