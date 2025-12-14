@@ -1,19 +1,23 @@
 import { cn } from "@/lib/utils";
-import Image from "next/image";
+import Image, { ImageProps } from "next/image";
 import React from "react";
 
+type DoclifyImageProps = {
+  imageProps?: Omit<ImageProps, "src" | "alt" | "width" | "height">;
+} & {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+};
 export function DoclifyImage({
   src,
   alt,
   width,
   height,
   className,
-}: {
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
-} & React.ComponentProps<"div">) {
+  imageProps,
+}: DoclifyImageProps & React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
@@ -27,6 +31,7 @@ export function DoclifyImage({
         width={width}
         height={height}
         className="max-w-full max-h-full object-cover group-hover:scale-110 transition-all duration-500"
+        {...imageProps}
       />
     </div>
   );
