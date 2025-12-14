@@ -1,4 +1,3 @@
-import { auth } from "@/auth";
 import { AppSidebar } from "@/components/dashboard-layout/app-sidebar";
 import {
   Breadcrumb,
@@ -26,16 +25,9 @@ export default async function DashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
-  const user = {
-    name: session?.user?.name ?? "",
-    email: session?.user?.email ?? "",
-    image: session?.user?.image ?? "",
-  };
-
   return (
     <SidebarProvider>
-      <AppSidebar user={user} />
+      <AppSidebar />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">

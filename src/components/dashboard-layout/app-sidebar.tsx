@@ -1,7 +1,4 @@
-"use client";
-
-import * as React from "react";
-
+import { auth } from "@/auth";
 import { NavMain } from "@/components/dashboard-layout/nav-main";
 import { NavProjects } from "@/components/dashboard-layout/nav-projects";
 import { NavUser } from "@/components/dashboard-layout/nav-user";
@@ -17,20 +14,24 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { Skeleton } from "@/components/ui/skeleton";
 import { dashboardSidebarLinks } from "@/const/navLink";
+import { Suspense } from "react";
 
-export function AppSidebar({
-  user,
-  ...props
-}: {
-  user: {
-    name: string;
-    email: string;
-    image: string;
+async function NavUserWrapper() {
+  const session = await auth();
+  const user = {
+    name: session?.user?.name ?? "",
+    email: session?.user?.email ?? "",
+    image: session?.user?.image ?? "",
   };
-} & React.ComponentProps<typeof Sidebar>) {
+
+  return <NavUser user={user} />;
+}
+
+export async function AppSidebar() {
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="icon">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -48,7 +49,9 @@ export function AppSidebar({
         <div className="flex justify-center">
           <DashboardModeToggle />
         </div>
-        <NavUser user={user} />
+        <Suspense fallback={<Skeleton className="w-full h-12" />}>
+          <NavUserWrapper />
+        </Suspense>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
