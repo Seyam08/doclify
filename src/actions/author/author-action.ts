@@ -5,6 +5,7 @@ import { Author } from "@/models/author";
 import { ServerActionResponse } from "@/types/global-types";
 import { AuthorType } from "@/types/schema.types";
 import { SocialLinkSchemaType } from "@/zod-schemas/social-link-schema";
+import { cacheLife } from "next/cache";
 import { cache } from "react";
 
 export type BioState = {
@@ -127,6 +128,9 @@ export async function editSocialLinks(
 export async function getAllAuthor(): Promise<
   ServerActionResponse<AuthorType[]>
 > {
+  "use cache";
+  cacheLife("hours");
+
   try {
     await connectDB();
     const author: AuthorType[] = await Author.find()
