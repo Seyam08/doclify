@@ -1,9 +1,6 @@
 import mongoose, { Mongoose } from "mongoose";
-import { cacheLife } from "next/cache";
 
 export async function connectDB(): Promise<Mongoose | undefined> {
-  "use cache";
-  cacheLife("minutes");
   const MONGO_URI: string = process.env.MONGO_DB_CONNECTION_STRING as string;
 
   try {
