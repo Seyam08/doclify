@@ -1,4 +1,4 @@
-import { getAuthor } from "@/actions/author/author-action";
+import { getAllAuthor, getAuthor } from "@/actions/author/author-action";
 import { getPostByAuthor } from "@/actions/post/post-actions";
 import { DoclifyBlogCard } from "@/components/DoclifyCards/DoclifyCards";
 import { DoclifySocialLinkShow } from "@/components/DoclifyItem/DoclifyItem";
@@ -14,6 +14,19 @@ import { Sparkles, SquarePen } from "lucide-react";
 import { Metadata } from "next";
 import { cacheLife } from "next/cache";
 import { notFound } from "next/navigation";
+
+export async function generateStaticParams() {
+  const response = await getAllAuthor();
+
+  if (response.success === false) {
+    return [];
+  } else {
+    const authors = response.content as AuthorType[];
+    return authors.map((author) => ({
+      slug: author.username,
+    }));
+  }
+}
 
 type Props = {
   params: Promise<{ slug: string }>;
