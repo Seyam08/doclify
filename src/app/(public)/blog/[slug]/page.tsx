@@ -1,6 +1,4 @@
-"use cache";
-
-import { getPost } from "@/actions/post/post-actions";
+import { getAllPost, getPost } from "@/actions/post/post-actions";
 import { DoclifyAuthorMeta } from "@/components/DoclifyAuthor/DoclifyAuthor";
 import {
   Facebook,
@@ -24,6 +22,20 @@ import { notFound } from "next/navigation";
 type Props = {
   params: Promise<{ slug: string }>;
 };
+
+export async function generateStaticParams() {
+  const response = await getAllPost();
+
+  if (response.success === false) {
+    return [];
+  } else {
+    const posts = response.content as BlogType[];
+    return posts.map((post) => ({
+      slug: post.slug,
+    }));
+  }
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
 
@@ -45,7 +57,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Props) {
+  "use cache";
   cacheLife("hours");
+
   const { slug } = await params;
   const response = await getPost(slug);
 
