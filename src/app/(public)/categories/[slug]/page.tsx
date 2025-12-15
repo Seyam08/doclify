@@ -1,4 +1,4 @@
-import { getSingleMeta } from "@/actions/post/post-actions";
+import { getPostMeta, getSingleMeta } from "@/actions/post/post-actions";
 import { DoclifyBreadcrumb } from "@/components/Breadcrumb/Breadcrumb";
 import { DoclifyBlogCard } from "@/components/DoclifyCards/DoclifyCards";
 import { TypographyH2 } from "@/components/ui/typography";
@@ -6,6 +6,19 @@ import { BlogType } from "@/types/schema.types";
 import { Metadata } from "next";
 import { cacheLife } from "next/cache";
 import { notFound } from "next/navigation";
+
+export async function generateStaticParams() {
+  const response = await getPostMeta("categories");
+
+  if (response.success === false) {
+    return [];
+  } else {
+    const categories = response.content as string[];
+    return categories.map((category) => ({
+      slug: category,
+    }));
+  }
+}
 
 type Props = {
   params: Promise<{ slug: string }>;
