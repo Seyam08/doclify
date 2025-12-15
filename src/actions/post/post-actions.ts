@@ -103,6 +103,8 @@ export async function addPost(
 export async function getPostMeta(
   meta: "categories" | "tags"
 ): Promise<ServerActionResponse<Array<string>>> {
+  "use cache";
+  cacheLife("minutes");
   try {
     await connectDB();
 
