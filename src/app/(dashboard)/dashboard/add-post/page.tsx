@@ -1,5 +1,5 @@
 import { getPostMeta } from "@/actions/post/post-actions";
-import AddPost from "@/components/ui/add-post/add-post";
+import AddPostWrapper from "@/components/ui/add-post/add-post-wrapper";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,14 +7,14 @@ export const metadata: Metadata = {
   description: "Dashboard",
 };
 export default async function Page() {
-  const category = await getPostMeta("categories");
+  const categories = await getPostMeta("categories");
   const tags = await getPostMeta("tags");
-  console.log({ category, tags });
+
   return (
     <div className="px-5 pt-0 pb-5">
-      <AddPost
+      <AddPostWrapper
         categoryList={
-          category.success ? (category.content as Array<string>) : []
+          categories.success ? (categories.content as Array<string>) : []
         }
         tagList={tags.success ? (tags.content as Array<string>) : []}
       />
