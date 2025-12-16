@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default async function Page() {
   const category = await getPostMeta("categories");
   const tags = await getPostMeta("tags");
-
+  console.log({ category, tags });
   return (
     <div className="px-5 pt-0 pb-5">
       <AddPost
