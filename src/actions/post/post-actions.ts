@@ -83,6 +83,7 @@ export async function addPost(
 
         const result: BlogType = await Blog.create(post);
         // revalidate tags and categories
+        revalidateTag("doclify-blog-posts", "max");
         revalidateTag("doclify-post-meta", "max");
         revalidateTag("doclify-single-post-meta", "max");
 
@@ -238,7 +239,9 @@ export const getSingleMeta = cache(
 export const getPost = cache(
   async (params: string): Promise<ServerActionResponse<BlogType>> => {
     "use cache";
-    cacheLife("hours");
+    cacheLife("days");
+    cacheTag("doclify-single-post");
+
     try {
       await connectDB();
       const blog: BlogType | null = await Blog.findOne({
@@ -276,7 +279,9 @@ export const getAllPost = cache(
     order: "asc" | "desc" = "desc"
   ): Promise<ServerActionResponse<BlogType[]>> => {
     "use cache";
-    cacheLife("hours");
+    cacheLife("days");
+    cacheTag("doclify-blog-posts");
+
     try {
       await connectDB();
       const sortOrder = order === "desc" ? -1 : 1;

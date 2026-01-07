@@ -15,7 +15,7 @@ import {
 import { BlogType } from "@/types/schema.types";
 import { Calendar1Icon, ClockFading } from "lucide-react";
 import type { Metadata } from "next";
-import { cacheLife } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 import { ImageProps } from "next/image";
 import { notFound } from "next/navigation";
 
@@ -58,7 +58,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
   "use cache";
-  cacheLife("hours");
+  cacheLife("days");
+  cacheTag("doclify-single-post");
 
   const { slug } = await params;
   const response = await getPost(slug);

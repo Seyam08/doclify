@@ -13,7 +13,7 @@ import {
 import { BlogType } from "@/types/schema.types";
 import { Calendar1Icon } from "lucide-react";
 import type { Metadata } from "next";
-import { cacheLife } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -24,7 +24,8 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   "use cache";
-  cacheLife("hours");
+  cacheLife("days");
+  cacheTag("doclify-blog-posts");
 
   const response = await getAllPost();
 
