@@ -5,7 +5,7 @@ import { DoclifyAuthorCardSkeleton } from "@/components/DoclifyCards/DoclifyCard
 import { TypographyH2 } from "@/components/ui/typography";
 import { AuthorType } from "@/types/schema.types";
 import { Metadata } from "next";
-import { cacheLife } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
@@ -16,7 +16,8 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   "use cache";
-  cacheLife("hours");
+  cacheLife("days");
+  cacheTag("doclify-authors");
 
   const response = await getAllAuthor();
 

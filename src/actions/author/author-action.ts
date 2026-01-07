@@ -5,7 +5,7 @@ import { Author } from "@/models/author";
 import { ServerActionResponse } from "@/types/global-types";
 import { AuthorType } from "@/types/schema.types";
 import { SocialLinkSchemaType } from "@/zod-schemas/social-link-schema";
-import { cacheLife } from "next/cache";
+import { cacheLife, cacheTag, revalidateTag } from "next/cache";
 import { cache } from "react";
 
 export type BioState = {
@@ -17,7 +17,9 @@ export type BioState = {
 export const getAuthor = cache(
   async (username: string): Promise<ServerActionResponse<AuthorType>> => {
     "use cache";
-    cacheLife("hours");
+    cacheLife("days");
+    cacheTag("doclify-single-author");
+
     try {
       await connectDB();
       const author: AuthorType | null = await Author.findOne({ username })
@@ -72,6 +74,8 @@ export async function updateBio(
     );
 
     if (updatedBio) {
+      revalidateTag("doclify-single-author", "max");
+
       return {
         success: true,
         submitted: true,
@@ -107,6 +111,7 @@ export async function editSocialLinks(
     );
 
     if (updatedLinks) {
+      revalidateTag("doclify-single-author", "max");
       return {
         success: true,
         message: "Social links updated successfully",
@@ -131,7 +136,8 @@ export async function getAllAuthor(): Promise<
   ServerActionResponse<AuthorType[]>
 > {
   "use cache";
-  cacheLife("hours");
+  cacheLife("days");
+  cacheTag("doclify-authors");
 
   try {
     await connectDB();

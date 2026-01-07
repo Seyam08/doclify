@@ -5,6 +5,7 @@ import { Author } from "@/models/author";
 import { AuthorType } from "@/types/schema.types";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import { revalidateTag } from "next/cache";
 import slugify from "slugify";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -47,7 +48,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           };
 
           await Author.create(author);
-
+          revalidateTag("doclify-authors", "max");
           return true;
         } else {
           const isNameChanged =
@@ -65,6 +66,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 },
               }
             );
+            revalidateTag("doclify-single-author", "max");
           }
           return true;
         }
