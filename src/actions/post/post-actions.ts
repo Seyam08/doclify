@@ -12,7 +12,7 @@ import { ServerActionResponse } from "@/types/global-types";
 import { BlogType } from "@/types/schema.types";
 import { addPostSchema } from "@/zod-schemas/schema";
 import { UploadApiResponse } from "cloudinary";
-import { cacheLife } from "next/cache";
+import { cacheLife, cacheTag, revalidateTag } from "next/cache";
 import { cache } from "react";
 import slugify from "slugify";
 import z from "zod";
@@ -82,6 +82,10 @@ export async function addPost(
         };
 
         const result: BlogType = await Blog.create(post);
+        // revalidate tags and categories
+        revalidateTag("doclify-post-meta", "max");
+        revalidateTag("doclify-single-post-meta", "max");
+
         return {
           success: true,
           message: "New blog created",
@@ -104,7 +108,9 @@ export async function getPostMeta(
   meta: "categories" | "tags"
 ): Promise<ServerActionResponse<Array<string>>> {
   "use cache";
-  cacheLife("minutes");
+  cacheLife("days");
+  cacheTag("doclify-post-meta");
+
   try {
     await connectDB();
 
@@ -131,7 +137,9 @@ export async function getDetailedPostMeta(
   limit: number = 0
 ): Promise<ServerActionResponse<MetaStats>> {
   "use cache";
-  cacheLife("hours");
+  cacheLife("days");
+  cacheTag("doclify-post-meta");
+
   try {
     await connectDB();
 
@@ -181,7 +189,9 @@ export const getSingleMeta = cache(
     params: string
   ): Promise<ServerActionResponse<BlogType[]>> => {
     "use cache";
-    cacheLife("hours");
+    cacheLife("days");
+    cacheTag("doclify-single-post-meta");
+
     try {
       await connectDB();
 

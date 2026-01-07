@@ -4,7 +4,7 @@ import { DoclifyItem } from "@/components/DoclifyItem/DoclifyItem";
 import { TypographyH2 } from "@/components/ui/typography";
 import { ExternalLinkIcon } from "lucide-react";
 import { Metadata } from "next";
-import { cacheLife } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
@@ -14,7 +14,8 @@ export const metadata: Metadata = {
 
 export default async function page() {
   "use cache";
-  cacheLife("hours");
+  cacheLife("days");
+  cacheTag("doclify-post-meta");
 
   const response = await getDetailedPostMeta("tags");
 

@@ -4,7 +4,7 @@ import { DoclifyBlogCard } from "@/components/DoclifyCards/DoclifyCards";
 import { TypographyH2 } from "@/components/ui/typography";
 import { BlogType } from "@/types/schema.types";
 import { Metadata } from "next";
-import { cacheLife } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
@@ -37,7 +37,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function page({ params }: Props) {
   "use cache";
-  cacheLife("hours");
+  cacheLife("days");
+  cacheTag("doclify-single-post-meta");
 
   const { slug } = await params;
   const decodedSlug = decodeURIComponent(slug);
