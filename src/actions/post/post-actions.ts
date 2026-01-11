@@ -86,6 +86,7 @@ export async function addPost(
         revalidateTag("doclify-blog-posts", "max");
         revalidateTag("doclify-post-meta", "max");
         revalidateTag("doclify-single-post-meta", "max");
+        revalidateTag("doclify-author-posts", "max");
 
         return {
           success: true,
@@ -322,13 +323,18 @@ export const getAllPost = cache(
 
 export const getPostByAuthor = cache(
   async (username: string): Promise<ServerActionResponse<BlogType[]>> => {
+    "use cache";
+    cacheLife("days");
+    cacheTag("doclify-author-posts");
+
     try {
       await connectDB();
       const blogs: BlogType[] = await Blog.find({
         "frontMatter.author": username,
       })
         .select({ _id: 0 })
-        .sort({ createdAt: -1 });
+        .sort({ createdAt: -1 })
+        .lean<BlogType[]>();
 
       if (blogs.length > 0) {
         return {
