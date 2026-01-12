@@ -134,7 +134,7 @@ export function UnderlineLink03({
     >
       {children}
       {/* bottom border using after */}
-      <span className="group-hover:translate-x-0 -translate-x-full absolute left-0 bottom-0.5 h-0.5 w-full bg-current after:content-[''] transition-all duration-300"></span>
+      <span className="group-hover:translate-x-0 -translate-x-[110%] absolute left-0 bottom-0.5 h-0.5 w-full bg-current after:content-[''] transition-all duration-300"></span>
     </Link>
   );
 }
