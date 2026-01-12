@@ -277,6 +277,7 @@ export const getPost = cache(
 export const getAllPost = cache(
   async (
     limit?: number,
+    skip?: number,
     order: "asc" | "desc" = "desc"
   ): Promise<ServerActionResponse<BlogType[]>> => {
     "use cache";
@@ -294,6 +295,9 @@ export const getAllPost = cache(
       // Apply limit only if it's a positive number
       if (typeof limit === "number" && limit > 0) {
         blogsQuery = blogsQuery.limit(limit);
+      }
+      if (typeof skip === "number" && skip > 0) {
+        blogsQuery = blogsQuery.skip(skip);
       }
 
       const blogs: BlogType[] = await blogsQuery.lean<BlogType[]>();
@@ -354,6 +358,31 @@ export const getPostByAuthor = cache(
       return {
         success: false,
         message: "Failed to get blogs!",
+      };
+    }
+  }
+);
+
+export const getTotalBlogsNumber = cache(
+  async (): Promise<ServerActionResponse<number>> => {
+    "use cache";
+    cacheLife("days");
+    cacheTag("doclify-blog-posts");
+
+    try {
+      await connectDB();
+
+      const total = await Blog.countDocuments();
+
+      return {
+        success: true,
+        message: "Total blogs count fetched successfully",
+        content: total,
+      };
+    } catch {
+      return {
+        success: false,
+        message: "Failed to get total blogs count",
       };
     }
   }
