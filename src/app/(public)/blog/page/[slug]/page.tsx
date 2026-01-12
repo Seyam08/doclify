@@ -56,7 +56,7 @@ export default async function Page({ params }: Props) {
       <div>
         <div className="flex justify-between items-center mb-14">
           <TypographyH2>Latest Blogs</TypographyH2>
-          <DoclifyBreadcrumb />
+          <DoclifyBreadcrumb removeLast={2} />
         </div>
 
         {/* all blogs */}

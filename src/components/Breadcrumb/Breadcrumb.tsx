@@ -10,11 +10,15 @@ import { TypographyP, UnderlineLink03 } from "@/components/ui/typography";
 import { House, Slash } from "lucide-react";
 import { usePathname } from "next/navigation";
 
-export function DoclifyBreadcrumb() {
+export function DoclifyBreadcrumb({ removeLast = 0 }: { removeLast?: number }) {
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
-  const crumbs = segments.map((seg, i) => {
-    const href = "/" + segments.slice(0, i + 1).join("/");
+
+  const visibleSegments =
+    removeLast > 0 ? segments.slice(0, -removeLast) : segments;
+
+  const crumbs = visibleSegments.map((seg, i) => {
+    const href = "/" + visibleSegments.slice(0, i + 1).join("/");
     const label = seg.charAt(0).toUpperCase() + seg.slice(1);
     const decodedLabel = decodeURIComponent(label);
 
