@@ -1,9 +1,10 @@
 "use cache";
 
-import { getAllPost } from "@/actions/post/post-actions";
+import { getAllPost, getTotalBlogsNumber } from "@/actions/post/post-actions";
 import { DoclifyBreadcrumb } from "@/components/Breadcrumb/Breadcrumb";
 import { DoclifyAuthorMeta } from "@/components/DoclifyAuthor/DoclifyAuthor";
 import { DoclifyBlogCard } from "@/components/DoclifyCards/DoclifyCards";
+import DoclifyPagination from "@/components/DoclifyPagination/DoclifyPagination";
 import { DoclifyImage } from "@/components/ui/image";
 import {
   TypographyH2,
@@ -12,28 +13,44 @@ import {
 } from "@/components/ui/typography";
 import { BlogType } from "@/types/schema.types";
 import { Calendar1Icon } from "lucide-react";
-import type { Metadata } from "next";
 import { cacheLife, cacheTag } from "next/cache";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Latest Blogs",
-  description: "Doclify",
+type Props = {
+  params: Promise<{ slug: string }>;
 };
 
-export default async function Page() {
+export default async function Page({ params }: Props) {
   "use cache";
   cacheLife("days");
   cacheTag("doclify-blog-posts");
 
-  const response = await getAllPost();
+  const { slug } = await params;
+  const pageNumber: number = Number(slug);
+  const totalPagesRes = await getTotalBlogsNumber();
 
-  if (response.success === false) {
+  if (isNaN(pageNumber) || pageNumber < 1) {
+    return notFound();
+  }
+
+  const limit: number = process.env.BLOG_PER_PAGE
+    ? parseInt(process.env.BLOG_PER_PAGE)
+    : 3;
+
+  const skip: number = (pageNumber - 1) * limit;
+
+  const response = await getAllPost(limit, skip, "desc");
+
+  if (response.success === false || totalPagesRes.success === false) {
+    return notFound();
+  } else if (response?.content === null || response?.content?.length === 0) {
     return notFound();
   } else {
     const blogs = response.content as BlogType[];
     const firstBlog = blogs[0] as BlogType;
+    const totalBlogs = totalPagesRes.content as number;
+    const totalPages = Math.ceil(totalBlogs / limit);
 
     return (
       <div>
@@ -102,6 +119,16 @@ export default async function Page() {
                 return <DoclifyBlogCard blog={blog} key={blog.slug} />;
               }
             })}
+          </div>
+
+          {/* pagination  */}
+          <div className="grid grid-cols-1 grid-rows-1 gap-5">
+            {/* each item  */}
+            <DoclifyPagination
+              currentPage={pageNumber}
+              totalPages={totalPages}
+              basePath="/blog"
+            />
           </div>
           {/* post horizontal */}
         </div>
