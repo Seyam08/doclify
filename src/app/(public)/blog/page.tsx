@@ -1,9 +1,10 @@
 "use cache";
 
-import { getAllPost } from "@/actions/post/post-actions";
+import { getAllPost, getTotalBlogsNumber } from "@/actions/post/post-actions";
 import { DoclifyBreadcrumb } from "@/components/Breadcrumb/Breadcrumb";
 import { DoclifyAuthorMeta } from "@/components/DoclifyAuthor/DoclifyAuthor";
 import { DoclifyBlogCard } from "@/components/DoclifyCards/DoclifyCards";
+import DoclifyPagination from "@/components/DoclifyPagination/DoclifyPagination";
 import { DoclifyImage } from "@/components/ui/image";
 import {
   TypographyH2,
@@ -27,13 +28,20 @@ export default async function Page() {
   cacheLife("days");
   cacheTag("doclify-blog-posts");
 
-  const response = await getAllPost();
+  const limit: number = process.env.BLOG_PER_PAGE
+    ? parseInt(process.env.BLOG_PER_PAGE)
+    : 3;
+
+  const response = await getAllPost(limit, 0, "desc");
+  const totalPagesRes = await getTotalBlogsNumber();
 
   if (response.success === false) {
     return notFound();
   } else {
     const blogs = response.content as BlogType[];
     const firstBlog = blogs[0] as BlogType;
+    const totalBlogs = totalPagesRes.content as number;
+    const totalPages = Math.ceil(totalBlogs / limit);
 
     return (
       <div>
@@ -102,6 +110,15 @@ export default async function Page() {
                 return <DoclifyBlogCard blog={blog} key={blog.slug} />;
               }
             })}
+          </div>
+          {/* pagination  */}
+          <div className="grid grid-cols-1 grid-rows-1 gap-5">
+            {/* each item  */}
+            <DoclifyPagination
+              currentPage={1}
+              totalPages={totalPages}
+              basePath="/blog"
+            />
           </div>
           {/* post horizontal */}
         </div>
