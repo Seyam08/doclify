@@ -31,6 +31,7 @@ import { ServerActionResponse } from "@/types/global-types";
 import { addPostSchema } from "@/zod-schemas/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleMinus, Save } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -49,6 +50,7 @@ export default function AddPost({
   const [categories, setCategories] = useState<string[]>([]);
   const [sync, setSync] = useState<boolean>(false);
   const [clear, setClear] = useState<boolean>(false); // to clear tag and category state
+  const router = useRouter();
   const form = useForm<z.infer<typeof addPostSchema>>({
     resolver: zodResolver(addPostSchema),
     defaultValues: {
@@ -86,6 +88,7 @@ export default function AddPost({
         setClear(true);
         form.reset();
         setEditorKey((prev) => prev + 1); // changing the key to destroy the old state
+        router.push("/dashboard");
       } else {
         toast.error(response.message);
       }
