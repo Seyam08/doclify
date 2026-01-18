@@ -47,6 +47,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
       title: blog.frontMatter.title,
       description: "Doclify Blog",
+      openGraph: {
+        title: blog.frontMatter.title,
+        description: blog.frontMatter.description,
+        url: `https://doclify.com/blog/${blog.slug}`,
+        siteName: "Doclify",
+        images: [
+          {
+            url: blog.frontMatter.image.url,
+            width: 1200,
+            height: 630,
+            alt: blog.frontMatter.title,
+          },
+        ],
+        type: "article",
+      },
     };
   } else {
     return {
