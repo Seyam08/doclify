@@ -17,6 +17,7 @@ import { Calendar1Icon, ClockFading } from "lucide-react";
 import type { Metadata } from "next";
 import { cacheLife, cacheTag } from "next/cache";
 import { ImageProps } from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 type Props = {
@@ -78,6 +79,7 @@ export default async function Page({ params }: Props) {
 
   const { slug } = await params;
   const response = await getPost(slug);
+  const baseUrl = process.env.AUTH_URL;
 
   if (response.success === false) {
     return notFound();
@@ -174,16 +176,31 @@ export default async function Page({ params }: Props) {
             <TypographyP className="mb-2">Share:</TypographyP>
             <div className="flex flex-wrap gap-4 mt-2">
               {/* facebook  */}
-              <Button variant="outline" size="icon">
-                <Facebook />
+              <Button variant="outline" size="icon" asChild>
+                <Link
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${baseUrl}/blog/${blog.slug}`)}`}
+                  target="_blank"
+                >
+                  <Facebook />
+                </Link>
               </Button>
               {/* linkedin */}
-              <Button variant="outline" size="icon">
-                <Linkedin />
+              <Button variant="outline" size="icon" asChild>
+                <Link
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(blog.slug)}`}
+                  target="_blank"
+                >
+                  <Linkedin />
+                </Link>
               </Button>
               {/* x Twitter */}
-              <Button variant="outline" size="icon">
-                <Twitter />
+              <Button variant="outline" size="icon" asChild>
+                <Link
+                  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(blog.slug)}&text=${encodeURIComponent(blog.frontMatter.title)}`}
+                  target="_blank"
+                >
+                  <Twitter />
+                </Link>
               </Button>
             </div>
           </div>
