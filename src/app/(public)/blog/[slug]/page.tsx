@@ -187,7 +187,9 @@ export default async function Page({ params }: Props) {
               {/* linkedin */}
               <Button variant="outline" size="icon" asChild>
                 <Link
-                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(blog.slug)}`}
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+                    `${baseUrl}/blog/${blog.slug}`,
+                  )}`}
                   target="_blank"
                 >
                   <Linkedin />
