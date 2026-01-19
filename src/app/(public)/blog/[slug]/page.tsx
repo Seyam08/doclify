@@ -198,7 +198,9 @@ export default async function Page({ params }: Props) {
               {/* x Twitter */}
               <Button variant="outline" size="icon" asChild>
                 <Link
-                  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(blog.slug)}&text=${encodeURIComponent(blog.frontMatter.title)}`}
+                  href={`https://x.com/intent/tweet?url=${encodeURIComponent(
+                    `${baseUrl}/blog/${blog.slug}`,
+                  )}&text=${encodeURIComponent(blog.frontMatter.title)}`}
                   target="_blank"
                 >
                   <Twitter />
