@@ -16,3 +16,5 @@ export type SocialLinksType = Omit<
   InferSchemaType<typeof socialLinkSchema>,
   "DefaultTimestampProps" | "createdAt" | "updatedAt"
 >;
+
+export type BlogFrontMatterType = BlogType["frontMatter"];

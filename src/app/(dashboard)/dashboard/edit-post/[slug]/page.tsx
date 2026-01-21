@@ -16,7 +16,6 @@ export default async function Page({ params }: Props) {
   const tags = await getPostMeta("tags");
   const { slug } = await params;
   const response = await getPost(slug);
-  console.log(response);
 
   if (response.success === false) {
     return notFound();
@@ -25,8 +24,6 @@ export default async function Page({ params }: Props) {
     const content = blog.content as string;
     const existedCategories = blog.frontMatter.categories;
     const existedTags = blog.frontMatter.tags;
-
-    console.log({ existedCategories, existedTags });
 
     return (
       <div className="px-5 pt-0 pb-5">
@@ -37,6 +34,8 @@ export default async function Page({ params }: Props) {
           tagList={tags.success ? (tags.content as Array<string>) : []}
           existedCategories={existedCategories}
           existedTags={existedTags}
+          BlogFrontMatter={blog.frontMatter}
+          content={content}
         />
       </div>
     );

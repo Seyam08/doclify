@@ -1,5 +1,6 @@
 "use client";
 
+import { BlogFrontMatterType } from "@/types/schema.types";
 import dynamic from "next/dynamic";
 import EditPost from "./edit-post";
 
@@ -12,11 +13,15 @@ export default function EditPostWrapper({
   tagList,
   existedCategories,
   existedTags,
+  BlogFrontMatter,
+  content,
 }: {
   categoryList: string[];
   tagList: string[];
   existedCategories?: string[];
   existedTags?: string[];
+  BlogFrontMatter: BlogFrontMatterType;
+  content: string;
 }) {
   return (
     <EditPost
@@ -24,6 +29,8 @@ export default function EditPostWrapper({
       tagList={tagList}
       existedCategories={existedCategories}
       existedTags={existedTags}
+      BlogFrontMatter={BlogFrontMatter}
+      existedContent={content}
     />
   );
 }
