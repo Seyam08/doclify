@@ -34,8 +34,7 @@ export default function SearchInput({
     if (existedItems.length > 0) {
       setSelectedItems(existedItems);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [existedItems]);
 
   /** Parent state update ONLY when items change */
   useEffect(() => {
@@ -54,7 +53,7 @@ export default function SearchInput({
     return itemList.filter(
       (item) =>
         item.toLowerCase().includes(search.toLowerCase()) &&
-        !selectedItems.includes(item)
+        !selectedItems.includes(item),
     );
   }, [itemList, search, selectedItems]);
 
@@ -63,7 +62,7 @@ export default function SearchInput({
     const trimmed = item.trim().toLowerCase();
 
     setSelectedItems((prev) =>
-      prev.includes(trimmed) ? prev : [...prev, trimmed]
+      prev.includes(trimmed) ? prev : [...prev, trimmed],
     );
   };
 

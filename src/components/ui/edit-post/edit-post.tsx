@@ -72,6 +72,7 @@ export default function EditPost({
 
   /** Add existing tags and categories only ONCE (initial mount) */
   useEffect(() => {
+    console.log({ existedCategories, existedTags });
     if (existedTags && existedTags.length > 0) {
       setTags(existedTags);
     }
