@@ -1,5 +1,4 @@
 "use client";
-import { addPost } from "@/actions/post/post-actions";
 import SearchInput from "@/components/SearchInput/SearchInput";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -26,9 +25,8 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
 import { contentPurify } from "@/lib/utils-client";
-import { ServerActionResponse } from "@/types/global-types";
 import { BlogFrontMatterType } from "@/types/schema.types";
-import { addPostSchema } from "@/zod-schemas/schema";
+import { editPostSchema } from "@/zod-schemas/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleMinus, Save } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -63,8 +61,8 @@ export default function EditPost({
   const [sync, setSync] = useState<boolean>(false);
   const [clear, setClear] = useState<boolean>(false); // to clear tag and category state
   const router = useRouter();
-  const form = useForm<z.infer<typeof addPostSchema>>({
-    resolver: zodResolver(addPostSchema),
+  const form = useForm<z.infer<typeof editPostSchema>>({
+    resolver: zodResolver(editPostSchema),
     defaultValues: {
       title: "",
       description: "",
@@ -101,35 +99,36 @@ export default function EditPost({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  async function onSubmit(data: z.infer<typeof addPostSchema>) {
+  async function onSubmit(data: z.infer<typeof editPostSchema>) {
     if (!sync) {
       toast.error("You haven't saved content!");
       form.setError("content", { message: "You haven't saved content!" });
       return;
     }
-    try {
-      const response: ServerActionResponse<string | undefined> = await addPost({
-        ...data,
-        tags: tags,
-        categories: categories,
-      });
+    console.log(data);
+    // try {
+    //   const response: ServerActionResponse<string | undefined> = await addPost({
+    //     ...data,
+    //     tags: tags,
+    //     categories: categories,
+    //   });
 
-      if (response.success === true) {
-        toast.success(response.message);
+    //   if (response.success === true) {
+    //     toast.success(response.message);
 
-        setContent("");
-        setCategories([]);
-        setTags([]);
-        setClear(true);
-        form.reset();
-        setEditorKey((prev) => prev + 1); // changing the key to destroy the old state
-        router.push("/dashboard");
-      } else {
-        toast.error(response.message);
-      }
-    } catch (error) {
-      toast.error("Failed to add post");
-    }
+    //     setContent("");
+    //     setCategories([]);
+    //     setTags([]);
+    //     setClear(true);
+    //     form.reset();
+    //     setEditorKey((prev) => prev + 1); // changing the key to destroy the old state
+    //     router.push("/dashboard");
+    //   } else {
+    //     toast.error(response.message);
+    //   }
+    // } catch (error) {
+    //   toast.error("Failed to add post");
+    // }
   }
 
   return (
@@ -234,7 +233,7 @@ export default function EditPost({
                                 <Avatar className="w-full h-52 cursor-pointer rounded-2xl">
                                   <AvatarImage
                                     src={fileUrl}
-                                    alt={selectedFile.name}
+                                    alt={selectedFile?.name}
                                   />
                                   <AvatarFallback>
                                     <Skeleton className="w-full h-52" />
