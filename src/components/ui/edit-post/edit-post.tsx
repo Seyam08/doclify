@@ -60,11 +60,11 @@ export default function EditPost({
   );
   const [sync, setSync] = useState<boolean>(false);
   const [clear, setClear] = useState<boolean>(false); // to clear tag and category state
+  const [title, setTitle] = useState<string>("");
   const router = useRouter();
   const form = useForm<z.infer<typeof editPostSchema>>({
     resolver: zodResolver(editPostSchema),
     defaultValues: {
-      title: "",
       description: "",
       thumbnail: undefined,
       content: "",
@@ -85,7 +85,7 @@ export default function EditPost({
       setCategories(existedCategories);
     }
     if (BlogFrontMatter.title) {
-      form.setValue("title", BlogFrontMatter.title);
+      setTitle(BlogFrontMatter.title);
     }
     if (BlogFrontMatter.description) {
       form.setValue("description", BlogFrontMatter.description);
@@ -140,25 +140,20 @@ export default function EditPost({
             <div className="w-full max-w-full h-screen overflow-y-auto scrollbar scrollbar-thumb-primary scrollbar-track-transparent scrollbar-corner-transparent">
               <form onSubmit={form.handleSubmit(onSubmit)}>
                 <FieldGroup>
-                  <Controller
-                    name="title"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor="post-title">Blog Title</FieldLabel>
-                        <Input
-                          {...field}
-                          id="post-title"
-                          aria-invalid={fieldState.invalid}
-                          placeholder="Choose a concise and descriptive title"
-                          autoComplete="off"
-                        />
-                        {fieldState.invalid && (
-                          <FieldError errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
-                  />
+                  <Field data-disabled>
+                    <FieldLabel htmlFor="title">Blog Title</FieldLabel>
+                    <Input
+                      id="title"
+                      type="text"
+                      placeholder="Title"
+                      disabled
+                      value={title}
+                    />
+                    <FieldDescription>
+                      You can't change the title while editing the post.
+                    </FieldDescription>
+                  </Field>
+
                   <Controller
                     name="description"
                     control={form.control}

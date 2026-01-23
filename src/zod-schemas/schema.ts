@@ -26,10 +26,6 @@ export const addPostSchema = z.object({
 });
 
 export const editPostSchema = z.object({
-  title: z
-    .string()
-    .min(5, "Blog title must be at least 5 characters.")
-    .max(80, "Blog title must be at most 80 characters."),
   description: z
     .string()
     .min(20, "Description must be at least 20 characters.")
