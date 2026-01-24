@@ -10,7 +10,7 @@ import { connectDB } from "@/lib/mongoConnection";
 import { Blog } from "@/models/blog";
 import { ServerActionResponse } from "@/types/global-types";
 import { BlogType } from "@/types/schema.types";
-import { addPostSchema } from "@/zod-schemas/schema";
+import { addPostSchema, editPostSchema } from "@/zod-schemas/schema";
 import { UploadApiResponse } from "cloudinary";
 import { cacheLife, cacheTag, revalidateTag } from "next/cache";
 import { cache } from "react";
@@ -23,10 +23,17 @@ type AddPost = z.infer<typeof addPostSchema> & {
   tags: string[];
 };
 
+type EditPost = z.infer<typeof editPostSchema> & {
+  content: string;
+  categories: string[];
+  tags: string[];
+  slug: string;
+};
+
 export type MetaStats = Array<{ _id: string; count: number }>;
 
 export async function addPost(
-  params: AddPost
+  params: AddPost,
 ): Promise<ServerActionResponse<string | undefined>> {
   try {
     await connectDB();
@@ -48,7 +55,7 @@ export async function addPost(
     } else {
       const session = await auth();
       const authorInfo = await checkAuthorEmailExists(
-        session?.user?.email as string
+        session?.user?.email as string,
       );
 
       if (authorInfo.status === true) {
@@ -59,7 +66,7 @@ export async function addPost(
         // upload the image
         const uploadResult: UploadApiResponse = await uploadImage(
           image,
-          process.env.CLOUDINARY_DOCLIFY_BLOG_THUMB_FOLDER as string
+          process.env.CLOUDINARY_DOCLIFY_BLOG_THUMB_FOLDER as string,
         );
 
         const post: BlogType = {
@@ -106,8 +113,83 @@ export async function addPost(
   }
 }
 
+export async function editPost(
+  params: EditPost,
+): Promise<ServerActionResponse<string | undefined>> {
+  try {
+    await connectDB();
+
+    // find existing post
+    const existingPost = await Blog.findOne({
+      slug: params.slug,
+    });
+
+    if (!existingPost) {
+      return {
+        success: false,
+        message: "Post not found!",
+      } satisfies ServerActionResponse;
+    }
+
+    // auth check (same as addPost)
+    const session = await auth();
+    const authorInfo = await checkAuthorEmailExists(
+      session?.user?.email as string,
+    );
+
+    if (authorInfo.status !== true) {
+      return {
+        success: false,
+        message: "There is something wrong with Author!",
+      } satisfies ServerActionResponse;
+    }
+
+    let imageData = existingPost.frontMatter.image;
+
+    // if new thumbnail provided, upload new image
+    if (params.thumbnail) {
+      const uploadResult: UploadApiResponse = await uploadImage(
+        params.thumbnail,
+        process.env.CLOUDINARY_DOCLIFY_BLOG_THUMB_FOLDER as string,
+      );
+
+      imageData = {
+        publicId: uploadResult.public_id,
+        url: uploadResult.secure_url,
+      };
+    }
+
+    // update post
+    existingPost.content = params.content;
+    existingPost.frontMatter = {
+      ...existingPost.frontMatter,
+      description: params.description,
+      image: imageData,
+      categories: params.categories,
+      tags: params.tags,
+    };
+
+    await existingPost.save();
+
+    // revalidate tags and categories (same as addPost)
+    revalidateTag("doclify-blog-posts", "max");
+    revalidateTag("doclify-post-meta", "max");
+    revalidateTag("doclify-single-post-meta", "max");
+    revalidateTag("doclify-author-posts", "max");
+
+    return {
+      success: true,
+      message: "Blog updated successfully",
+      content: existingPost.slug,
+    } satisfies ServerActionResponse<string>;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    throw new Error("Failed to edit post");
+  }
+}
+
 export async function getPostMeta(
-  meta: "categories" | "tags"
+  meta: "categories" | "tags",
 ): Promise<ServerActionResponse<Array<string>>> {
   "use cache";
   cacheLife("days");
@@ -136,7 +218,7 @@ export async function getPostMeta(
 
 export async function getDetailedPostMeta(
   meta: "categories" | "tags",
-  limit: number = 0
+  limit: number = 0,
 ): Promise<ServerActionResponse<MetaStats>> {
   "use cache";
   cacheLife("days");
@@ -188,7 +270,7 @@ export async function getDetailedPostMeta(
 export const getSingleMeta = cache(
   async (
     meta: "categories" | "tags",
-    params: string
+    params: string,
   ): Promise<ServerActionResponse<BlogType[]>> => {
     "use cache";
     cacheLife("days");
@@ -234,7 +316,7 @@ export const getSingleMeta = cache(
         message: "Failed to find blogs!",
       };
     }
-  }
+  },
 );
 
 export const getPost = cache(
@@ -271,14 +353,14 @@ export const getPost = cache(
         message: "Failed to find blog!",
       };
     }
-  }
+  },
 );
 
 export const getAllPost = cache(
   async (
     limit?: number,
     skip?: number,
-    order: "asc" | "desc" = "desc"
+    order: "asc" | "desc" = "desc",
   ): Promise<ServerActionResponse<BlogType[]>> => {
     "use cache";
     cacheLife("days");
@@ -322,7 +404,7 @@ export const getAllPost = cache(
         message: "Failed to get blogs!",
       };
     }
-  }
+  },
 );
 
 export const getPostByAuthor = cache(
@@ -360,7 +442,7 @@ export const getPostByAuthor = cache(
         message: "Failed to get blogs!",
       };
     }
-  }
+  },
 );
 
 export const getTotalBlogsNumber = cache(
@@ -385,5 +467,5 @@ export const getTotalBlogsNumber = cache(
         message: "Failed to get total blogs count",
       };
     }
-  }
+  },
 );

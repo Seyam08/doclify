@@ -1,5 +1,5 @@
 import { getPost, getPostMeta } from "@/actions/post/post-actions";
-import EditPostWrapper from "@/components/ui/edit-post/eidt-post-wrapper";
+import EditPostWrapper from "@/components/ui/edit-post/edit-post-wrapper";
 import { BlogType } from "@/types/schema.types";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -36,6 +36,7 @@ export default async function Page({ params }: Props) {
           existedTags={existedTags}
           BlogFrontMatter={blog.frontMatter}
           content={content}
+          blogSlug={slug}
         />
       </div>
     );

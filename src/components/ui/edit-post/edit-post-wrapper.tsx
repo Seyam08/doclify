@@ -15,6 +15,7 @@ export default function EditPostWrapper({
   existedTags,
   BlogFrontMatter,
   content,
+  blogSlug,
 }: {
   categoryList: string[];
   tagList: string[];
@@ -22,6 +23,7 @@ export default function EditPostWrapper({
   existedTags?: string[];
   BlogFrontMatter: BlogFrontMatterType;
   content: string;
+  blogSlug: string;
 }) {
   return (
     <EditPost
@@ -31,6 +33,7 @@ export default function EditPostWrapper({
       existedTags={existedTags}
       BlogFrontMatter={BlogFrontMatter}
       existedContent={content}
+      blogSlug={blogSlug}
     />
   );
 }

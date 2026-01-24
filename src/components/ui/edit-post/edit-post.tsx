@@ -1,4 +1,5 @@
 "use client";
+import { editPost } from "@/actions/post/post-actions";
 import SearchInput from "@/components/SearchInput/SearchInput";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
 import { contentPurify } from "@/lib/utils-client";
+import { ServerActionResponse } from "@/types/global-types";
 import { BlogFrontMatterType } from "@/types/schema.types";
 import { editPostSchema } from "@/zod-schemas/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,7 +36,7 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
-import EditPostContainer from "./eidt-post-container";
+import EditPostContainer from "./edit-post-container";
 
 export default function EditPost({
   categoryList,
@@ -43,6 +45,7 @@ export default function EditPost({
   existedTags,
   BlogFrontMatter,
   existedContent,
+  blogSlug,
 }: {
   categoryList: Array<string>;
   tagList: Array<string>;
@@ -50,6 +53,7 @@ export default function EditPost({
   existedTags?: string[];
   BlogFrontMatter: BlogFrontMatterType;
   existedContent: string;
+  blogSlug: string;
 }) {
   const [content, setContent] = useState<string>("");
   const [editorKey, setEditorKey] = useState<number>(0);
@@ -106,29 +110,32 @@ export default function EditPost({
       return;
     }
     console.log(data);
-    // try {
-    //   const response: ServerActionResponse<string | undefined> = await addPost({
-    //     ...data,
-    //     tags: tags,
-    //     categories: categories,
-    //   });
+    try {
+      const response: ServerActionResponse<string | undefined> = await editPost(
+        {
+          ...data,
+          tags: tags,
+          categories: categories,
+          slug: blogSlug,
+        },
+      );
 
-    //   if (response.success === true) {
-    //     toast.success(response.message);
+      if (response.success === true) {
+        toast.success(response.message);
 
-    //     setContent("");
-    //     setCategories([]);
-    //     setTags([]);
-    //     setClear(true);
-    //     form.reset();
-    //     setEditorKey((prev) => prev + 1); // changing the key to destroy the old state
-    //     router.push("/dashboard");
-    //   } else {
-    //     toast.error(response.message);
-    //   }
-    // } catch (error) {
-    //   toast.error("Failed to add post");
-    // }
+        setContent("");
+        setCategories([]);
+        setTags([]);
+        setClear(true);
+        form.reset();
+        setEditorKey((prev) => prev + 1); // changing the key to destroy the old state
+        router.push("/dashboard");
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      toast.error("Failed to add post");
+    }
   }
 
   return (
