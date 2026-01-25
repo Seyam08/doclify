@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/item";
 import { TypographyH2, UnderlineLink03 } from "@/components/ui/typography";
 import { BlogType } from "@/types/schema.types";
-import { ArrowUpRight, Plus } from "lucide-react";
+import { ArrowUpRight, Pencil, Plus } from "lucide-react";
 import Link from "next/link";
 
 export default async function Page() {
@@ -88,7 +88,16 @@ export default async function Page() {
               </ItemContent>
               <ItemActions>
                 <Button variant="outline" size="sm" aria-label="View" asChild>
-                  <Link href={`/blog/${blog.slug}`}>
+                  <Link
+                    href={`/dashboard/edit-post/${blog.slug}`}
+                    target="_blank"
+                  >
+                    <span className="hidden md:block">Edit</span>
+                    <Pencil className="size-3" />
+                  </Link>
+                </Button>
+                <Button variant="outline" size="sm" aria-label="View" asChild>
+                  <Link href={`/blog/${blog.slug}`} target="_blank">
                     <span className="hidden md:block">View</span>
                     <ArrowUpRight />
                   </Link>
