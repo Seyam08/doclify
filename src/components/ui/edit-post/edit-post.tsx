@@ -30,6 +30,7 @@ import { ServerActionResponse } from "@/types/global-types";
 import { BlogFrontMatterType } from "@/types/schema.types";
 import { editPostSchema } from "@/zod-schemas/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import _ from "lodash";
 import { CircleMinus, Save } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -109,7 +110,26 @@ export default function EditPost({
       form.setError("content", { message: "You haven't saved content!" });
       return;
     }
-    console.log(data);
+    const prevData = {
+      description: BlogFrontMatter.description,
+      content: existedContent,
+      categories: existedCategories || [],
+      tags: existedTags || [],
+    };
+    const newData = {
+      description: data.description,
+      content: data.content,
+      categories: categories,
+      tags: tags,
+    };
+
+    const isDataUnchanged = _.isEqual(prevData, newData);
+
+    if (isDataUnchanged && !data.thumbnail) {
+      toast.error("No changes detected to update.");
+      return;
+    }
+
     try {
       const response: ServerActionResponse<string | undefined> = await editPost(
         {

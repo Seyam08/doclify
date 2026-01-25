@@ -176,6 +176,7 @@ export async function editPost(
     revalidateTag("doclify-post-meta", "max");
     revalidateTag("doclify-single-post-meta", "max");
     revalidateTag("doclify-author-posts", "max");
+    revalidateTag("doclify-single-post", "max");
 
     return {
       success: true,
