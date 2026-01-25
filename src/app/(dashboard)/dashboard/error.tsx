@@ -3,7 +3,6 @@
 import { DoclifyError } from "@/components/Error/Error";
 import { Button } from "@/components/ui/button";
 import { RefreshCcw } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { startTransition } from "react";
 
 export default function Error({
@@ -13,11 +12,8 @@ export default function Error({
   error: Error;
   reset: () => void;
 }) {
-  const router = useRouter();
-
   const tryAgain = () => {
     startTransition(() => {
-      router.refresh();
       reset();
     });
   };
