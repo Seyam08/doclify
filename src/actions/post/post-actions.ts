@@ -5,6 +5,7 @@ import {
   checkBlogSlugExists,
 } from "@/actions/helper/checkCredentialsExists";
 import { auth } from "@/auth";
+import { deleteImage } from "@/lib/cloudinary/delete-image";
 import { uploadImage } from "@/lib/cloudinary/upload-image";
 import { connectDB } from "@/lib/mongoConnection";
 import { Blog } from "@/models/blog";
@@ -144,7 +145,8 @@ export async function editPost(
       } satisfies ServerActionResponse;
     }
 
-    let imageData = existingPost.frontMatter.image;
+    const oldImageData = existingPost.frontMatter.image;
+    let newImageData;
 
     // if new thumbnail provided, upload new image
     if (params.thumbnail) {
@@ -153,7 +155,7 @@ export async function editPost(
         process.env.CLOUDINARY_DOCLIFY_BLOG_THUMB_FOLDER as string,
       );
 
-      imageData = {
+      newImageData = {
         publicId: uploadResult.public_id,
         url: uploadResult.secure_url,
       };
@@ -164,12 +166,17 @@ export async function editPost(
     existingPost.frontMatter = {
       ...existingPost.frontMatter,
       description: params.description,
-      image: imageData,
+      image: newImageData,
       categories: params.categories,
       tags: params.tags,
     };
 
     await existingPost.save();
+
+    if (newImageData?.publicId || newImageData?.url) {
+      // Delete the old image if a new one was uploaded
+      await deleteImage(oldImageData.publicId);
+    }
 
     // revalidate tags and categories (same as addPost)
     revalidateTag("doclify-blog-posts", "max");
