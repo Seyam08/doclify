@@ -53,7 +53,7 @@ export default async function Page() {
     const numberOfBlogs = blogs?.length; // number of blog can be undefine also, because of blog
 
     return (
-      <main className="flex w-full flex-col gap-6 p-4 pt-0">
+      <main className="flex w-full flex-col gap-6 p-2 md:p-4 pt-0">
         <TypographyH2>My Blogs</TypographyH2>
         {numberOfBlogs > 0 &&
           blogs.map((blog) => (
@@ -77,7 +77,7 @@ export default async function Page() {
                   {blog.frontMatter.description.slice(0, 50) + "..."}
                 </ItemDescription>
               </ItemContent>
-              <ItemContent className="ml-auto">
+              <ItemContent className="ml-auto hidden md:block">
                 <ItemDescription className="text-xs">
                   {new Date(blog.frontMatter.date).toLocaleString("en-GB", {
                     day: "2-digit",
