@@ -1,6 +1,13 @@
 import { getPostByAuthor } from "@/actions/post/post-actions";
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { DoclifyImage } from "@/components/ui/image";
 import {
   Item,
@@ -12,7 +19,7 @@ import {
 } from "@/components/ui/item";
 import { TypographyH2, UnderlineLink03 } from "@/components/ui/typography";
 import { BlogType } from "@/types/schema.types";
-import { ArrowUpRight, Pencil, Plus } from "lucide-react";
+import { ArrowUpRight, Ellipsis, Pencil, Plus, Trash } from "lucide-react";
 import Link from "next/link";
 
 export default async function Page() {
@@ -87,21 +94,41 @@ export default async function Page() {
                 </ItemDescription>
               </ItemContent>
               <ItemActions>
-                <Button variant="outline" size="sm" aria-label="View" asChild>
-                  <Link
-                    href={`/dashboard/edit-post/${blog.slug}`}
-                    target="_blank"
-                  >
-                    <span className="hidden md:block">Edit</span>
-                    <Pencil className="size-3" />
-                  </Link>
-                </Button>
+                {/* view button */}
                 <Button variant="outline" size="sm" aria-label="View" asChild>
                   <Link href={`/blog/${blog.slug}`} target="_blank">
                     <span className="hidden md:block">View</span>
                     <ArrowUpRight />
                   </Link>
                 </Button>
+                {/* more button */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" aria-label="More">
+                      <Ellipsis />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem asChild>
+                      <Link
+                        href={`/dashboard/edit-post/${blog.slug}`}
+                        target="_blank"
+                        className="cursor-pointer"
+                      >
+                        <Pencil className="size-4" />
+                        Edit
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      variant="destructive"
+                      className="cursor-pointer"
+                    >
+                      <Trash />
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </ItemActions>
             </Item>
           ))}
