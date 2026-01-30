@@ -1,5 +1,6 @@
 import { getPostByAuthor } from "@/actions/post/post-actions";
 import { auth } from "@/auth";
+import { DeletePostModal } from "@/components/modal/delete-post";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -19,7 +20,7 @@ import {
 } from "@/components/ui/item";
 import { TypographyH2, UnderlineLink03 } from "@/components/ui/typography";
 import { BlogType } from "@/types/schema.types";
-import { ArrowUpRight, Ellipsis, Pencil, Plus, Trash } from "lucide-react";
+import { ArrowUpRight, Ellipsis, Pencil, Plus } from "lucide-react";
 import Link from "next/link";
 
 export default async function Page() {
@@ -119,13 +120,11 @@ export default async function Page() {
                         Edit
                       </Link>
                     </DropdownMenuItem>
+
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      variant="destructive"
-                      className="cursor-pointer"
-                    >
-                      <Trash />
-                      Delete
+
+                    <DropdownMenuItem asChild className="cursor-pointer">
+                      <DeletePostModal />
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
