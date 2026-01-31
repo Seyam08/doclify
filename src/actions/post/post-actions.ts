@@ -500,7 +500,8 @@ export async function deletePost(
   }
 
   try {
-    const blog = await Blog.findOne({ slug: blogSlug });
+    const blog: BlogType | null = await Blog.findOne({ slug: blogSlug });
+    const imagePublicId = blog?.frontMatter.image.publicId as string;
 
     if (!blog) {
       return {
@@ -519,6 +520,7 @@ export async function deletePost(
     }
 
     await Blog.deleteOne({ slug: blogSlug });
+    await deleteImage(imagePublicId);
 
     // revalidate tags and categories (same as addPost)
     revalidateTag("doclify-blog-posts", "max");
