@@ -31,6 +31,12 @@ type EditPost = z.infer<typeof editPostSchema> & {
   slug: string;
 };
 
+export type DeletePostState = {
+  submitted: boolean;
+  success: boolean | null;
+  message: string;
+};
+
 export type MetaStats = Array<{ _id: string; count: number }>;
 
 export async function addPost(
@@ -477,3 +483,61 @@ export const getTotalBlogsNumber = cache(
     }
   },
 );
+
+export async function deletePost(
+  prevState: DeletePostState,
+  formData: FormData,
+): Promise<DeletePostState> {
+  const blogSlug = formData.get("blogSlug") as string;
+  const currentAuthor = formData.get("currentAuthor") as string;
+
+  if (!blogSlug || !currentAuthor) {
+    return {
+      submitted: true,
+      success: false,
+      message: "Invalid request!",
+    };
+  }
+
+  try {
+    const blog = await Blog.findOne({ slug: blogSlug });
+
+    if (!blog) {
+      return {
+        submitted: true,
+        success: false,
+        message: "Blog not found!",
+      };
+    }
+
+    if (blog.frontMatter.author !== currentAuthor) {
+      return {
+        submitted: true,
+        success: false,
+        message: "You are not authorized to delete this post!",
+      };
+    }
+
+    await Blog.deleteOne({ slug: blogSlug });
+
+    // revalidate tags and categories (same as addPost)
+    revalidateTag("doclify-blog-posts", "max");
+    revalidateTag("doclify-post-meta", "max");
+    revalidateTag("doclify-single-post-meta", "max");
+    revalidateTag("doclify-author-posts", "max");
+    revalidateTag("doclify-single-post", "max");
+
+    return {
+      submitted: true,
+      success: true,
+      message: "Blog deleted successfully!",
+    };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return {
+      submitted: true,
+      success: false,
+      message: "Failed to delete blog!",
+    };
+  }
+}

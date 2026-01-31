@@ -1,47 +1,58 @@
+"use client";
+
+import { deletePost, DeletePostState } from "@/actions/post/post-actions";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Trash } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { redirect } from "next/navigation";
+import { useActionState, useEffect, useState } from "react";
+import { toast } from "sonner";
 
-export function DeletePostModal() {
+export function DeletePostModal({
+  currentAuthor,
+  blogSlug,
+}: {
+  currentAuthor: string;
+  blogSlug: string;
+}) {
+  const [confirmText, setConfirmText] = useState("");
+
+  const [state, formAction] = useActionState(deletePost, {
+    submitted: false,
+    success: null,
+    message: "",
+  } satisfies DeletePostState);
+
+  useEffect(() => {
+    if (!state.submitted) return;
+
+    if (state.success) {
+      toast.success(state.message);
+      redirect("/dashboard");
+    } else {
+      toast.error(state.message);
+    }
+  }, [state]);
+
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
-          <Trash />
-          Delete
-        </Button>
-      </DialogTrigger>
+    <form action={formAction} className="space-y-3">
+      <input type="hidden" name="currentAuthor" value={currentAuthor} />
+      <input type="hidden" name="blogSlug" value={blogSlug} />
 
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Coming Soon</DialogTitle>
-          <DialogDescription>
-            This feature is not available yet. We’re working on it and it will
-            be released soon.
-          </DialogDescription>
-        </DialogHeader>
+      <Input
+        name="confirmText"
+        placeholder='Type "confirm" to delete'
+        value={confirmText}
+        onChange={(e) => setConfirmText(e.target.value)}
+      />
 
-        <div className="flex items-center gap-2">
-          <p className="text-sm text-muted-foreground">
-            Thank you for your patience 🙏
-          </p>
-        </div>
-
-        <DialogFooter className="sm:justify-start">
-          <DialogClose asChild>
-            <Button type="button">Close</Button>
-          </DialogClose>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+      <Button
+        variant="destructive"
+        type="submit"
+        size="sm"
+        disabled={confirmText !== "confirm"}
+      >
+        Confirm Delete
+      </Button>
+    </form>
   );
 }

@@ -3,6 +3,16 @@ import { auth } from "@/auth";
 import { DeletePostModal } from "@/components/modal/delete-post";
 import { Button } from "@/components/ui/button";
 import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -20,7 +30,7 @@ import {
 } from "@/components/ui/item";
 import { TypographyH2, UnderlineLink03 } from "@/components/ui/typography";
 import { BlogType } from "@/types/schema.types";
-import { ArrowUpRight, Ellipsis, Pencil, Plus } from "lucide-react";
+import { ArrowUpRight, Ellipsis, Pencil, Plus, Trash } from "lucide-react";
 import Link from "next/link";
 
 export default async function Page() {
@@ -124,7 +134,33 @@ export default async function Page() {
                     <DropdownMenuSeparator />
 
                     <DropdownMenuItem asChild className="cursor-pointer">
-                      <DeletePostModal />
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button variant="outline" size="sm">
+                            <Trash />
+                            Delete
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="w-full md:max-w-[625px]">
+                          <DialogHeader>
+                            <DialogTitle>Edit Bio</DialogTitle>
+                            <DialogDescription>
+                              You can place a little details about yourself
+                            </DialogDescription>
+                          </DialogHeader>
+                          <DeletePostModal
+                            currentAuthor={session?.user.username as string}
+                            blogSlug={blog.slug}
+                          />
+                          <DialogFooter className="sm:justify-start">
+                            <DialogClose asChild>
+                              <Button type="button" variant="outline">
+                                cancel
+                              </Button>
+                            </DialogClose>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
