@@ -7,10 +7,18 @@ import { Metadata } from "next";
 import { cacheLife, cacheTag } from "next/cache";
 import { notFound } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Categories of Doclify",
-  description: "Doclify",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const response = await getDetailedPostMeta("categories");
+
+  if (response.success === false) {
+    return notFound();
+  } else {
+    return {
+      title: "Categories of Doclify",
+      description: "Doclify",
+    };
+  }
+}
 
 export default async function page() {
   "use cache";
