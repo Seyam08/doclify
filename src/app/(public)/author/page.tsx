@@ -9,10 +9,18 @@ import { cacheLife, cacheTag } from "next/cache";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
-export const metadata: Metadata = {
-  title: "All Authors",
-  description: "Doclify",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const response = await getAllAuthor();
+
+  if (response.success === false) {
+    return notFound();
+  } else {
+    return {
+      title: "All Authors",
+      description: "Doclify Authors",
+    };
+  }
+}
 
 export default async function Page() {
   "use cache";
