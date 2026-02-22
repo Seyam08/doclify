@@ -18,10 +18,18 @@ import { cacheLife, cacheTag } from "next/cache";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Latest Blogs",
-  description: "Doclify",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const response = await getAllPost();
+
+  if (response.success === false) {
+    return notFound();
+  } else {
+    return {
+      title: "Latest Blogs",
+      description: "Doclify",
+    };
+  }
+}
 
 export default async function Page() {
   "use cache";
@@ -82,7 +90,7 @@ export default async function Page() {
                       day: "2-digit",
                       month: "long",
                       year: "numeric",
-                    }
+                    },
                   )}
                 </div>
                 <TypographyH3>
