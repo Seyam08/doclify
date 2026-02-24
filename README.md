@@ -2,6 +2,8 @@
 
 **Doclify is an early-stage, modern blog platform built with _Next.js 16 (App Router)_.**
 
+**_Current Version: v2_**
+
 It currently provides essential features such as:
 
 - Blog creation with a rich-text editor (Tiptap)
@@ -56,6 +58,65 @@ Doclify is evolving rapidly, and more refinements and improvements will be added
 - React 19 with `cache()`-based data deduplication
 - Tailwind CSS v4 + Design tokens
 - Radix UI + shadcn components
+
+---
+
+## 🆕 What's New in v2
+
+Version 2 introduces major improvements in content management, caching, performance, and user experience.
+
+### ✏️ Post Editing System
+
+- Full edit post functionality implemented
+- Server-side validation using Zod
+- Intelligent data comparison before update (only modified fields are persisted)
+- Cache revalidation after successful update
+- Optimized edit performance using React cache()
+
+### 🗑️ Post Deletion
+
+- Secure delete functionality with ownership verification
+- Only the author of the post can delete it
+- Cloudinary thumbnail image is automatically deleted when a post is removed
+- Server-side authorization checks before deletion
+
+### 🖼️ Cloudinary Image Cleanup
+
+- Automatic Cloudinary asset deletion when:
+  - A post is deleted
+  - A thumbnail is replaced during editing
+- Prevents unused image accumulation
+- Keeps cloud storage clean and optimized
+
+### 🔄 Smart Cache Handling
+
+- Post edit cache revalidation
+- Tag-based revalidation for dynamic content updates
+- Improved consistency between server and UI
+
+### 🔗 Share Functionality
+
+- Social media share buttons added to blog pages
+- Dynamic URL generation for sharing
+- SEO-friendly sharing support
+
+### 🔍 Pagination with searchParams
+
+- Blog listing now supports pagination
+- Uses Next.js searchParams for page navigation
+- Improved performance for large datasets
+- Cleaner URL structure (e.g., /page/2)
+
+### 🔁 Static Params Optimization
+
+- Implemented generateStaticParams for pre-rendered routes
+- Better performance and improved SEO
+- Reduced runtime computation for dynamic routes
+
+### 🎯 Improved UX After Post Creation
+
+- Users now see a direct link to the newly created post
+- Better feedback and navigation experience
 
 ---
 
