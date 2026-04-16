@@ -143,9 +143,10 @@ export default async function Page() {
                         </DialogTrigger>
                         <DialogContent className="w-full md:max-w-[625px]">
                           <DialogHeader>
-                            <DialogTitle>Edit Bio</DialogTitle>
+                            <DialogTitle>Delete post</DialogTitle>
                             <DialogDescription>
-                              You can place a little details about yourself
+                              Are you sure you want to delete this post? This
+                              action cannot be undone.
                             </DialogDescription>
                           </DialogHeader>
                           <DeletePostModal
