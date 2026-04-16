@@ -1,4 +1,7 @@
 import { getPost, getPostMeta } from "@/actions/post/post-actions";
+import { auth } from "@/auth";
+import { DoclifyError } from "@/components/Error/Error";
+import GoBackBtn from "@/components/NotFound/GoBackBtn";
 import EditPostWrapper from "@/components/ui/edit-post/edit-post-wrapper";
 import { BlogType } from "@/types/schema.types";
 import { Metadata } from "next";
@@ -16,9 +19,23 @@ export default async function Page({ params }: Props) {
   const tags = await getPostMeta("tags");
   const { slug } = await params;
   const response = await getPost(slug);
+  const userInfo = await auth();
+  const loggedInUser = userInfo?.user.username;
+  const blogAuthor = response.content?.frontMatter.author;
 
   if (response.success === false) {
     return notFound();
+  } else if (loggedInUser !== blogAuthor) {
+    return (
+      <div className="max-w-6xl 2xl:max-w-7xl w-full mx-auto px-4 md:px-10">
+        <DoclifyError
+          status={401}
+          title="Unauthorized user!"
+          description="You are not authorized to edit this post."
+          cta={<GoBackBtn />}
+        />
+      </div>
+    );
   } else {
     const blog = response.content as BlogType;
     const content = blog.content as string;

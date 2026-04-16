@@ -150,6 +150,13 @@ export async function editPost(
         message: "There is something wrong with Author!",
       } satisfies ServerActionResponse;
     }
+    // verify ownership
+    if (existingPost.frontMatter.author !== authorInfo.author?.username) {
+      return {
+        success: false,
+        message: "You are not authorized to edit this post!",
+      } satisfies ServerActionResponse;
+    }
 
     const oldImageData = existingPost.frontMatter.image;
     let newImageData;
