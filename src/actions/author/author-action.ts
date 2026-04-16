@@ -46,12 +46,12 @@ export const getAuthor = cache(
         message: "Failed to find Author!",
       };
     }
-  }
+  },
 );
 
 export async function updateBio(
   prevState: BioState,
-  formData: FormData
+  formData: FormData,
 ): Promise<BioState> {
   const newBio = formData.get("edit-bio") as string;
   const trimmedBio = newBio.trim();
@@ -70,7 +70,7 @@ export async function updateBio(
     const updatedBio = await Author.findOneAndUpdate(
       { "authorInfo.email": email }, // find author by email
       { "authorInfo.bio": trimmedBio }, // update field
-      { new: true } // return updated doc
+      { new: true }, // return updated doc
     );
 
     if (updatedBio) {
@@ -101,13 +101,13 @@ export async function updateBio(
 
 export async function editSocialLinks(
   socialLinks: SocialLinkSchemaType,
-  email: string
+  email: string,
 ): Promise<ServerActionResponse> {
   try {
     const updatedLinks = await Author.findOneAndUpdate(
       { "authorInfo.email": email }, // find author by email
       { "authorInfo.socialLinks": socialLinks.links }, // update field
-      { new: true } // return updated doc
+      { new: true }, // return updated doc
     );
 
     if (updatedLinks) {
@@ -127,7 +127,7 @@ export async function editSocialLinks(
   } catch (error) {
     return {
       success: false,
-      message: "Social links to update Bio!",
+      message: "Failed to update social links!",
     };
   }
 }
