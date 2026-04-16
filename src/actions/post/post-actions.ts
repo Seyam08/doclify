@@ -507,6 +507,8 @@ export async function deletePost(
   }
 
   try {
+    await connectDB();
+
     const blog: BlogType | null = await Blog.findOne({ slug: blogSlug });
     const imagePublicId = blog?.frontMatter.image.publicId as string;
 
