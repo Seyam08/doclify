@@ -86,12 +86,18 @@ export default async function Page({ params }: Props) {
   } else {
     const blog = response.content as BlogType;
     const content = blog.content as string;
+
+    // calculate from content
+    const wordCount = content.replace(/<[^>]+>/g, "").split(/\s+/).length;
+    const readingTime = Math.max(1, Math.ceil(wordCount / 200));
+
     return (
       <div className="content-holder space-y-2">
         {/* categories and reading time section */}
         <p className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
           <ClockFading className="h-4 w-4 mr-2" />
-          02 min reading in<span className="mx-2">—</span>
+          {readingTime} min reading
+          <span className="mx-2">—</span>
           {blog.frontMatter.categories.map((category, index) => (
             <span key={index}>
               <UnderlineLink href={`/categories/${category}`}>
