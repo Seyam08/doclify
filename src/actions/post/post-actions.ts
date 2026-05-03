@@ -8,6 +8,7 @@ import { auth } from "@/auth";
 import { deleteImage } from "@/lib/cloudinary/delete-image";
 import { uploadImage } from "@/lib/cloudinary/upload-image";
 import { connectDB } from "@/lib/mongoConnection";
+import { Author } from "@/models/author";
 import { Blog } from "@/models/blog";
 import { ServerActionResponse } from "@/types/global-types";
 import { BlogType } from "@/types/schema.types";
@@ -96,11 +97,17 @@ export async function addPost(
         };
 
         const result: BlogType = await Blog.create(post);
+        await Author.updateOne(
+          { username: author },
+          { $set: { role: "author" } },
+        );
         // revalidate tags and categories
         revalidateTag("doclify-blog-posts", "max");
         revalidateTag("doclify-post-meta", "max");
         revalidateTag("doclify-single-post-meta", "max");
         revalidateTag("doclify-author-posts", "max");
+        revalidateTag("doclify-authors", "max");
+        revalidateTag("doclify-single-author", "max");
 
         return {
           success: true,
