@@ -141,7 +141,7 @@ export async function getAllAuthor(): Promise<
 
   try {
     await connectDB();
-    const author: AuthorType[] = await Author.find()
+    const author: AuthorType[] = await Author.find({ role: "author" })
       .select({ _id: 0, createdAt: 0, updatedAt: 0, __v: 0 })
       .lean<AuthorType[]>();
 
