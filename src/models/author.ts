@@ -22,6 +22,7 @@ const authorFrontMatterSchema = new Schema(
 export const AuthorSchema = new Schema(
   {
     username: { type: String, required: true, unique: true, trim: true },
+    role: { type: String, enum: ["user", "author"], default: "user" },
     authorInfo: { type: authorFrontMatterSchema, required: true },
   },
   { timestamps: true }

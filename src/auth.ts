@@ -40,6 +40,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           });
           const author: AuthorType = {
             username: slugifyUsername,
+            role: "user",
             authorInfo: {
               name: user.name as string,
               email: user.email as string,
@@ -64,7 +65,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                   "authorInfo.name": user.name,
                   "authorInfo.image": user.image,
                 },
-              }
+              },
             );
             revalidateTag("doclify-single-author", "max");
           }
