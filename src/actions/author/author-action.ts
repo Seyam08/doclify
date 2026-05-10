@@ -1,5 +1,6 @@
 "use server";
 
+import { checkBlogExistForThisUser } from "@/actions/helper/author-utils";
 import { connectDB } from "@/lib/mongoConnection";
 import { Author } from "@/models/author";
 import { ServerActionResponse } from "@/types/global-types";
@@ -128,6 +129,62 @@ export async function editSocialLinks(
     return {
       success: false,
       message: "Failed to update social links!",
+    };
+  }
+}
+
+export async function doRoleChange(
+  username: string,
+): Promise<ServerActionResponse<null>> {
+  try {
+    await connectDB();
+
+    const blogCheck = await checkBlogExistForThisUser(username);
+
+    if (!blogCheck.status) {
+      return {
+        success: false,
+        message: "Author not Found",
+      };
+    }
+
+    // If author has any blog, keep role as is
+    if (blogCheck.hasBlog) {
+      return {
+        success: true,
+        message: "Author has blog — role unchanged",
+      };
+    }
+
+    // No blog — ensure role is set to 'user'
+    const updated = await Author.findOneAndUpdate(
+      { username },
+      { role: "user" },
+      { new: true },
+    )
+      .select({ _id: 0, createdAt: 0, updatedAt: 0, __v: 0 })
+      .lean<AuthorType | null>();
+
+    if (updated) {
+      revalidateTag("doclify-authors", "max");
+      revalidateTag("doclify-single-author", "max");
+
+      return {
+        success: true,
+        message: "Role changed to user",
+      };
+    } else {
+      return {
+        success: false,
+        message: "Role change failed!",
+      };
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed to change role!",
     };
   }
 }
