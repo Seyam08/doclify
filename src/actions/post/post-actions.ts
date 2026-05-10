@@ -1,5 +1,6 @@
 "use server";
 
+import { doRoleChange } from "@/actions/author/author-action";
 import {
   checkAuthorEmailExists,
   checkBlogSlugExists,
@@ -537,6 +538,9 @@ export async function deletePost(
 
     await Blog.deleteOne({ slug: blogSlug });
     await deleteImage(imagePublicId);
+
+    // After deleting the blog and its image, check if the author's role should change
+    await doRoleChange(blog.frontMatter.author);
 
     // revalidate tags and categories (same as addPost)
     revalidateTag("doclify-blog-posts", "max");
