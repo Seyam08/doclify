@@ -7,6 +7,7 @@ import {
 } from "@/components/DoclifyAccount/DoclifyAccount";
 import { DoclifyWarnPopover } from "@/components/DoclifyAuthor/DoclifyAuthor";
 import { DoclifySocialLinkItem } from "@/components/DoclifyItem/DoclifyItem";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -64,7 +65,7 @@ export default async function Page() {
               className="group-hover:brightness-75 transition-all"
             />
           </div>
-          <div className="text-center sm:text-left space-y-2">
+          <div className="text-center sm:text-left space-y-2 space-x-2">
             <TypographyH3 className="text-muted-foreground">
               {user.username}
             </TypographyH3>
@@ -72,8 +73,15 @@ export default async function Page() {
               itemTitle="Profile picture can't be changed from here"
               itemDesc="Please click on the button to change"
               externalLink="https://aboutme.google.com"
-              trigger={<Button variant="outline">change</Button>}
+              trigger={
+                <Button variant="outline" size={"xs"}>
+                  change
+                </Button>
+              }
             />
+            <Badge className="uppercase" variant="secondary">
+              {user.role}
+            </Badge>
           </div>
         </div>
 
@@ -229,7 +237,7 @@ export default async function Page() {
                     name={item.platform}
                     socialLink={item.address}
                   />
-                )
+                ),
               )}
           </div>
         </div>
