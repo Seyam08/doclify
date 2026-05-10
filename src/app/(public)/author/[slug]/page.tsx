@@ -19,7 +19,7 @@ export async function generateStaticParams() {
   const response = await getAllAuthor();
 
   if (response.success === false) {
-    return [];
+    return ["user"];
   } else {
     const authors = response.content as AuthorType[];
     return authors.map((author) => ({
