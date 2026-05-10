@@ -5,7 +5,7 @@ import { Blog } from "@/models/blog";
 import { AuthorType } from "@/types/schema.types";
 import { checkAuthorEmailExists } from "./checkCredentialsExists";
 
-export async function checkBlogExist(
+export async function checkBlogExistForThisUser(
   username: string,
 ): Promise<{ status: boolean; hasBlog: boolean; author: AuthorType | null }> {
   try {
