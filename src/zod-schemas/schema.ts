@@ -46,3 +46,11 @@ export const editPostSchema = z.object({
     })
     .optional(),
 });
+
+export const newsLetterSchema = z.object({
+  name: z
+    .string()
+    .min(3, "Name must be at least 5 characters.")
+    .max(32, "Name must be at most 32 characters."),
+  email: z.email({ error: "Please enter a valid Email!" }),
+});

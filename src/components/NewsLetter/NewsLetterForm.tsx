@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Field, FieldError } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { newsLetterSchema } from "@/zod-schemas/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowUpRight } from "lucide-react";
 import { ComponentProps } from "react";
@@ -11,23 +12,15 @@ import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 
 export function NewsLetterForm({ className }: ComponentProps<"div">) {
-  const formSchema = z.object({
-    name: z
-      .string()
-      .min(3, "Name must be at least 5 characters.")
-      .max(32, "Name must be at most 32 characters."),
-    email: z.email({ error: "Please enter a valid Email!" }),
-  });
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof newsLetterSchema>>({
+    resolver: zodResolver(newsLetterSchema),
     defaultValues: {
       name: "",
       email: "",
     },
   });
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  function onSubmit(data: z.infer<typeof newsLetterSchema>) {
     // Do something with the form values.
     console.log(data);
     form.reset();

@@ -76,6 +76,7 @@
     "@tailwindcss/postcss": "^4",
     "@types/lodash": "^4.17.23",
     "@types/node": "^20",
+    "@types/nodemailer": "^8.0.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "baseline-browser-mapping": "^2.10.29",
