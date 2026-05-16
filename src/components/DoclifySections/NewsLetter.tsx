@@ -1,8 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { NewsLetterForm } from "@/components/NewsLetter/NewsLetterForm";
 import { TypographyH1, TypographyP } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
-import { ArrowUpRight } from "lucide-react";
 import { ComponentProps } from "react";
 
 export default function NewsLetter({ className }: ComponentProps<"div">) {
@@ -21,23 +19,7 @@ export default function NewsLetter({ className }: ComponentProps<"div">) {
         </div>
 
         {/* Right Form Section */}
-        <div className="flex-1 flex flex-col gap-5 max-w-md">
-          <div className="flex flex-col gap-3">
-            <Input id="name" type="text" placeholder="Name" />
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <Input id="email" type="email" placeholder="Your email address" />
-          </div>
-
-          <Button
-            variant="outline"
-            className="flex items-center justify-between group"
-          >
-            Subscribe Now
-            <ArrowUpRight className="h-6 w-6 group-hover:rotate-45 transition-all duration-300" />
-          </Button>
-        </div>
+        <NewsLetterForm className="flex-1 max-w-md" />
       </div>
     </div>
   );
