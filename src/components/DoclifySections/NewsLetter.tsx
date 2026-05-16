@@ -1,7 +1,8 @@
+import { NewsLetterSkeleton } from "@/components/DoclifySkeleton/DoclifySkeleton";
 import { NewsLetterForm } from "@/components/NewsLetter/NewsLetterForm";
 import { TypographyH1, TypographyP } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
-import { ComponentProps } from "react";
+import { ComponentProps, Suspense } from "react";
 
 export default function NewsLetter({ className }: ComponentProps<"div">) {
   return (
@@ -19,7 +20,9 @@ export default function NewsLetter({ className }: ComponentProps<"div">) {
         </div>
 
         {/* Right Form Section */}
-        <NewsLetterForm className="flex-1 max-w-md" />
+        <Suspense fallback={<NewsLetterSkeleton className="flex-1 max-w-md" />}>
+          <NewsLetterForm className="flex-1 max-w-md" />
+        </Suspense>
       </div>
     </div>
   );
