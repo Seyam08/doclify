@@ -1,5 +1,6 @@
 "use client";
 
+import { sendNewsLetter } from "@/actions/news-letter/news-letter-action";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -9,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowUpRight } from "lucide-react";
 import { ComponentProps } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import * as z from "zod";
 
 export function NewsLetterForm({ className }: ComponentProps<"div">) {
@@ -20,10 +22,18 @@ export function NewsLetterForm({ className }: ComponentProps<"div">) {
     },
   });
 
-  function onSubmit(data: z.infer<typeof newsLetterSchema>) {
-    // Do something with the form values.
-    console.log(data);
-    form.reset();
+  async function onSubmit(data: z.infer<typeof newsLetterSchema>) {
+    try {
+      const response = await sendNewsLetter(data);
+      if (response.success === true) {
+        toast.success(response.message);
+        form.reset();
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      toast.error("Failed to subscribe");
+    }
   }
   return (
     <form

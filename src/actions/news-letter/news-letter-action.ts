@@ -1,3 +1,5 @@
+"use server";
+
 import { transport } from "@/lib/nodemailer/config";
 import { ServerActionResponse } from "@/types/global-types";
 import { newsLetterSchema } from "@/zod-schemas/schema";
@@ -82,7 +84,7 @@ export async function sendNewsLetter(
     await transport.sendMail(adminMailData);
     return {
       success: true,
-      message: "Newsletter emails sent.",
+      message: "Successfully subscribed",
     } satisfies ServerActionResponse;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
