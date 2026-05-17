@@ -70,17 +70,20 @@ export default async function page({ params }: Props) {
 
     return (
       <>
-        <div className="content-holder flex flex-col items-center space-y-5">
-          <div className="w-36 h-36">
+        <div className="content-holder ollyo-section-panel flex flex-col items-center space-y-5 border border-[#DDDDDD] p-8 text-center">
+          <div className="h-36 w-36 border border-[#DDDDDD]">
             <DoclifyImage
               src={author.authorInfo.image}
               alt={author.authorInfo.name}
               height={200}
               width={200}
+              className="rounded-none"
             />
           </div>
-          <TypographyH3>{author.authorInfo.name}</TypographyH3>
-          <TypographyP className="mt-0 align-middle">
+          <TypographyH3 className="ollyo-section-title">
+            {author.authorInfo.name}
+          </TypographyH3>
+          <TypographyP className="ollyo-meta mt-0 align-middle">
             {blogResponse.success ? (
               <>
                 <SquarePen className="inline-block h-4 w-4" /> {numberOfBlogs}{" "}
@@ -91,7 +94,7 @@ export default async function page({ params }: Props) {
             )}
           </TypographyP>
           {author.authorInfo.bio && (
-            <TypographyP className="text-center">
+            <TypographyP className="ollyo-copy max-w-2xl text-center">
               {author.authorInfo.bio}
             </TypographyP>
           )}
@@ -107,24 +110,24 @@ export default async function page({ params }: Props) {
               ))}
             </div>
           )}
-          <Separator className="my-5" />
+          <Separator className="my-5 bg-black/20" />
         </div>
         {/* post of author  */}
-        <div className="m-auto">
-          <TypographyH3 className="font-normal text-center">
+        <div className="m-auto mt-16">
+          <TypographyH3 className="ollyo-kicker text-center">
             Post of
           </TypographyH3>
 
-          <TypographyH2 className="flex items-center justify-center gap-5 font-normal text-center mb-10">
-            <Sparkles className="h-5 w-5 fill-accent-foreground" />
+          <TypographyH2 className="ollyo-page-title mb-10 flex items-center justify-center gap-5 text-center">
+            <Sparkles className="h-5 w-5 fill-[#9FFA62]" />
 
             {author.authorInfo.name}
 
-            <Sparkles className="h-5 w-5 fill-accent-foreground" />
+            <Sparkles className="h-5 w-5 fill-[#9FFA62]" />
           </TypographyH2>
           {/* each item */}
           {blogs ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
               {/* each item  */}
               {blogs.map((blog) => (
                 <DoclifyBlogCard blog={blog} key={blog.slug} />
@@ -132,8 +135,8 @@ export default async function page({ params }: Props) {
             </div>
           ) : (
             <div className="m-auto">
-              <TypographyH2 className="mb-14 capitalize">
-                This user don't have any Blog
+              <TypographyH2 className="ollyo-page-title mb-14 capitalize">
+                This user doesn&apos;t have any Blog
               </TypographyH2>
             </div>
           )}

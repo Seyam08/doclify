@@ -50,13 +50,13 @@ export default async function page({ params }: Props) {
     const blogs = response.content as BlogType[];
     return (
       <div>
-        <div className="flex justify-between items-center mb-14">
-          <TypographyH2 className="capitalize">{decodedSlug}</TypographyH2>
+        <div className="ollyo-page-heading">
+          <TypographyH2 className="ollyo-page-title">{decodedSlug}</TypographyH2>
           <DoclifyBreadcrumb />
         </div>
 
         {/* each item */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
           {/* each item  */}
           {blogs.map((blog) => (
             <DoclifyBlogCard blog={blog} key={blog.slug} />

@@ -14,7 +14,7 @@ export default async function FeaturedPosts({
   limit: number;
   title: string;
 } & ComponentProps<"div">) {
-  const response = await getAllPost(3);
+  const response = await getAllPost(limit);
 
   if (response.success === false) {
     return (
@@ -28,16 +28,24 @@ export default async function FeaturedPosts({
     const blogs = response.content as BlogType[];
     return (
       <div className={cn("w-full", className)}>
-        <div className="flex flex-row justify-between items-center mb-14">
-          <TypographyH3 className="capitalize">{title}</TypographyH3>
-          <UnderlineLink02 href="/blog">
+        <div className="mb-14 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+          <div>
+            <p className="ollyo-kicker mb-4">Featured writing</p>
+            <TypographyH3 className="ollyo-section-title capitalize">
+              {title}
+            </TypographyH3>
+          </div>
+          <UnderlineLink02
+            href="/blog"
+            className="ollyo-tag hover:text-[#5409DA]"
+          >
             All Blogs
             <ArrowUpRight className="h-5 w-5 group-hover:rotate-45 transition-all duration-300" />
           </UnderlineLink02>
         </div>
 
         {/* each item */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
           {/* each item  */}
           {blogs.map((blog) => (
             <DoclifyBlogCard blog={blog} key={blog.slug} />

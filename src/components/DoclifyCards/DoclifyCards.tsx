@@ -14,7 +14,7 @@ export function DoclifyBlogCard({ blog, className }: DoclifyBlogCardProps) {
   return (
     <div
       className={cn(
-        "space-y-5 hover:bg-accent transition-all duration-500 p-2 rounded-2xl",
+        "ollyo-card border border-[#DDDDDD] p-2",
         className
       )}
       key={blog.slug}
@@ -27,17 +27,17 @@ export function DoclifyBlogCard({ blog, className }: DoclifyBlogCardProps) {
             height={400}
             width={1200}
             alt="Image"
-            className="aspect-video"
+            className="aspect-video rounded-none"
           />
         </Link>
       </div>
 
       {/* content side  */}
-      <div className="px-5 pb-5">
-        <div className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
+      <div className="space-y-4 px-5 py-6">
+        <div className="ollyo-meta flex items-center justify-start">
           <DoclifyAuthorMeta username={blog.frontMatter.author} />
         </div>
-        <div className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
+        <div className="ollyo-meta flex items-center justify-start">
           <Calendar1Icon className="h-4 w-4 mr-2" />
           Published at{" "}
           {new Date(blog.frontMatter.date).toLocaleString("en-GB", {
@@ -46,12 +46,12 @@ export function DoclifyBlogCard({ blog, className }: DoclifyBlogCardProps) {
             year: "numeric",
           })}
         </div>
-        <TypographyH3>
-          <Link href={`/blog/${blog.slug}`} className="hover:underline">
+        <TypographyH3 className="ollyo-card-title">
+          <Link href={`/blog/${blog.slug}`} className="hover:text-[#5409DA]">
             {blog.frontMatter.title}
           </Link>
         </TypographyH3>
-        <TypographyP>
+        <TypographyP className="ollyo-copy">
           {blog.frontMatter.description.slice(0, 80) + "..."}
         </TypographyP>
       </div>
@@ -67,15 +67,15 @@ export function DoclifyBlogMiniCard({
   className,
 }: DoclifyBlogMiniCardProps) {
   return (
-    <div className={cn(className)} key={blog.slug}>
+    <div className={cn("border-l-2 border-[#9FFA62] pl-4", className)} key={blog.slug}>
       {/* content side  */}
       <div className="pb-5 space-y-3">
-        <TypographyH3 className="text-sm md:text-base">
-          <Link href={`/blog/${blog.slug}`} className="hover:underline">
+        <TypographyH3 className="ollyo-mini-title">
+          <Link href={`/blog/${blog.slug}`} className="hover:text-[#5409DA]">
             {blog.frontMatter.title}
           </Link>
         </TypographyH3>
-        <div className="flex items-center justify-start mb-4 text-primary text-sm">
+        <div className="ollyo-meta flex items-center justify-start">
           <Calendar1Icon className="h-4 w-4 mr-2" />
 
           {new Date(blog.frontMatter.date).toLocaleString("en-GB", {

@@ -15,33 +15,30 @@ const authorLink = process.env.AUTHOR_LINK as string;
 
 export default function Footer() {
   return (
-    <footer className="bg-accent w-full py-6">
-      <div className="container mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-6 text-sm">
-        {/* Left copyright */}
+    <footer className="w-full py-10">
+      <div className="mx-auto flex w-full max-w-[1110px] flex-col-reverse items-center justify-between gap-8 px-4 text-sm md:flex-row md:px-10">
         <div>
           <TypographyP className="whitespace-nowrap">
-            © 2025 Doclify. All rights reserved.
+            (C) 2025 Doclify. All rights reserved.
           </TypographyP>
-          <TypographyP className="flex justify-center md:justify-start text-sm">
+          <TypographyP className="flex justify-center text-sm md:justify-start">
             Developed by
             <UnderlineLink02
               href={authorLink}
-              className="ml-1 text-sm text-accent-foreground"
+              className="ml-1 text-sm text-[#9FFA62]"
             >
               Seyam
             </UnderlineLink02>
           </TypographyP>
         </div>
 
-        {/* Center links */}
-        <div className="flex items-center gap-10">
+        <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10">
           <UnderlineLink href="/coming-soon">Terms of service</UnderlineLink>
           <UnderlineLink href="/coming-soon">Privacy policy</UnderlineLink>
         </div>
 
-        {/* Right socials */}
         <div className="flex items-center gap-2">
-          <span className="font-medium text-muted-foreground">Follow:</span>
+          <span className="font-medium">Follow:</span>
 
           <Button variant="ghost" size="sm" asChild>
             <Link href="#" aria-label="Facebook">

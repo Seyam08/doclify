@@ -9,8 +9,8 @@ import {
 
 export default function Login() {
   return (
-    <div className="w-4/5 flex flex-col gap-6">
-      <Card className="bg-transparent dark:bg-transparent">
+    <div className="flex w-full flex-col gap-6">
+      <Card className="ollyo-section-panel border border-[#DDDDDD] bg-white/60">
         <CardHeader className="text-center">
           <div className="w-14 m-auto">
             <svg
@@ -253,7 +253,7 @@ export default function Login() {
               </g>
             </svg>
           </div>
-          <CardTitle className="text-xl">Login with Google</CardTitle>
+          <CardTitle className="ollyo-card-title">Login with Google</CardTitle>
           <CardDescription>
             Click the button below to authenticate using your Google account.
           </CardDescription>

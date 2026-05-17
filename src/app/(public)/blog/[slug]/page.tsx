@@ -40,7 +40,6 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
 
-  // fetch post information
   const response = await getPost(slug);
 
   if (response.success === true) {
@@ -87,17 +86,15 @@ export default async function Page({ params }: Props) {
     const blog = response.content as BlogType;
     const content = blog.content as string;
 
-    // calculate from content
     const wordCount = content.replace(/<[^>]+>/g, "").split(/\s+/).length;
     const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 
     return (
-      <div className="content-holder space-y-2">
-        {/* categories and reading time section */}
-        <p className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
-          <ClockFading className="h-4 w-4 mr-2" />
+      <div className="content-holder space-y-8">
+        <p className="ollyo-meta mb-4 flex flex-wrap items-center justify-start gap-y-2">
+          <ClockFading className="mr-2 h-4 w-4" />
           {readingTime} min reading
-          <span className="mx-2">—</span>
+          <span className="mx-2">-</span>
           {blog.frontMatter.categories.map((category, index) => (
             <span key={index}>
               <UnderlineLink href={`/categories/${category}`}>
@@ -110,22 +107,19 @@ export default async function Page({ params }: Props) {
           ))}
         </p>
 
-        {/* heading section */}
-        <TypographyH1 className="my-3 md:my-6">
+        <TypographyH1 className="ollyo-page-title my-3 md:my-6">
           {blog.frontMatter.title}
         </TypographyH1>
 
-        {/* description section */}
-        <TypographyP className="my-1 md:my-2">
+        <TypographyP className="ollyo-lead my-1 md:my-2">
           {blog.frontMatter.description}
         </TypographyP>
 
-        {/* Author and Date info section */}
         <div className="my-1 md:my-2">
-          <p className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
+          <p className="ollyo-meta mb-4 flex flex-wrap items-center justify-start gap-y-2">
             <DoclifyAuthorMeta username={blog.frontMatter.author} />
-            <span className="mx-2">—</span>
-            <Calendar1Icon className="h-4 w-4 mr-2" />
+            <span className="mx-2">-</span>
+            <Calendar1Icon className="mr-2 h-4 w-4" />
             Published at{" "}
             {new Date(blog.frontMatter.date).toLocaleString("en-GB", {
               day: "2-digit",
@@ -135,14 +129,13 @@ export default async function Page({ params }: Props) {
           </p>
         </div>
 
-        {/* thumbnail image section */}
         <div className="my-2 md:my-8">
           <DoclifyImage
             src={blog.frontMatter.image.url}
             alt={blog.frontMatter.title}
             width={1050}
             height={400}
-            className="aspect-video"
+            className="aspect-video rounded-none border border-[#DDDDDD]"
             imageProps={
               {
                 loading: "eager",
@@ -152,23 +145,20 @@ export default async function Page({ params }: Props) {
           />
         </div>
 
-        {/* post content section  */}
         <div
           dangerouslySetInnerHTML={{ __html: content }}
           className="blog"
         ></div>
 
-        {/* tags and share section  */}
-        <div className="flex flex-nowrap flex-row items-start md:items-center justify-between my-4 md:my-8">
-          {/* tags  */}
+        <div className="my-4 flex flex-col items-start justify-between gap-8 border-t border-black/20 pt-8 md:my-8 md:flex-row md:items-center">
           <div>
-            <TypographyP className="mb-2">Tags:</TypographyP>
+            <TypographyP className="ollyo-kicker mb-2">Tags:</TypographyP>
             <div className="flex flex-wrap gap-2">
               {blog.frontMatter.tags.map((tag, index) => (
-                <div className="border border-ring px-2 py-1" key={index}>
+                <div className="ollyo-tag" key={index}>
                   <UnderlineLink
                     href={`/tags/${tag}`}
-                    className="text-sm text-primary"
+                    className="text-sm text-[#5409DA]"
                   >
                     # {tag}
                   </UnderlineLink>
@@ -177,11 +167,9 @@ export default async function Page({ params }: Props) {
             </div>
           </div>
 
-          {/* share  */}
           <div>
-            <TypographyP className="mb-2">Share:</TypographyP>
-            <div className="flex flex-wrap gap-4 mt-2">
-              {/* facebook  */}
+            <TypographyP className="ollyo-kicker mb-2">Share:</TypographyP>
+            <div className="mt-2 flex flex-wrap gap-4">
               <Button variant="outline" size="icon" asChild>
                 <Link
                   href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${baseUrl}/blog/${blog.slug}`)}`}
@@ -190,7 +178,6 @@ export default async function Page({ params }: Props) {
                   <Facebook />
                 </Link>
               </Button>
-              {/* linkedin */}
               <Button variant="outline" size="icon" asChild>
                 <Link
                   href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
@@ -201,7 +188,6 @@ export default async function Page({ params }: Props) {
                   <Linkedin />
                 </Link>
               </Button>
-              {/* x Twitter */}
               <Button variant="outline" size="icon" asChild>
                 <Link
                   href={`https://x.com/intent/tweet?url=${encodeURIComponent(

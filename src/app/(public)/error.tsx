@@ -13,6 +13,8 @@ export default function Error({
   error: Error;
   reset: () => void;
 }) {
+  void error;
+
   const router = useRouter();
 
   const tryAgain = () => {

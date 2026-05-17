@@ -35,13 +35,13 @@ export default async function Page() {
     const authors = response.content as AuthorType[];
     return (
       <div>
-        <div className="flex justify-between items-center mb-14">
-          <TypographyH2>All Authors</TypographyH2>
+        <div className="ollyo-page-heading">
+          <TypographyH2 className="ollyo-page-title">All Authors</TypographyH2>
           <DoclifyBreadcrumb />
         </div>
 
         {authors?.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             {authors.map((author) => (
               <Suspense
                 fallback={<DoclifyAuthorCardSkeleton />}

@@ -56,7 +56,7 @@ export async function DoclifyAuthorMeta({
       <>
         <Link
           href={`/author/${username}`}
-          className="flex group h-6 w-6 md:h-7 md:w-7 rounded-sm overflow-hidden mr-2"
+          className="mr-2 flex h-6 w-6 overflow-hidden border border-[#DDDDDD] md:h-7 md:w-7"
         >
           <Image
             alt={username}
@@ -70,7 +70,7 @@ export async function DoclifyAuthorMeta({
           by{" "}
           <UnderlineLink
             href={`/author/${username}`}
-            className="text-accent-foreground"
+            className="text-[#5409DA]"
           >
             {author?.authorInfo.name}
           </UnderlineLink>
@@ -128,34 +128,36 @@ export async function DoclifyAuthorCard({
   username: string;
 }) {
   const { authorInfo } = author;
-  const { email, image, name, bio, socialLinks } = authorInfo;
+  const { image, name, bio } = authorInfo;
   const blogResponse = await getPostByAuthor(username);
   const blogs = blogResponse.content as BlogType[]; // blogs can be undefine or null
   const numberOfBlogs = blogs?.length; // number of blog can be undefine also, because of blog
   return (
-    <div className="bg-accent rounded-2xl p-3">
+    <div className="ollyo-card border border-[#DDDDDD] p-5">
       {/* author info */}
-      <div className="flex flex-row flex-wrap">
+      <div className="flex flex-row flex-wrap gap-5 md:gap-0">
         <div className="basis-full md:basis-1/4 text-start">
           <DoclifyImage
             src={image}
             alt={name}
             height={150}
             width={150}
-            className="block w-fit"
+            className="block w-fit rounded-none border border-[#DDDDDD]"
           />
         </div>
-        <div className="basis-full md:basis-3/4 flex flex-col justify-center px-0 md:px-2 py-2 md:py-0">
-          <TypographyH3>
-            <UnderlineLink href={`/author/${username}`}>{name}</UnderlineLink>
+        <div className="basis-full md:basis-3/4 flex flex-col justify-center px-0 md:px-5 py-2 md:py-0">
+          <TypographyH3 className="ollyo-card-title">
+            <UnderlineLink href={`/author/${username}`} className="text-black">
+              {name}
+            </UnderlineLink>
           </TypographyH3>
 
           {bio && (
-            <TypographyP>
+            <TypographyP className="ollyo-copy mt-4">
               {bio.slice(0, 80)}...
               <UnderlineLink
                 href={`/author/${username}`}
-                className="ml-1 text-accent-foreground"
+                className="ml-1 text-[#5409DA]"
               >
                 Read More
               </UnderlineLink>
@@ -164,12 +166,12 @@ export async function DoclifyAuthorCard({
         </div>
       </div>
 
-      <Separator className="w-full my-3" />
+      <Separator className="my-5 w-full bg-black/20" />
       {/* recent post */}
       <div>
         {/* title  */}
         <div>
-          <TypographyP className="my-3 text-accent-foreground font-medium">
+          <TypographyP className="ollyo-kicker my-3">
             Recent Post
           </TypographyP>
         </div>
@@ -185,17 +187,17 @@ export async function DoclifyAuthorCard({
           </div>
         ) : (
           <div className="py-5">
-            <TypographyH3 className="capitalize text-muted-foreground text-sm md:text-base">
+            <TypographyH3 className="ollyo-mini-title capitalize text-[#464544]">
               This user doesn&apos;t have any blog
             </TypographyH3>
           </div>
         )}
         {numberOfBlogs > 2 && (
-          <div className="text-muted-foreground">
+          <div className="ollyo-meta">
             <SquarePen className="inline-block h-4 w-4" /> {name} has{" "}
             <UnderlineLink
               href={`/author/${username}`}
-              className="text-accent-foreground"
+              className="text-[#5409DA]"
             >
               {numberOfBlogs - 2} more
             </UnderlineLink>{" "}

@@ -34,13 +34,13 @@ export default async function page() {
 
     return (
       <div>
-        <div className="flex justify-between items-center mb-14">
-          <TypographyH2 className="capitalize">All Categories</TypographyH2>
+        <div className="ollyo-page-heading">
+          <TypographyH2 className="ollyo-page-title">All Categories</TypographyH2>
           <DoclifyBreadcrumb />
         </div>
 
         {/* each item */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-4">
           {/* each item  */}
           {categories.map((category, index) => (
             <DoclifyItem

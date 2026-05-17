@@ -4,7 +4,25 @@ import { NavbarSkeleton } from "@/components/DoclifySkeleton/DoclifySkeleton";
 import { Navbar } from "@/components/ui/navbar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { navLink } from "@/const/navLink";
+import { cn } from "@/lib/utils";
+import { Jersey_20, Plus_Jakarta_Sans, Stack_Sans_Notch } from "next/font/google";
 import { Suspense } from "react";
+
+const jersey20 = Jersey_20({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-ollyo-display",
+});
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-ollyo-body",
+});
+
+const stackSansNotch = Stack_Sans_Notch({
+  subsets: ["latin"],
+  variable: "--font-ollyo-emphasis",
+});
 
 export default function Layout({
   children,
@@ -12,9 +30,17 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className="relative w-full bg-[radial-gradient(circle_at_top_center,rgb(161,210,247,0.6),transparent_70%)] dark:bg-[radial-gradient(circle_at_top_center,rgb(2,13,25,1),transparent_70%)] bg-fixed">
+    <main
+      className={cn(
+        "ollyo-public relative min-h-screen w-full overflow-hidden bg-background text-foreground",
+        jersey20.variable,
+        plusJakarta.variable,
+        stackSansNotch.variable,
+      )}
+    >
       <Suspense fallback={<NavbarSkeleton />}>
         <Navbar
+          className="ollyo-nav"
           userProfile={
             <Suspense fallback={<Skeleton className="h-9 w-11.5" />}>
               <UserProfile />

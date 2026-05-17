@@ -29,14 +29,14 @@ export function DoclifyNotFound({
         className
       )}
     >
-      <div className="max-w-xl w-full md:w-4/5 flex flex-col">
-        <Card className="w-full bg-[radial-gradient(circle_at_top_center,rgb(161,210,247,0.6),transparent_70%)] dark:bg-[radial-gradient(circle_at_top_center,rgb(2,13,25,1),transparent_70%)] bg-fixed bg-background/60 backdrop-blur supports-backdrop-filter:bg-background/60">
+      <div className="flex w-full max-w-xl flex-col md:w-4/5">
+        <Card className="ollyo-section-panel w-full border border-[#DDDDDD] bg-white/60">
           <CardHeader className="text-center">
             <div className="w-fit m-auto">
               <DoclifyFullLogo logoHref="/" />
             </div>
-            <TypographyH1>404</TypographyH1>
-            <CardTitle className="text-xl">{cardTitle}</CardTitle>
+            <TypographyH1 className="ollyo-display">404</TypographyH1>
+            <CardTitle className="ollyo-card-title">{cardTitle}</CardTitle>
             <CardDescription>{cardDesc}</CardDescription>
           </CardHeader>
           {cta && <CardContent className="w-fit m-auto">{cta}</CardContent>}

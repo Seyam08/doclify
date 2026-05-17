@@ -36,23 +36,29 @@ export function DoclifyItem({
   number,
 }: DoclifyItemType) {
   return (
-    <Item variant="outline" asChild className={cn(className)}>
+    <Item
+      variant="outline"
+      asChild
+      className={cn("border-[#DDDDDD] bg-white/60 p-5", className)}
+    >
       <Link href={link} rel="noopener noreferrer" className="group">
         <ItemContent>
-          <ItemTitle className="group-hover:underline">{title}</ItemTitle>
+          <ItemTitle className="capitalize group-hover:text-[#5409DA]">
+            {title}
+          </ItemTitle>
           {description && <ItemDescription>{description}</ItemDescription>}
         </ItemContent>
         {number && (
           <ItemMedia>
             <Badge
-              className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums"
+              className="h-7 min-w-7 px-2 font-mono tabular-nums"
               variant="destructive"
             >
               {number}
             </Badge>
           </ItemMedia>
         )}
-        <ItemActions>{icon}</ItemActions>
+        <ItemActions className="text-[#5409DA]">{icon}</ItemActions>
       </Link>
     </Item>
   );
@@ -86,7 +92,7 @@ export function DoclifySocialLinkItem({
         <Icon />
       </ItemMedia>
       <ItemContent>
-        <ItemTitle>Your {name} account's link</ItemTitle>
+        <ItemTitle>Your {name} account&apos;s link</ItemTitle>
         <ItemDescription>{socialLink}</ItemDescription>
       </ItemContent>
       <ItemActions>
@@ -127,18 +133,22 @@ export function DoclifySocialLinkShow({
       break;
   }
   return (
-    <Item variant="default" asChild className={cn(className)}>
+    <Item
+      variant="default"
+      asChild
+      className={cn("border border-[#DDDDDD] bg-white/60", className)}
+    >
       <Link
         href={address}
         target="_blank"
         rel="noopener noreferrer"
         className="group"
       >
-        <ItemMedia variant="icon">
+        <ItemMedia variant="icon" className="border-[#5409DA] bg-[#F1F1F1]">
           <Icon className="h-4 w-4" />
         </ItemMedia>
         <ItemContent>
-          <ItemTitle className="group-hover:underline capitalize text-center">
+          <ItemTitle className="capitalize text-center group-hover:text-[#5409DA]">
             {platform}
           </ItemTitle>
         </ItemContent>

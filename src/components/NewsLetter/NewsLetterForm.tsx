@@ -32,7 +32,7 @@ export function NewsLetterForm({ className }: ComponentProps<"div">) {
       } else {
         toast.error(response.message);
       }
-    } catch (error) {
+    } catch {
       toast.error("Failed to subscribe");
     }
   }
@@ -79,7 +79,7 @@ export function NewsLetterForm({ className }: ComponentProps<"div">) {
       </div>
 
       <Button
-        variant="outline"
+        variant="default"
         className="flex items-center justify-between group"
         type="submit"
       >

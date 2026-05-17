@@ -54,17 +54,17 @@ export default async function Page({ params }: Props) {
 
     return (
       <div>
-        <div className="flex justify-between items-center mb-14">
-          <TypographyH2>Latest Blogs</TypographyH2>
+        <div className="ollyo-page-heading">
+          <TypographyH2 className="ollyo-page-title">Latest Blogs</TypographyH2>
           <DoclifyBreadcrumb removeLast={2} />
         </div>
 
         {/* all blogs */}
-        <div className="space-y-5">
+        <div className="space-y-8">
           {/* top blog */}
           {firstBlog && (
             <div
-              className="grid grid-cols-1 grid-rows-2 md:grid-cols-2 md:grid-rows-1 gap-5 md:gap-10 hover:bg-accent transition-all duration-500 p-2 rounded-2xl mb-5"
+              className="ollyo-featured-post mb-5 grid grid-cols-1 gap-5 border border-[#DDDDDD] p-2 md:grid-cols-2 md:gap-10"
               key={firstBlog.slug}
             >
               {/* image side */}
@@ -74,15 +74,15 @@ export default async function Page({ params }: Props) {
                   height={400}
                   width={800}
                   alt={firstBlog.frontMatter.title}
-                  className="aspect-video"
+                  className="aspect-video rounded-none"
                 />
               </Link>
               {/* content side  */}
-              <div className="flex flex-col justify-center px-5 md:px-0">
-                <div className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
+              <div className="flex flex-col justify-center px-5 py-6 md:px-0">
+                <div className="ollyo-meta mb-4 flex items-center justify-start">
                   <DoclifyAuthorMeta username={firstBlog.frontMatter.author} />
                 </div>
-                <div className="flex items-center justify-start mb-4 text-primary text-sm md:text-base">
+                <div className="ollyo-meta mb-4 flex items-center justify-start">
                   <Calendar1Icon className="h-4 w-4 mr-2" />
                   Published at{" "}
                   {new Date(firstBlog.frontMatter.date).toLocaleString(
@@ -94,15 +94,15 @@ export default async function Page({ params }: Props) {
                     }
                   )}
                 </div>
-                <TypographyH3>
+                <TypographyH3 className="ollyo-card-title">
                   <Link
                     href={`/blog/${firstBlog.slug}`}
-                    className="hover:underline"
+                    className="hover:text-[#5409DA]"
                   >
                     {firstBlog.frontMatter.title}
                   </Link>
                 </TypographyH3>
-                <TypographyP>
+                <TypographyP className="ollyo-copy mt-4">
                   {firstBlog.frontMatter.description.slice(0, 80) + "..."}
                 </TypographyP>
               </div>
@@ -110,7 +110,7 @@ export default async function Page({ params }: Props) {
           )}
 
           {/* rest of the blog */}
-          <div className="grid grid-cols-1 grid-rows-2 md:grid-cols-2 md:grid-rows-1 gap-5">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             {/* each item  */}
             {blogs.map((blog, index) => {
               if (index === 0) {

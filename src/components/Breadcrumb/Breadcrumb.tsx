@@ -27,12 +27,12 @@ export function DoclifyBreadcrumb({ removeLast = 0 }: { removeLast?: number }) {
   const lastItem = crumbs.length - 1;
 
   return (
-    <Breadcrumb>
+    <Breadcrumb className="ollyo-meta">
       <BreadcrumbList className="gap-0.5 sm:gap-0.5">
         <BreadcrumbItem>
           <House className="h-4 w-4" />
           <BreadcrumbLink asChild>
-            <UnderlineLink03 href="/" className="text-foreground">
+            <UnderlineLink03 href="/" className="ollyo-meta">
               Home
             </UnderlineLink03>
           </BreadcrumbLink>
@@ -44,11 +44,11 @@ export function DoclifyBreadcrumb({ removeLast = 0 }: { removeLast?: number }) {
           <BreadcrumbItem key={index}>
             <BreadcrumbLink asChild>
               {lastItem !== index ? (
-                <UnderlineLink03 href={item.href} className="text-foreground">
+                <UnderlineLink03 href={item.href} className="ollyo-meta">
                   {item.label}
                 </UnderlineLink03>
               ) : (
-                <TypographyP>{item.label}</TypographyP>
+                <TypographyP className="ollyo-meta">{item.label}</TypographyP>
               )}
             </BreadcrumbLink>
             {lastItem !== index && (

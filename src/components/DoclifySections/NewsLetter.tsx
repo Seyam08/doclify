@@ -7,13 +7,14 @@ import { ComponentProps, Suspense } from "react";
 export default function NewsLetter({ className }: ComponentProps<"div">) {
   return (
     <div className={cn(className)}>
-      <div className="py-20 px-10 mx-auto flex flex-col md:flex-row items-stretch md:items-start justify-between gap-10 bg-background/30 backdrop-blur supports-backdrop-filter:bg-background/30">
+      <div className="ollyo-section-panel mx-auto flex flex-col items-stretch justify-between gap-10 border border-[#DDDDDD] px-6 py-12 md:flex-row md:items-start md:px-10 md:py-16">
         {/* Left Text Section */}
         <div className="flex-1 space-y-4 text-center md:text-left">
-          <TypographyH1>
+          <p className="ollyo-kicker">Monthly dispatch</p>
+          <TypographyH1 className="ollyo-section-title">
             Subscribe to our <br /> monthly newsletter
           </TypographyH1>
-          <TypographyP className="text-sm max-w-md">
+          <TypographyP className="ollyo-copy max-w-md">
             Stay up-to-date about latest tech and new world. <br />
             Unsubscribe at anytime!
           </TypographyP>

@@ -17,7 +17,7 @@ export default async function TopCategories({
   limit: number;
   title: string;
 } & ComponentProps<"div">) {
-  const response = await getDetailedPostMeta("categories", 6);
+  const response = await getDetailedPostMeta("categories", limit);
 
   if (response.success === false) {
     return (
@@ -32,16 +32,19 @@ export default async function TopCategories({
 
     return (
       <div className={cn("w-full", className)}>
-        <TypographyH3 className="w-fit capitalize mx-auto mb-2">
-          {title}
-        </TypographyH3>
+        <div className="mx-auto mb-14 max-w-3xl text-center">
+          <p className="ollyo-kicker mb-4">Content map</p>
+          <TypographyH3 className="ollyo-section-title mx-auto w-fit capitalize">
+            {title}
+          </TypographyH3>
 
-        <TypographyP className="w-fit capitalize mx-auto mb-14">
-          Select a category to see more related content
-        </TypographyP>
+          <TypographyP className="ollyo-copy mx-auto mt-6 w-fit capitalize">
+            Select a category to see more related content
+          </TypographyP>
+        </div>
 
         {/* each item */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
           {/* each item  */}
           {categories.map((category, index) => (
             <DoclifyItem
@@ -54,8 +57,11 @@ export default async function TopCategories({
           ))}
         </div>
 
-        <div className="m-auto w-fit mt-14">
-          <UnderlineLink02 href="/categories">
+        <div className="m-auto mt-14 w-fit">
+          <UnderlineLink02
+            href="/categories"
+            className="ollyo-tag hover:text-[#5409DA]"
+          >
             All Categories
             <ArrowUpRight className="h-5 w-5 group-hover:rotate-45 transition-all duration-300" />
           </UnderlineLink02>
