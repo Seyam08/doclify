@@ -4,6 +4,7 @@ import { sendNewsLetter } from "@/actions/news-letter/news-letter-action";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 import { newsLetterSchema } from "@/zod-schemas/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -76,13 +77,18 @@ export function NewsLetterForm({ className }: ComponentProps<"div">) {
           )}
         />
       </div>
+
       <Button
         variant="outline"
         className="flex items-center justify-between group"
         type="submit"
       >
         Subscribe Now
-        <ArrowUpRight className="h-6 w-6 group-hover:rotate-45 transition-all duration-300" />
+        {form.formState.isSubmitting ? (
+          <Spinner />
+        ) : (
+          <ArrowUpRight className="h-6 w-6 group-hover:rotate-45 transition-all duration-300" />
+        )}
       </Button>
     </form>
   );
